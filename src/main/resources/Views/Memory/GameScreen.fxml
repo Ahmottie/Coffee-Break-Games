@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen">
+    <children>
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="600.0" prefWidth="800.0">
+            <children>
+            <VBox fx:id="header" prefHeight="87.0" prefWidth="568.0" styleClass="box">
+               <children>
+                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="552.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                          <font>
+                              <Font name="Arial Bold" size="24.0" />
+                          </font>
+                      </Label>
+                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
+                          <font>
+                              <Font size="18.0" />
+                          </font>
+                  </Label>
+               </children>
+            </VBox>
+                <AnchorPane prefHeight="100.0" prefWidth="800.0">
+               <children>
+                  <GridPane layoutX="249.0" layoutY="25.0" prefHeight="29.0" prefWidth="251.0" styleClass="box" AnchorPane.bottomAnchor="25.2" AnchorPane.topAnchor="25.2">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Current Turn: " />
+                        <Label fx:id="activePlayerLabel" text="Active Player" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets top="5.0" />
+                           </GridPane.margin></Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </GridPane>
+                  <GridPane layoutX="550.0" layoutY="-1.0" prefHeight="71.0" prefWidth="218.0" styleClass="box" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="10.0" prefWidth="80.2" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="128.6" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="sboardP1" text="Player 1: " />
+                        <Label fx:id="sboardP2" text="Player 2: " GridPane.rowIndex="1" />
+                        <Label fx:id="sboardScoreP1" text="Score Player 1" GridPane.columnIndex="1" />
+                        <Label fx:id="sboardScoreP2" text="Score Player 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </GridPane>
+                  <Button layoutX="44.0" layoutY="26.0" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit Game" />
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+                </AnchorPane>
+                <AnchorPane fx:id="gamePane" prefHeight="398.0" prefWidth="800.0" />
+            </children>
+        </VBox>
+    </children>
+   <stylesheets>
+      <URL value="@../../css/stylesheets/fontstyle.css" />
+      <URL value="@../../css/stylesheets/MemoryMenu.css" />
+   </stylesheets>
+</AnchorPane>

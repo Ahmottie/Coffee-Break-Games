@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Michroma';
+    src: url('../fonts/Michroma-Regular.ttf');
+}
+
+.text {
+    -fx-font-family: 'Michroma';
+}
+
+.headerText {
+    -fx-font-size: 35px;
+}
+
+.normalText {
+    -fx-font-size: 18px;
+}
+
+.button{
+    -fx-font-size: 13px;
+}
