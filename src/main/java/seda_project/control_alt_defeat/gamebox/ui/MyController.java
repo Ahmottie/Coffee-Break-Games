@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox;
+package seda_project.control_alt_defeat.gamebox.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
