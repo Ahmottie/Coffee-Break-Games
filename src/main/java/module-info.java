@@ -12,4 +12,6 @@ module seda.project.control.alt.defeat.gamebox {
     exports seda_project.control_alt_defeat.gamebox.Memory.Controller to javafx.fxml;
     exports seda_project.control_alt_defeat.gamebox.Memory to javafx.fxml;
     opens seda_project.control_alt_defeat.gamebox.Memory to javafx.fxml;
+    exports seda_project.control_alt_defeat.gamebox.ui to javafx.graphics;
+    opens seda_project.control_alt_defeat.gamebox.ui to javafx.fxml;
 }
