@@ -5,4 +5,4 @@ public record GameConfig(
         int deckSize,
         String player1Name,
         String player2Name
-        ) {}
+) implements java.io.Serializable {}
