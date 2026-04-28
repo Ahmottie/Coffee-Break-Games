@@ -5,4 +5,4 @@ public record Card(
         int symbolId,
         boolean faceUp,
         boolean removed
-) {}
+) implements java.io.Serializable {}
