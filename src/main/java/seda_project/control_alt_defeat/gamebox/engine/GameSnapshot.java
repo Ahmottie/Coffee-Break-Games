@@ -9,4 +9,4 @@ public record GameSnapshot(
         String activePlayer,
         List<Integer> flippedIds,
         boolean gameOver
-) {}
+) implements java.io.Serializable {}
