@@ -38,14 +38,14 @@ public class LocalGame {
                 possibleMatches--;
                 gameScreen.awardPoints(activePlayer);
 
-                gameScreen.setStatusLabel(getActivePlayerName()+ " has found a match!", false);
+                gameScreen.setStatusLabel(true);
                 gameScreen.removeMatch();
                 flippedCards.clear();
             }
             else {
                 gameScreen.turnCardsBack();
 
-                gameScreen.setStatusLabel(getActivePlayerName()+ " didn't find a match! Next Players turn", true);
+                gameScreen.setStatusLabel(false);
                 activePlayer += 1;
                 gameScreen.setActivePlayerLabel(getActivePlayerName());
 

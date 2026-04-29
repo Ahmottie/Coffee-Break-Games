@@ -1,8 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
-import javafx.animation.PauseTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -10,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.transform.Rotate;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
@@ -30,7 +28,7 @@ public class GameScreen {
     ArrayList<MCard> flippedCards = new ArrayList<>();
     boolean canClick = true;
     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-
+    Timeline blink;
 
     @FXML
     private VBox header;
@@ -40,6 +38,9 @@ public class GameScreen {
 
     @FXML
     private AnchorPane gamePane;
+
+    @FXML
+    private Text notificationText;
 
     //TODO game Start
 
@@ -137,19 +138,16 @@ public class GameScreen {
         AnchorPane.setRightAnchor(playingGrid,20.0);
     }
 
-    public void setStatusLabel(String text, boolean error){
-        if (error){
-            turnStatusLabel.getStyleClass().clear();
-            turnStatusLabel.getStyleClass().add("box");
-            turnStatusLabel.getStyleClass().add("error");
-            turnStatusLabel.setText(text);
-        }
-        else{
-            turnStatusLabel.getStyleClass().clear();
-            turnStatusLabel.getStyleClass().add("box");
-            turnStatusLabel.getStyleClass().add("ready");
-            turnStatusLabel.setText(text);
-        }
+    public void setStatusLabel(boolean match){
+        notificationText.setVisible(true);
+        notificationText.setViewOrder(-1.0);
+
+        notificationText.setText(match ? "Match" : "Mismatch");
+        blink.play();
+        blink.setOnFinished( e-> {
+            notificationText.setVisible(false);
+            notificationText.setViewOrder(5.0);
+        });
     }
 
     public void setActivePlayerLabel(String name){
@@ -160,13 +158,22 @@ public class GameScreen {
         Player player1 = new Player(player1Name);
         Player player2 = new Player(player2Name);
 
+        blink = new Timeline(
+            new KeyFrame(Duration.seconds(.25), e -> {
+                notificationText.setStyle("-fx-font-size: 75px;");
+
+            }),
+            new KeyFrame(Duration.seconds(.5), e -> {
+                notificationText.setStyle("-fx-font-size: 100px;");
+            })
+        );
+        blink.setCycleCount(3);
 
         localGame = new LocalGame(player1,player2,this,matchSize, deckSize);
     }
 
     public void turnCardsBack(){
         canClick = false;
-        System.err.println("FLIPP THEM BACK ");
         pause.setOnFinished(e -> {
             for (MCard c : flippedCards) {
                 flipmotion(c);
