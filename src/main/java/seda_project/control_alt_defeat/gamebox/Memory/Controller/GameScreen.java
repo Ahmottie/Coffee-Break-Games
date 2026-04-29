@@ -28,7 +28,7 @@ public class GameScreen {
     ArrayList<MCard> flippedCards = new ArrayList<>();
     boolean canClick = true;
     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-    Timeline blink;
+    ScaleTransition blink;
 
     @FXML
     private VBox header;
@@ -111,8 +111,6 @@ public class GameScreen {
                 if ( i == row-1 && overhang!=0){
                     helper = (row-overhang)/2;
                 }
-                //TODO Each Cell is a Memory Card
-                //TODO Create Card Amir
                 if (placed < deckSize) {
                     placed++;
                     int id = positions.get((col * i) + j);
@@ -158,16 +156,13 @@ public class GameScreen {
         Player player1 = new Player(player1Name);
         Player player2 = new Player(player2Name);
 
-        blink = new Timeline(
-            new KeyFrame(Duration.seconds(.25), e -> {
-                notificationText.setStyle("-fx-font-size: 75px;");
-
-            }),
-            new KeyFrame(Duration.seconds(.5), e -> {
-                notificationText.setStyle("-fx-font-size: 100px;");
-            })
-        );
-        blink.setCycleCount(3);
+        blink = new ScaleTransition(Duration.seconds(0.5), notificationText);
+        blink.setFromX(1.0);
+        blink.setToX(0.75);
+        blink.setFromY(1.0);
+        blink.setToY(0.75);
+        blink.setAutoReverse(true);
+        blink.setCycleCount(4);
 
         localGame = new LocalGame(player1,player2,this,matchSize, deckSize);
     }
@@ -227,7 +222,6 @@ public class GameScreen {
             winner = 2;
         }
         try {
-
             String address = "/Views/Memory/ResultScreen.fxml";
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
             Parent root = loader.load();
@@ -235,7 +229,7 @@ public class GameScreen {
 
             vS.addFxmlLoaders(address);
             controller.handViewStack(vS);
-            controller.passMatchData(sboardP1.getText(), sboardP2.getText(), matchSize, deckSize,winner);
+            controller.passMatchData(sboardP1.getText(), sboardP2.getText(), sboardScoreP1.getText(),sboardScoreP2.getText(),matchSize, deckSize,winner);
 
             Scene newScene = new Scene(root, 800, 600);
             Stage stage = (Stage) header.getScene().getWindow();
@@ -274,6 +268,5 @@ public class GameScreen {
 
         SequentialTransition flip = new SequentialTransition(firstHalf, secondHalf);
         flip.play();
-        System.err.println("AFTER FLIP " +card.getFaceUp());
     }
 }

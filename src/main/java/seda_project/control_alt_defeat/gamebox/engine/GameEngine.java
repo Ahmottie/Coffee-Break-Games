@@ -1,9 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.engine;
 
-import seda_project.control_alt_defeat.gamebox.Memory.engine.FlipResult;
-import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
-import seda_project.control_alt_defeat.gamebox.Memory.engine.GameOutcome;
-import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.*;
 
 public interface GameEngine {
 

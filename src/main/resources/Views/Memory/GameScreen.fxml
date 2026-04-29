@@ -8,6 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen">
     <children>
+      <Text fx:id="notificationText" fill="WHITE" layoutX="147.0" layoutY="197.87890625" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="notification" textAlignment="CENTER" wrappingWidth="410.9999771118164" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="97.0" />
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="600.0" prefWidth="780.0">
             <children>
             <VBox fx:id="header" prefHeight="87.0" prefWidth="568.0" styleClass="box">
@@ -67,10 +68,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
                 </AnchorPane>
-                <AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="800.0">
-               <children>
-                  <Text fx:id="notificationText" fill="WHITE" layoutX="184.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="notification" textAlignment="CENTER" wrappingWidth="455.9999771118164" AnchorPane.bottomAnchor="138.30624999999998" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="274.40002288818357" AnchorPane.topAnchor="138.12109375" />
-               </children></AnchorPane>
+                <AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="800.0" />
             </children>
         </VBox>
     </children>

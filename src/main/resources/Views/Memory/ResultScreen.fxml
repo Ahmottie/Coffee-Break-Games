@@ -34,7 +34,8 @@
                         <GridPane prefHeight="252.0" prefWidth="356.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="115.99999999999999" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="222.8" minWidth="10.0" prefWidth="208.8" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.80003051757814" minWidth="10.0" prefWidth="180.5999694824219" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="222.8" minWidth="10.0" prefWidth="75.80003051757814" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -44,8 +45,8 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label alignment="CENTER" prefHeight="52.0" prefWidth="373.0" styleClass="headerText" text="Game Result" GridPane.columnSpan="2" />
-                                <Label text="Looser" GridPane.rowIndex="2" />
+                                <Label alignment="CENTER" prefHeight="52.0" prefWidth="373.0" styleClass="headerText" text="Game Result" GridPane.columnSpan="3" />
+                                <Label fx:id="positionLooserLabel" text="Looser" GridPane.rowIndex="2" />
                                 <Label fx:id="looserLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label text="Deck Size" GridPane.rowIndex="3" />
                                 <Label fx:id="deckSizeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -54,8 +55,10 @@
                                     <padding>
                                         <Insets left="5.0" right="5.0" />
                                     </padding></Label>
-                                <Label text="Winner:" GridPane.rowIndex="1" />
+                                <Label fx:id="positionWinnerLabel" text="Winner:" GridPane.rowIndex="1" />
                                 <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="83.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="winnerPointsLabel" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label fx:id="looserPointsLabel" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                             </children>
                             <padding>
                                 <Insets left="15.0" right="15.0" />
