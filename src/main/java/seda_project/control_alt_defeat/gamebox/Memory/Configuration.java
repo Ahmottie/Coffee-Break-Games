@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 public class Configuration {
 
-    public static void deckSize(int tupleSize, RadioButton smallGame, RadioButton mediumGame, RadioButton largeGame){
+    public void deckSize(int tupleSize, RadioButton smallGame, RadioButton mediumGame, RadioButton largeGame){
         int max = (int) 45/tupleSize;
         int stepsize = max/3;
         System.out.println("tuple size: "+tupleSize);
@@ -36,7 +36,7 @@ public class Configuration {
         }
     }
 
-    public static boolean checkNameLength(String name, int player, Label statusLabel) {
+    public boolean checkNameLength(String name, int player, Label statusLabel) {
         int max = 16;
         int length = name.length();
         if (length > max){
@@ -46,11 +46,16 @@ public class Configuration {
         }
         return true;
     }
-    public static String checkNameInput(String name, int player){
+    public String checkNameInput(String name, int player){
         if (name.equals("")){
             name = "Player " + player;
         }
         return name;
+    }
+
+    public int ActivePlayer(){
+        //TODO create function that either returns 1 or 2
+        return 1;
     }
 
 

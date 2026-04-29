@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class JoinLan implements Initializable {
     ViewStack vS;
-
+    Configuration c = new Configuration();
 
     @FXML
     private VBox header;
@@ -53,8 +53,8 @@ public class JoinLan implements Initializable {
 
     @FXML
     private void onConnectAction(){
-        String yourName = Configuration.checkNameInput(joinPlayerNameTF.getText(),2);
-        if (Configuration.checkNameLength(yourName,2,joinStatus)) {
+        String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
+        if (c.checkNameLength(yourName,2,joinStatus)) {
             if (checkIP()) {
                 try {
                     connectToHost(ipAdresseTF.getText());

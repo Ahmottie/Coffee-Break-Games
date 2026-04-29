@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class LocalGameConfiguration implements Initializable {
     ViewStack vS = GameBox.getvS();
+    Configuration c = new Configuration();
 
     @FXML
     private VBox header;
@@ -50,7 +51,7 @@ public class LocalGameConfiguration implements Initializable {
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
     }
 
     @FXML
@@ -76,12 +77,12 @@ public class LocalGameConfiguration implements Initializable {
     private void onStartGameAction(){
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
-        String player1Name = Configuration.checkNameInput(player1TF.getText(),1);
-        String player2Name = Configuration.checkNameInput(player2TF.getText(),2);
+        String player1Name = c.checkNameInput(player1TF.getText(),1);
+        String player2Name = c.checkNameInput(player2TF.getText(),2);
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
 
 
-        if (Configuration.checkNameLength(player1Name,1, statusLabel) && Configuration.checkNameLength(player2Name,2,statusLabel)) {
+        if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
             if (selected != null) {
                 try {
                     int deckSize = Integer.parseInt(selected.getText());
@@ -93,6 +94,7 @@ public class LocalGameConfiguration implements Initializable {
                     vS.addFxmlLoaders(address);
                     controller.handViewStack(vS);
                     controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
+                    controller.startGame(player1Name,player2Name);
 
                     Scene newScene = new Scene(root, 800, 600);
                     Stage stage = (Stage) header.getScene().getWindow();

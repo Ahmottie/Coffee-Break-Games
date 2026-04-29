@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class HostLan implements Initializable {
     public ViewStack vS = GameBox.getvS();
+    Configuration c = new Configuration();
 
     @FXML
     private VBox header;
@@ -49,7 +50,7 @@ public class HostLan implements Initializable {
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
     }
 
     @FXML
@@ -77,11 +78,11 @@ public class HostLan implements Initializable {
 
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
-        String yourName = Configuration.checkNameInput(hostNameTF.getText(),1);
+        String yourName = c.checkNameInput(hostNameTF.getText(),1);
 
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
 
-        if (Configuration.checkNameLength(yourName, 1,statusLabel)) {
+        if (c.checkNameLength(yourName, 1,statusLabel)) {
             if (selected != null) {
                 try {
                     int deckSize = Integer.parseInt(selected.getText());
@@ -116,7 +117,7 @@ public class HostLan implements Initializable {
     public void backTransfer(String name, int tupleSize, int deckSize){
         hostNameTF.setText(name);
         matchSize.getSelectionModel().select(tupleSize-1);
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
 
         if (smallGame.getText().equals(String.valueOf(deckSize))) {
             smallGame.setSelected(true);

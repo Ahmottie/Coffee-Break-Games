@@ -1,5 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -8,14 +9,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
+import seda_project.control_alt_defeat.gamebox.Memory.LocalGame;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.MCard;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameScreen {
     ViewStack vS;
+    LocalGame localGame;
+    int matchSize;
+    int deckSize;
+    ArrayList<MCard> flippedCards = new ArrayList<>();
+    boolean canClick = true;
+    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+
+
     @FXML
     private VBox header;
 
@@ -58,6 +71,9 @@ public class GameScreen {
         sboardP1.setText(player1);
         sboardP2.setText(player2);
 
+        this.matchSize = tupleSize;
+        this.deckSize = deckSize;
+
         createBoard(tupleSize,deckSize);
     }
 
@@ -68,8 +84,8 @@ public class GameScreen {
         playingGrid.setVgap(10);
         playingGrid.setPadding(new Insets(10));
 
-        int col = (int)Math.sqrt(deckSize);
-        int row = (int) deckSize/col;
+        int col = (int)Math.ceil(Math.sqrt(deckSize));
+        int row = (int) Math.ceil((double) deckSize /col);
 
         ArrayList<Integer> positions  = new ArrayList<Integer>();
         int repeats = deckSize/tupleSize;
@@ -78,24 +94,42 @@ public class GameScreen {
                 positions.add(i);
             }
         }
-
+        System.out.println(positions);
         Collections.shuffle(positions);
-
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
+        System.out.println(row);
+        System.out.println(col);
+        int placed = 0;
+        int overhang = deckSize%row;
+        System.out.println(overhang);
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                int helper = 0;
+                if ( i == row-1 && overhang!=0){
+                    helper = (row-overhang)/2;
+                }
                 //TODO Each Cell is a Memory Card
                 //TODO Create Card Amir
-                /**
-                Card cell = new Card(i,j,positions.get(3*i+j));
-                cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE); // fill cell
-                playingGrid.add(cell, j, i);
+                if (placed < deckSize) {
+                    placed++;
+                    int id = positions.get((col * i) + j);
+                    MCard cell = new MCard(i, j+helper, id);
 
-                GridPane.setHgrow(cell,Priority.ALWAYS);
-                GridPane.setVgrow(cell,Priority.ALWAYS);
-                 **/
+                    cell.setOnAction(mouseEvent -> {
+                        if (canClick) {
+                            cell.setText(Integer.toString(cell.getid()));
+                            cell.setDisable(true);
+                            cell.setFaceUp(true);
+                            flipCard(cell, id);
+                        }
+                    });
+                    cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    playingGrid.add(cell, j+helper, i);
+
+                    GridPane.setHgrow(cell,Priority.ALWAYS);
+                    GridPane.setVgrow(cell,Priority.ALWAYS);
+                }
             }
         }
-
         gamePane.getChildren().add(playingGrid);
         AnchorPane.setBottomAnchor(playingGrid,20.0);
         AnchorPane.setTopAnchor(playingGrid,20.0);
@@ -122,20 +156,86 @@ public class GameScreen {
         activePlayerLabel.setText(name);
     }
 
-    public void changePoints(String player,  int points){
-        int current;
-        if (player.equals(sboardP1.getText())){
-            current = Integer.parseInt(sboardScoreP1.getText());
-            current += points;
-            sboardScoreP1.setText(current+"");
-        }
-        else if (player.equals(sboardP2.getText())){
-            current = Integer.parseInt(sboardScoreP2.getText());
-            current += points;
-            sboardScoreP2.setText(current+"");
+    public void startGame(String player1Name, String player2Name) {
+        Player player1 = new Player(player1Name);
+        Player player2 = new Player(player2Name);
+
+
+        localGame = new LocalGame(player1,player2,this,matchSize, deckSize);
+    }
+
+    public void turnCardsBack(){
+        canClick = false;
+        pause.setOnFinished(e -> {
+            for (MCard c : flippedCards) {
+                c.faceDown();
+            }
+            flippedCards.clear();
+            canClick = true;
+        });
+
+        pause.play();
+    }
+
+    private void flipCard(MCard card, int id) {
+        flippedCards.add(card);
+        localGame.flipCard(id);
+    }
+
+    public void removeMatch() {
+
+        canClick = false;
+        pause.setOnFinished(e -> {
+            for (MCard c : flippedCards){
+                c.setVisible(false);
+            }
+            flippedCards.clear();
+            canClick = true;
+        });
+
+        pause.play();
+    }
+    public void awardPoints(int active){
+        if (active %2 == 0) {
+            int current = Integer.parseInt(sboardScoreP2.getText());
+            sboardScoreP2.setText((current+10)+"");
         }
         else {
-            System.err.println("This player does not exist!");
+            int current = Integer.parseInt(sboardScoreP1.getText());
+            sboardScoreP1.setText((current+10)+"");
+        }
+    }
+
+    public void gameEnd() {
+        int points1 = Integer.parseInt(sboardScoreP1.getText());
+        int points2 = Integer.parseInt(sboardScoreP2.getText());
+        int winner;
+        if (points1 == points2){
+            winner = 0;
+        }
+        else if (points1 > points2){
+            winner = 1;
+        }
+        else{
+            winner = 2;
+        }
+        try {
+
+            String address = "/Views/Memory/ResultScreen.fxml";
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+            ResultScreen controller = loader.getController();
+
+            vS.addFxmlLoaders(address);
+            controller.handViewStack(vS);
+            controller.passMatchData(sboardP1.getText(), sboardP2.getText(), matchSize, deckSize,winner);
+
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
