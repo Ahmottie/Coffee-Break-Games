@@ -1,6 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.engine;
-
-import seda_project.control_alt_defeat.gamebox.Memory.engine.*;
+package seda_project.control_alt_defeat.gamebox.Memory.engine;
 
 import java.util.ArrayList;
 import java.util.List;
