@@ -7,4 +7,4 @@ public record FlipResult(
         List<Integer> matchedIds,
         String newActivePlayer,
         int scoreAwarded
-) {}
+) implements java.io.Serializable {}
