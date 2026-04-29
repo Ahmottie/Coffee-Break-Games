@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class HostLan implements Initializable {
     public ViewStack vS = GameBox.getvS();
+    Configuration c = new Configuration();
 
     @FXML
     private VBox header;
@@ -33,10 +34,14 @@ public class HostLan implements Initializable {
     @FXML
     private TextField hostNameTF;
 
+    @FXML
+    private Label statusLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        matchSize.getItems().clear();
+        statusLabel.setVisible(false);
 
+        matchSize.getItems().clear();
         for(int i = 1; i <= 45; i++) {
             matchSize.getItems().add(i);
         }
@@ -45,7 +50,7 @@ public class HostLan implements Initializable {
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
     }
 
     @FXML
@@ -73,26 +78,34 @@ public class HostLan implements Initializable {
 
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
-        String yourName = hostNameTF.getText();
+        String yourName = c.checkNameInput(hostNameTF.getText(),1);
+
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        int deckSize = Integer.parseInt(selected.getText());
 
-        try {
-            String address = "/Views/Memory/WaitForOpponent.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            WaitForOpponent controller = loader.getController();
+        if (c.checkNameLength(yourName, 1,statusLabel)) {
+            if (selected != null) {
+                try {
+                    int deckSize = Integer.parseInt(selected.getText());
+                    String address = "/Views/Memory/WaitForOpponent.fxml";
+                    FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+                    Parent root = loader.load();
+                    WaitForOpponent controller = loader.getController();
 
-            vS.addFxmlLoaders(address);
-            boolean host = true;
-            controller.passHostData(vS, host, yourName, tupleSize,deckSize);
+                    vS.addFxmlLoaders(address);
+                    boolean host = true;
+                    controller.passHostData(vS, host, yourName, tupleSize, deckSize);
 
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+                    Scene newScene = new Scene(root, 800, 600);
+                    Stage stage = (Stage) header.getScene().getWindow();
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                statusLabel.setVisible(true);
+                statusLabel.setText("You need to select a deck Size!");
+            }
         }
 
     }
@@ -104,7 +117,7 @@ public class HostLan implements Initializable {
     public void backTransfer(String name, int tupleSize, int deckSize){
         hostNameTF.setText(name);
         matchSize.getSelectionModel().select(tupleSize-1);
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
 
         if (smallGame.getText().equals(String.valueOf(deckSize))) {
             smallGame.setSelected(true);

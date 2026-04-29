@@ -1,5 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seda_project.control_alt_defeat.gamebox.GameBox;
+import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 
@@ -20,6 +23,8 @@ public class WaitForOpponent {
     private String joinName;
     private int tupleSize;
     private int deckSize;
+    Timeline timeline;
+    private String ipAddress;
 
     @FXML
     private VBox header;
@@ -29,6 +34,7 @@ public class WaitForOpponent {
 
     @FXML
     private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel;
+
 
 
     @FXML
@@ -48,7 +54,7 @@ public class WaitForOpponent {
             }
             if (controller instanceof JoinLan c){
                 c.handViewStack(vS);
-                c.backTransfer(joinName);
+                c.backTransfer(joinName,ipAddress);
                 Scene newScene = new Scene(root, 800, 600);
                 Stage stage = (Stage) header.getScene().getWindow();
                 stage.setScene(newScene);
@@ -59,6 +65,8 @@ public class WaitForOpponent {
             e.printStackTrace();
         }
     }
+
+    int c = 0;
 
     public void onStartGameAction (){
         if (!host){
@@ -77,16 +85,24 @@ public class WaitForOpponent {
                 ready = !ready;
                 //TODO Send this to the host
             }
-
+        }
+        if (host) {
+            if (c == 0) {
+                playerJoin("Peter");
+                c++;
+            }
+            else if (c == 1){
+                readyChange(true);
+            }
         }
     }
 
-    public void passJoinData(ViewStack vs, boolean host, String playerName){
+    public void passJoinData(ViewStack vs, boolean host, String playerName, String ipAddress){
         this.vS = vs;
         this.host = host;
         this.ready = false;
         this.joinName = playerName;
-
+        this.ipAddress = ipAddress;
         startGameButton.setText("Ready");
         yourNameLabel.setText(playerName);
 
@@ -104,6 +120,36 @@ public class WaitForOpponent {
         deckSizeLabel.setText(Integer.toString(deckSize));
         matchSizeLabel.setText(Integer.toString(tupleSize));
 
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> opponentNameLabel.setText("")),
+                new KeyFrame(Duration.seconds(0.5), e -> opponentNameLabel.setText("o")),
+                new KeyFrame(Duration.seconds(1), e -> opponentNameLabel.setText("oo")),
+                new KeyFrame(Duration.seconds(1.5), e -> opponentNameLabel.setText("ooo")),
+                new KeyFrame(Duration.seconds(2), e -> opponentNameLabel.setText("ooo"))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
         statusLabel.setText("Waiting for an opponent to Join!");
+    }
+
+    public void playerJoin(String joinN){
+        timeline.stop();
+        joinName = joinN;
+        opponentNameLabel.setText(joinName);
+        statusLabel.setText("Waiting for " + joinName + " to be ready!");
+    }
+
+    public void readyChange(boolean change){
+        ready = change;
+        if (ready){
+            statusLabel.getStyleClass().clear();
+            statusLabel.getStyleClass().add("ready");
+            statusLabel.getStyleClass().add("box");
+            statusLabel.setText("All ready!");
+        }
+        else {
+            statusLabel.setText("Waiting for " + joinName + " to be ready!");
+        }
     }
 }

@@ -5,10 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.GameBox;
@@ -20,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class LocalGameConfiguration implements Initializable {
     ViewStack vS = GameBox.getvS();
+    Configuration c = new Configuration();
 
     @FXML
     private VBox header;
@@ -36,10 +34,14 @@ public class LocalGameConfiguration implements Initializable {
     @FXML
     private TextField player1TF, player2TF;
 
+    @FXML
+    private Label statusLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        matchSize.getItems().clear();
+        statusLabel.setVisible(false);
 
+        matchSize.getItems().clear();
         for(int i = 1; i <= 45; i++) {
             matchSize.getItems().add(i);
         }
@@ -49,7 +51,7 @@ public class LocalGameConfiguration implements Initializable {
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        Configuration.deckSize(tupleSize,smallGame,mediumGame,largeGame);
+        c.deckSize(tupleSize,smallGame,mediumGame,largeGame);
     }
 
     @FXML
@@ -75,30 +77,42 @@ public class LocalGameConfiguration implements Initializable {
     private void onStartGameAction(){
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
-        String player1Name = player1TF.getText();
-        String player2Name = player2TF.getText();
+        String player1Name = c.checkNameInput(player1TF.getText(),1);
+        String player2Name = c.checkNameInput(player2TF.getText(),2);
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
-        int deckSize = Integer.parseInt(selected.getText());
 
-        try{
-            String address = "/Views/Memory/GameScreen.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            GameScreen controller = loader.getController();
 
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-            controller.passMemoryData(player1Name,player2Name,tupleSize,deckSize);
+        if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
+            if (selected != null) {
+                try {
+                    int deckSize = Integer.parseInt(selected.getText());
+                    String address = "/Views/Memory/GameScreen.fxml";
+                    FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+                    Parent root = loader.load();
+                    GameScreen controller = loader.getController();
 
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
+                    vS.addFxmlLoaders(address);
+                    controller.handViewStack(vS);
+                    controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
+                    controller.startGame(player1Name,player2Name);
+
+                    Scene newScene = new Scene(root, 800, 600);
+                    Stage stage = (Stage) header.getScene().getWindow();
+                    stage.setScene(newScene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                statusLabel.setVisible(true);
+                statusLabel.setText("You need to select a deck Size!");
+            }
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+
     }
+
+
     public void handViewStack(ViewStack vs){
         this.vS = vs;
     }

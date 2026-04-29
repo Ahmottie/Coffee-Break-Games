@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -27,7 +28,7 @@
             </VBox>
             <AnchorPane prefHeight="520.0" prefWidth="800.0">
                <children>
-                  <GridPane layoutX="224.0" layoutY="100.0" styleClass="box">
+                  <GridPane layoutX="224.0" layoutY="100.0" prefWidth="352.0" styleClass="box">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="130.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
@@ -37,6 +38,7 @@
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -63,16 +65,27 @@
                         <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <RadioButton fx:id="largeGame" mnemonicParsing="false" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                         <Label text="Match Size" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" onAction="#onBackAction" text="Back" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                        <Button mnemonicParsing="false" onAction="#onBackAction" text="Back" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                            <GridPane.margin>
                               <Insets right="15.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
+                        <Button mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin></Button>
                         <ComboBox fx:id="matchSize" onAction="#calcDeckSize" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="342.0" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4" GridPane.rowIndex="4" GridPane.rowSpan="2">
+                           <styleClass>
+                              <String fx:value="box" />
+                              <String fx:value="error" />
+                           </styleClass>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding></Label>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

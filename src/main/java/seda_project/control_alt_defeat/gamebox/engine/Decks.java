@@ -1,5 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.engine;
 
+import seda_project.control_alt_defeat.gamebox.Memory.engine.Card;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
