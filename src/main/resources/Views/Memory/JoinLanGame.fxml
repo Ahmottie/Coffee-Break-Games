@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -48,12 +49,19 @@
                            <GridPane.margin>
                               <Insets right="15.0" />
                            </GridPane.margin></Button>
-                        <Label fx:id="joinStatus" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-                              <TextField prefHeight="26.0" prefWidth="180.0" promptText="Insert Host IP-Adress" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                        <Label fx:id="joinStatus" alignment="CENTER" contentDisplay="CENTER" prefHeight="58.0" prefWidth="343.0" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="error" />
+                              <String fx:value="box" />
+                           </styleClass></Label>
+                              <TextField fx:id="ipAdresseTF" prefHeight="26.0" prefWidth="180.0" promptText="Insert Host IP-Adress" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="5.0" />
                            </GridPane.margin></TextField>
-                              <TextField fx:id="joinPlayerName" prefHeight="26.0" prefWidth="180.0" promptText="Insert Player 1 Name " GridPane.columnIndex="2" GridPane.columnSpan="2">
+                              <TextField fx:id="joinPlayerNameTF" prefHeight="26.0" prefWidth="180.0" promptText="Insert Player 1 Name " GridPane.columnIndex="2" GridPane.columnSpan="2">
                            <GridPane.margin>
                               <Insets right="5.0" />
                            </GridPane.margin></TextField>

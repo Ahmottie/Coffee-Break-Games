@@ -13,3 +13,21 @@
     -fx-background-color: rgba(255,255,255,0.5);
     -fx-background-radius: 20px;
 }
+
+.error {
+    -fx-background-color: rgba(255,0,0,0.5);
+    -fx-border-radius: 20px;
+    -fx-border-color: rgb(121, 0, 0);
+}
+
+.information {
+    -fx-background-color: rgba(255, 193, 2, 0.5);
+    -fx-border-radius: 20px;
+    -fx-border-color: rgb(154, 119, 1);
+}
+
+.ready {
+    -fx-background-color: rgba(27, 255, 2, 0.5);
+    -fx-border-radius: 20px;
+    -fx-border-color: rgb(16, 151, 0);
+}

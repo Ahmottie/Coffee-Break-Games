@@ -1,0 +1,106 @@
+package seda_project.control_alt_defeat.gamebox.Memory.Controller;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
+import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+
+public class ResultScreen {
+    ViewStack vS;
+
+    String player1Name,player2Name;
+    int tupleSize,deckSize, winner;
+
+    @FXML
+    private VBox header;
+
+    @FXML
+    private Label matchSizeLabel, deckSizeLabel,looserLabel,winnerLabel;
+
+    @FXML
+    private void onExitGameAction(){
+        try{
+            vS.emtyStack();
+            String address = "/Views/Memory/MemoryMenu.fxml";
+
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+            MemoryMenu controller = loader.getController();
+
+            vS.addFxmlLoaders(address);
+            controller.handViewStack(vS);
+
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onPlayAgainAction(){
+        //TODO get Player 1 Name
+        //TODO get Player 2 Name
+        //TODO get TupleSize
+        //TODO get DeckSize
+
+        try {
+            String address = "/Views/Memory/GameScreen.fxml";
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+            GameScreen controller = loader.getController();
+
+            vS.addFxmlLoaders(address);
+            controller.handViewStack(vS);
+            controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
+            controller.startGame(player1Name,player2Name);
+
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void passMatchData(String player1Name, String player2Name, int tupleSize, int deckSize, int winner){
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
+        this.tupleSize = tupleSize;
+        this.deckSize = deckSize;
+        this.winner = winner;
+
+        deckSizeLabel.setText(String.valueOf(deckSize));
+        matchSizeLabel.setText(String.valueOf(tupleSize));
+
+        switch (winner){
+            case 0:// TODO Draw
+                break;
+            case 1:
+                winnerLabel.setText(player1Name);
+                looserLabel.setText(player2Name);
+                break;
+            case 2:
+                winnerLabel.setText(player2Name);
+                looserLabel.setText(player1Name);
+                break;
+        }
+
+    }
+
+    public void handViewStack(ViewStack vs){
+        this.vS = vs;
+    }
+}

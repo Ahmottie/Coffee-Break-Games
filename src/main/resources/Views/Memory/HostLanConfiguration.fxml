@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -64,6 +65,15 @@
                               <Insets left="10.0" />
                            </GridPane.margin></Button>
                         <ComboBox fx:id="matchSize" onAction="#calcDeckSize" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                        <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="367.0" textAlignment="CENTER" GridPane.columnSpan="4" GridPane.rowIndex="3">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <styleClass>
+                              <String fx:value="box" />
+                              <String fx:value="error" />
+                           </styleClass>
+                        </Label>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

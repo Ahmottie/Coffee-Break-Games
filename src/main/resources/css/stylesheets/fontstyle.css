@@ -18,3 +18,11 @@
 .button{
     -fx-font-size: 13px;
 }
+
+.notification{
+    -fx-font-family: Impact;
+    -fx-font-weight: bold;
+    -fx-stroke:black;
+    -fx-stroke-width: 3px;
+    -fx-font-size: 100px;
+}
