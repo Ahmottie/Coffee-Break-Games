@@ -1,5 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +12,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+import seda_project.control_alt_defeat.gamebox.network.LanClient;
+import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
+import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.network.Lan;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -57,11 +62,13 @@ public class JoinLan implements Initializable {
         if (c.checkNameLength(yourName,2,joinStatus)) {
             if (checkIP()) {
                 try {
-                    connectToHost(ipAdresseTF.getText());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
+                    NetworkLayer layer = connectToHost(ipAdresseTF.getText());
+
+                    Session s = Session.current();
+                    s.myName  = yourName;
+                    s.isHost  = false;
+                    s.network = layer;
+
                     String address = "/Views/Memory/WaitForOpponent.fxml";
                     FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
                     Parent root = loader.load();
@@ -69,21 +76,23 @@ public class JoinLan implements Initializable {
 
                     vS.addFxmlLoaders(address);
                     boolean host = false;
-                    controller.passJoinData(vS, host, yourName,ipAdresseTF.getText());
+                    controller.passJoinData(vS, host, yourName, ipAdresseTF.getText());
 
                     Scene newScene = new Scene(root, 800, 600);
                     Stage stage = (Stage) header.getScene().getWindow();
                     stage.setScene(newScene);
                     stage.show();
                 } catch (Exception e) {
+                    joinStatus.setVisible(true);
+                    joinStatus.setText("Could not connect: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    private void connectToHost(String ipAddress){
-        //TODO Suleyman
+    private NetworkLayer connectToHost(String ipAddress) throws Exception {
+        return LanClient.join(ipAddress, Lan.DEFAULT_PORT);
     }
 
     private boolean checkIP() {

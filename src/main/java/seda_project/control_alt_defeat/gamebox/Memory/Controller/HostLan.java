@@ -1,4 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
+import seda_project.control_alt_defeat.gamebox.network.Session;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +78,6 @@ public class HostLan implements Initializable {
 
     @FXML
     private void onSearchAction(){
-        //TODO Create Server that can be found
 
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
@@ -84,8 +87,19 @@ public class HostLan implements Initializable {
 
         if (c.checkNameLength(yourName, 1,statusLabel)) {
             if (selected != null) {
+
+                int deckSize = Integer.parseInt(selected.getText());
+
+                GameConfig config = new GameConfig(tupleSize, deckSize, yourName, "Opponent");
+                GameSetup setup = Decks.prepare(config);
+
+                Session s = Session.current();
+                s.myName = yourName;
+                s.isHost = true;
+                s.config = config;
+                s.setup  = setup;
+
                 try {
-                    int deckSize = Integer.parseInt(selected.getText());
                     String address = "/Views/Memory/WaitForOpponent.fxml";
                     FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
                     Parent root = loader.load();
