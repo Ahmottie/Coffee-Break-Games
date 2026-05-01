@@ -11,14 +11,14 @@ The game supports two modes:
 - **LAN play** — two players on the same Wi-Fi or LAN, one hosts and the
   other joins by typing the host's IP address.
 
-Both modes use the same game engine, so the rules behave identically.
+The rules for this game are the same in Local and Land mode.
 
 ## Team
 
 | Person   | Area                                              |
-| -------- | ------------------------------------------------- |
+|----------| ------------------------------------------------- |
 | Amir     | Game engine — match logic, scoring, deck setup    |
-| Eric     | UI / FXML controllers, animations, local play     |
+| Erik     | UI / FXML controllers, animations, local play     |
 | Suleyman | LAN networking — sockets, lobby sync, disconnect  |
 
 ## Requirements
