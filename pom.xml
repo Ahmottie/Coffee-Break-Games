@@ -86,6 +86,10 @@
                 <version>${javafx.maven.version}</version>
                 <configuration>
                     <mainClass>seda_project.control_alt_defeat.gamebox.Launcher</mainClass>
+                    <launcher>launcher</launcher>
+                    <jlinkImageName>image</jlinkImageName>
+                    <noManPages>true</noManPages>
+                    <stripDebug>true</stripDebug>
                 </configuration>
             </plugin>
 
