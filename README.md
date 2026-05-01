@@ -42,7 +42,7 @@ Install plugins from `Ctrl+Alt+S > Plugins`.
 Run from the repository root:
 
 ```sh
-mvn package
+mvn test javafx:jlink
 ```
 
 This compiles the project, runs tests, and creates artifacts in `target/`.

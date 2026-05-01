@@ -17,10 +17,10 @@ build:
   stage: build
   image: maven:3.9.12-eclipse-temurin-25
   script:
-    - mvn clean package
+    - mvn clean javafx:jlink
   artifacts:
     paths:
-      - target/javafx-app-jar-with-dependencies.jar
+      - target/gamebox
     reports:
       junit: target/surefire-reports/TEST-*.xml
     expire_in: 30 days

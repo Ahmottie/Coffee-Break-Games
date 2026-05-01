@@ -19,7 +19,6 @@
         <javafx.maven.version>0.0.8</javafx.maven.version>
 
         <maven.compiler.version>3.13.0</maven.compiler.version>
-        <maven.assembly.version>3.7.1</maven.assembly.version>
         <exec.maven.version>3.6.1</exec.maven.version>
         <maven.antrun.version>3.1.0</maven.antrun.version>
         <maven.resources.version>3.3.1</maven.resources.version>
@@ -86,29 +85,21 @@
                 <version>${javafx.maven.version}</version>
                 <configuration>
                     <mainClass>seda_project.control_alt_defeat.gamebox.Launcher</mainClass>
+                    <launcher>gamebox</launcher>
+                    <jlinkImageName>gamebox</jlinkImageName>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
                 </configuration>
-            </plugin>
 
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven.assembly.version}</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>seda_project.control_alt_defeat.gamebox.Launcher</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
+                        <id>jlink</id>
                         <goals>
-                            <goal>single</goal>
+                            <goal>jlink</goal>
                         </goals>
                     </execution>
                 </executions>
