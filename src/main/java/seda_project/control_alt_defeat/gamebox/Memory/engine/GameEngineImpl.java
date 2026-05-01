@@ -41,7 +41,7 @@ public class GameEngineImpl implements GameEngine {
 
     @Override
     public void addListener(GameEventListener listener) {
-        if (!listeners.contains(listener)) {
+        if (listener != null && !listeners.contains(listener)) {
             listeners.add(listener);
         }
     }
@@ -89,10 +89,11 @@ public class GameEngineImpl implements GameEngine {
 
             if (isMatch) {
                 // Add 10 points to the active player
+                int points = GameConstants.POINTS_PER_MATCH;
                 if (activePlayer.equals(config.player1Name())) {
-                    score1 += 10;
+                    score1 += points;
                 } else {
-                    score2 += 10;
+                    score2 += points;
                 }
 
                 // Remove the matched cards
