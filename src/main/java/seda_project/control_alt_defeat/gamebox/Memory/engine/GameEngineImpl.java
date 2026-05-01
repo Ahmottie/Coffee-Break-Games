@@ -39,6 +39,11 @@ public class GameEngineImpl implements GameEngine {
         );
     }
 
+    @Override
+    public void addListener(GameEventListener listener) {
+
+    }
+
     public boolean canFlip(int cardId) {
         if (cardId < 0 || cardId >= board.size() || gameOver) return false;
         Card card = board.get(cardId);
@@ -171,13 +176,6 @@ public class GameEngineImpl implements GameEngine {
             return score1 > score2 ? GameOutcome.WIN : GameOutcome.LOSE;
         } else {
             return score2 > score1 ? GameOutcome.WIN : GameOutcome.LOSE;
-        }
-    }
-
-    @Override
-    public void addListener(GameEventListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
         }
     }
 

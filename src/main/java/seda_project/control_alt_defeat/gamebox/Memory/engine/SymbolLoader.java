@@ -11,8 +11,8 @@ import java.util.Map;
 // this part is AI generated
 public class SymbolLoader {
 
-    private static final String SYMBOL_PATH = "/symbols/";
-    private static final String CARD_BACK_PATH = "/card_back.png";
+    private static final String SYMBOL_PATH = "src/main/resources/Images/Memory";
+    private static final String CARD_BACK_PATH = SYMBOL_PATH + "/backface.png";
     private static final Map<Integer, BufferedImage> symbolCache = new HashMap<>();
     private static BufferedImage cardBackCache = null;
 

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.GameBox;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.SymbolLoader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -92,14 +93,15 @@ public class LocalGameConfiguration implements Initializable {
                     GameScreen controller = loader.getController();
 
                     vS.addFxmlLoaders(address);
-                    controller.handViewStack(vS);
-                    controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
-                    controller.startGame(player1Name,player2Name);
 
                     Scene newScene = new Scene(root, 800, 600);
                     Stage stage = (Stage) header.getScene().getWindow();
                     stage.setScene(newScene);
                     stage.show();
+
+                    controller.handViewStack(vS);
+                    controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
+                    controller.startGame(player1Name,player2Name);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

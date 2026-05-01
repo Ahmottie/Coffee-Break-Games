@@ -1,5 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.Memory;
 
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
 
@@ -15,6 +17,7 @@ public class LocalGame {
     private ArrayList<Integer> flippedCards;
     private int deckSize;
     private int possibleMatches;
+    PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
 
     public LocalGame(Player player1, Player player2, GameScreen gameScreen, int matchSize, int deckSize) {
         this.player1 = player1;
@@ -54,7 +57,10 @@ public class LocalGame {
 
         }
         if(possibleMatches == 0){
-            gameScreen.gameEnd();
+            pause.setOnFinished(event -> {
+                gameScreen.gameEnd();
+            });
+            pause.play();
         }
     }
 
@@ -69,11 +75,13 @@ public class LocalGame {
         return true;
     }
 
-    private String getActivePlayerName() {
+    public String getActivePlayerName() {
         if (activePlayer % 2 == 0) {
             return player2.getName();
         } else {
             return player1.getName();
         }
     }
+
+
 }
