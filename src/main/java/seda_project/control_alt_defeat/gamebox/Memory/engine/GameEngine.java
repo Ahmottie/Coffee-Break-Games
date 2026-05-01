@@ -2,7 +2,7 @@ package seda_project.control_alt_defeat.gamebox.Memory.engine;
 
 public interface GameEngine {
 
-    long MISMATCH_DELAY_MS = 1500L;                // How long to display a mismatched flip before flipping a card/cards back
+    long MISMATCH_DELAY_MS = GameConstants.MISMATCH_DELAY_MS;                // How long to display a mismatched flip before flipping a card/cards back
     void start(GameConfig config, GameSetup setup);
     FlipResult flip(int cardId);                   // Player flips a card. Returns Null if the flip is not allowed.
     GameSnapshot getSnapshot();                    // Current state
