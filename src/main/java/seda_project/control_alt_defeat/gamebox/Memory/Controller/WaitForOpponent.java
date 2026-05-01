@@ -38,7 +38,7 @@ public class WaitForOpponent {
 
     @FXML private VBox header;
     @FXML private Button startGameButton;
-    @FXML private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel;
+    @FXML private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
 
     @FXML
     private void onBackAction() {
@@ -158,6 +158,7 @@ public class WaitForOpponent {
                     err.printStackTrace();
                 })
         );
+        hostIpAddressLabel.setText(Lan.localIp());
     }
 
     public void passJoinData(ViewStack vs, boolean host, String playerName, String ipAddress) {

@@ -1,8 +1,5 @@
 package seda_project.control_alt_defeat.gamebox.Memory.engine;
 
-import seda_project.control_alt_defeat.gamebox.engine.GameEngine;
-import seda_project.control_alt_defeat.gamebox.engine.GameEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +14,7 @@ public class GameEngineImpl implements GameEngine {
     private boolean gameOver;
 
     // UI and Network listeners
-    private final List<seda_project.control_alt_defeat.gamebox.engine.GameEventListener> listeners = new ArrayList<>();
+    private final List<GameEventListener> listeners = new ArrayList<>();
 
     @Override
     public void start(GameConfig config, GameSetup setup) {
@@ -42,6 +39,11 @@ public class GameEngineImpl implements GameEngine {
         );
     }
 
+    @Override
+    public void addListener(GameEventListener listener) {
+
+    }
+
     public boolean canFlip(int cardId) {
         if (cardId < 0 || cardId >= board.size() || gameOver) return false;
         Card card = board.get(cardId);
@@ -62,7 +64,7 @@ public class GameEngineImpl implements GameEngine {
 
         // Notify listeners that a card was flipped
         GameSnapshot snap = getSnapshot();
-        for (seda_project.control_alt_defeat.gamebox.engine.GameEventListener listener : listeners) {
+        for (GameEventListener listener : listeners) {
             listener.onCardFlipped(cardId, snap);
         }
 
@@ -110,7 +112,7 @@ public class GameEngineImpl implements GameEngine {
 
                 // Notify listeners of the match
                 snap = getSnapshot();
-                for (seda_project.control_alt_defeat.gamebox.engine.GameEventListener listener : listeners) {
+                for (GameEventListener listener : listeners) {
                     listener.onMatch(idsToResolve, activePlayer, 10, snap);
                     if (gameOver) {
                         listener.onGameOver(score1, score2, getOutcome(config.player1Name()), getOutcome(config.player2Name()));
@@ -134,7 +136,7 @@ public class GameEngineImpl implements GameEngine {
 
                 // Notify listeners of the mismatch before flipping cards down
                 snap = getSnapshot();
-                for (seda_project.control_alt_defeat.gamebox.engine.GameEventListener listener : listeners) {
+                for (GameEventListener listener : listeners) {
                     listener.onMismatch(idsToResolve, snap);
                 }
 
@@ -148,7 +150,7 @@ public class GameEngineImpl implements GameEngine {
 
                 // Notify listeners that cards flipped back and turn changed
                 snap = getSnapshot();
-                for (seda_project.control_alt_defeat.gamebox.engine.GameEventListener listener : listeners) {
+                for (GameEventListener listener : listeners) {
                     listener.onMismatchFlipback(idsToResolve, snap);
                     listener.onTurnChanged(activePlayer, snap);
                 }
@@ -174,13 +176,6 @@ public class GameEngineImpl implements GameEngine {
             return score1 > score2 ? GameOutcome.WIN : GameOutcome.LOSE;
         } else {
             return score2 > score1 ? GameOutcome.WIN : GameOutcome.LOSE;
-        }
-    }
-
-    @Override
-    public void addListener(seda_project.control_alt_defeat.gamebox.engine.GameEventListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
         }
     }
 
