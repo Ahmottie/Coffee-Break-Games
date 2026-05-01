@@ -11,7 +11,7 @@ The game supports two modes:
 - **LAN play** — two players on the same Wi-Fi or LAN, one hosts and the
   other joins by typing the host's IP address.
 
-The rules for this game are the same in Local and Land mode.
+The rules for this game are the same in Local and Lan mode.
 
 ## Team
 
