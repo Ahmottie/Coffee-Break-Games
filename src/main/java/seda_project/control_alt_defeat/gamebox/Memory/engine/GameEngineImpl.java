@@ -41,7 +41,9 @@ public class GameEngineImpl implements GameEngine {
 
     @Override
     public void addListener(GameEventListener listener) {
-
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     public boolean canFlip(int cardId) {
