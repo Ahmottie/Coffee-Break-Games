@@ -115,10 +115,27 @@ public class WaitForOpponent {
     }
 
     private void startGameNow() {
-        // To be wired after the GameScreen refactor (Step 13).
-        // For now just log so we can see the countdown completed.
-        System.out.println("[WaitForOpponent] countdown finished — would navigate to GameScreen");
-        statusLabel.setText("(Ready to start! GameScreen wiring coming next.)");
+        try {
+            String address = "/Views/Memory/GameScreen.fxml";
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+            GameScreen controller = loader.getController();
+
+            vS.addFxmlLoaders(address);
+            controller.handViewStack(vS);
+            controller.passLanData();
+            controller.startGame(
+                    Session.current().config.player1Name(),
+                    Session.current().config.player2Name()
+            );
+
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void passHostData(ViewStack vS, boolean host, String hostName, int tupleSize, int deckSize) {
