@@ -1,5 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.network.GameMessage;
+import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
+import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -14,6 +17,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Card;
@@ -25,6 +30,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameEventListener;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.MCard;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +46,8 @@ public class GameScreen {
     boolean canClick = true;
     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
     ScaleTransition blink;
+    private final java.util.Set<Integer> remoteFlipIds = java.util.concurrent.ConcurrentHashMap.newKeySet();
+    private boolean disconnected = false;
 
     private String myName;
     private final Map<Integer, MCard> cardsById = new HashMap<>();
@@ -55,6 +63,7 @@ public class GameScreen {
     @FXML
     private void onExitGameAction() {
         try {
+            Session.clear();
             vS.emtyStack();
             String address = "/Views/Memory/MemoryMenu.fxml";
 
@@ -154,7 +163,13 @@ public class GameScreen {
                     cardIdOf.put(cell, cardId);
 
                     cell.setOnAction(e -> {
-                        if (canClick) flipmotion(cell, cardId);
+                        if (!canClick) return;
+                        // In LAN mode, only the active player can flip.
+                        if (Session.current().network != null
+                                && !engine.getActivePlayer().equals(myName)) {
+                            return;
+                        }
+                        flipmotion(cell, cardId);
                     });
                     playingGrid.add(cell, j + helper, i);
                     placed++;
@@ -221,6 +236,22 @@ public class GameScreen {
                 Platform.runLater(() -> setActivePlayerLabel(newActivePlayer));
             }
         });
+
+        NetworkLayer net = Session.current().network;
+        if (net != null) {
+            net.addListener(new NetworkListener() {
+                @Override
+                public void onMessage(GameMessage msg) {
+                    if (msg instanceof GameMessage.Flip f) {
+                        Platform.runLater(() -> applyRemoteFlip(f.cardId()));
+                    }
+                }
+                @Override
+                public void onDisconnected(String reason) {
+                    Platform.runLater(() -> handleDisconnect(reason));
+                }
+            });
+        }
 
         setActivePlayerLabel(engine.getActivePlayer());
     }
@@ -304,7 +335,12 @@ public class GameScreen {
             firstHalf.setOnFinished(e -> {
                 card.setFaceUp(true);
                 flippedCards.add(card);
+                boolean wasRemote = remoteFlipIds.remove(cardId);
                 engine.flip(cardId);
+                NetworkLayer net = Session.current().network;
+                if (net != null && !wasRemote) {
+                    net.send(new GameMessage.Flip(cardId));
+                }
             });
         } else {
             firstHalf.setOnFinished(e -> {
@@ -314,5 +350,46 @@ public class GameScreen {
 
         SequentialTransition flip = new SequentialTransition(firstHalf, secondHalf);
         flip.play();
+    }
+
+    private void applyRemoteFlip(int cardId) {
+        MCard card = cardsById.get(cardId);
+        if (card == null || card.getFaceUp() || !canClick) return;
+        remoteFlipIds.add(cardId);
+        flipmotion(card, cardId);
+    }
+
+    private void handleDisconnect(String reason) {
+        if (disconnected) return;
+        disconnected = true;
+
+        canClick = false;
+        pause.stop();
+
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
+                ButtonType.OK);
+        alert.setTitle("Disconnected");
+        alert.setHeaderText("Opponent disconnected");
+        alert.showAndWait();
+
+        Session.clear();
+
+        try {
+            vS.emtyStack();
+            String address = "/Views/Memory/MemoryMenu.fxml";
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+            MemoryMenu controller = loader.getController();
+            vS.addFxmlLoaders(address);
+            controller.handViewStack(vS);
+
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

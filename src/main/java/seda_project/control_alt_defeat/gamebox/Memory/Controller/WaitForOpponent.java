@@ -43,6 +43,7 @@ public class WaitForOpponent {
     @FXML
     private void onBackAction() {
         try {
+            Session.clear();
             vS.popFxmlLoader();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
             Parent root = loader.load();

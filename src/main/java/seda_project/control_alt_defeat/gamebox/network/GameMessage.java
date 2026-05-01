@@ -11,13 +11,7 @@ import java.io.Serializable;
 // so we can ship these objects across a socket. Like JSON.stringify but
 // for Java's native byte format
 public sealed interface GameMessage extends Serializable
-        permits GameMessage.Hello,
-        GameMessage.LobbyConfig,
-        GameMessage.Ready,
-        GameMessage.StartCountdown,
-        GameMessage.Flip,
-        GameMessage.Heartbeat,
-        GameMessage.Disconnect {
+        permits GameMessage.Disconnect, GameMessage.Flip, GameMessage.Heartbeat, GameMessage.Hello, GameMessage.LobbyConfig, GameMessage.NewGame, GameMessage.Ready, GameMessage.StartCountdown {
 
     // records are like classess that implements the interface
     // they auto gen  constructor, accessor method per field..
@@ -34,4 +28,6 @@ public sealed interface GameMessage extends Serializable
     record Heartbeat(long sentAt) implements GameMessage {}
 
     record Disconnect(String reason) implements GameMessage {}
+
+    record NewGame(GameConfig config, GameSetup setup) implements GameMessage {}
 }
