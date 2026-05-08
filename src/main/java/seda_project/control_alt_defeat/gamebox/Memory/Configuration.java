@@ -1,9 +1,14 @@
 package seda_project.control_alt_defeat.gamebox.Memory;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import seda_project.control_alt_defeat.gamebox.Memory.Controller.MemoryMenu;
+import seda_project.control_alt_defeat.gamebox.network.Session;
 
 public class Configuration {
 
@@ -56,6 +61,46 @@ public class Configuration {
     public int ActivePlayer(){
         //TODO create function that either returns 1 or 2
         return 1;
+    }
+
+    public Object changeScene(String address, VBox header, ViewStack vS){
+        try {
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
+            Parent root = loader.load();
+
+            vS.addFxmlLoaders(address);
+            var controller = loader.getController();
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+            if (controller != null){
+                return controller;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Object backScene( VBox header, ViewStack vS){
+        try{
+            vS.popFxmlLoader();
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
+            Parent root = loader.load();
+            var controller = loader.getController();
+            Scene newScene = new Scene(root, 800, 600);
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setScene(newScene);
+            stage.show();
+            if (controller != null){
+                return controller;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

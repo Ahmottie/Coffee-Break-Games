@@ -1,0 +1,20 @@
+.background{
+    -fx-background-image: url('../../Images/Tetris/Background.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.gameField {
+    -fx-grid-lines-visible: true;
+    -fx-background-color: #000000;
+}
+
+.gameField Line{
+    -fx-stroke: #4a4a4a;
+}
+
+.playground{
+    -fx-background-color: rgb(37, 151, 151);
+}
+

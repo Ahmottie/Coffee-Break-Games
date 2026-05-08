@@ -41,7 +41,7 @@ public class JoinLan implements Initializable {
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
             Parent root = loader.load();
             MemoryMenu controller = loader.getController();
-            controller.handViewStack(vS);
+            controller.handViewStack(vS,c);
             Scene newScene = new Scene(root, 800, 600);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);

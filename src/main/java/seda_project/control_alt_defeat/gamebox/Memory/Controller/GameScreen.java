@@ -40,6 +40,7 @@ import java.util.Map;
 public class GameScreen {
     ViewStack vS;
     GameEngine engine;
+    Configuration c = new Configuration();
     int matchSize;
     int deckSize;
     ArrayList<MCard> flippedCards = new ArrayList<>();
@@ -72,7 +73,7 @@ public class GameScreen {
             MemoryMenu controller = loader.getController();
 
             vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
+            controller.handViewStack(vS,c);
 
             Scene newScene = new Scene(root, 800, 600);
             Stage stage = (Stage) header.getScene().getWindow();
@@ -124,6 +125,7 @@ public class GameScreen {
 
         List<Card> deck = setup.initialDeck();
         int n = deck.size();
+
         int col = (int) Math.ceil(Math.sqrt(n));
         int row = (int) Math.ceil((double) n / col);
 
@@ -382,7 +384,7 @@ public class GameScreen {
             Parent root = loader.load();
             MemoryMenu controller = loader.getController();
             vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
+            controller.handViewStack(vS,c);
 
             Scene newScene = new Scene(root, 800, 600);
             Stage stage = (Stage) header.getScene().getWindow();

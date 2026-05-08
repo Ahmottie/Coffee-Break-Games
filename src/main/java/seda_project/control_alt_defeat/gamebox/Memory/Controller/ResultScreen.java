@@ -23,6 +23,7 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 
 public class ResultScreen {
     ViewStack vS;
+    Configuration c = new Configuration();
 
     String player1Name,player2Name, pointsPlayer1, pointsPlayer2;
     int tupleSize,deckSize, winner;
@@ -49,7 +50,7 @@ public class ResultScreen {
             MemoryMenu controller = loader.getController();
 
             vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
+            controller.handViewStack(vS,c);
 
             Scene newScene = new Scene(root, 800, 600);
             Stage stage = (Stage) header.getScene().getWindow();

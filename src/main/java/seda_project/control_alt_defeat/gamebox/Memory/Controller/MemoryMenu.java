@@ -12,6 +12,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 
 public class MemoryMenu {
     ViewStack vS;
+    Configuration c;
 
     @FXML
     private VBox header;
@@ -80,10 +81,13 @@ public class MemoryMenu {
 
     @FXML
     protected void onExitAction(){
-        GameBox.cleanExit();
+        GameBox controller = (GameBox) c.backScene(header, vS);
+        controller.handViewStack(vS,c);
+
     }
 
-    public void handViewStack(ViewStack vs){
+    public void handViewStack(ViewStack vs, Configuration c){
         this.vS = vs;
+        this.c = c;
     }
 }

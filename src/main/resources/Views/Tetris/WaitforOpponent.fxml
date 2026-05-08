@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.WaitForOpponent">
+    <children>
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" prefHeight="624.0" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" prefHeight="127.0" prefWidth="620.0" styleClass="box" stylesheets="@../../css/stylesheets/MemoryMenu.css">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutY="5.0" prefHeight="55.0" prefWidth="630.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="615.0" styleClass="normalText" text="Memory Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="615.0" text="Waiting for opponent" />
+                    </children>
+                </VBox>
+                <Pane prefHeight="516.0" prefWidth="800.0">
+                    <children>
+                        <VBox layoutX="209.0" layoutY="71.0" prefHeight="321.0" prefWidth="382.0" styleClass="box">
+                            <children>
+                                <GridPane prefHeight="252.0" prefWidth="356.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="163.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.8" minWidth="10.0" prefWidth="218.8" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label alignment="CENTER" text="Your Name:" />
+                                        <Label fx:id="yourNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="237.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" />
+                                        <Label text="Stauts" GridPane.rowIndex="3" />
+                                        <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="58.0" prefWidth="245.0" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <styleClass>
+                                                <String fx:value="box" />
+                                                <String fx:value="information" />
+                                            </styleClass>
+                                            <padding>
+                                                <Insets left="5.0" right="5.0" />
+                                            </padding></Label>
+                                        <Label text="Opponent Name" GridPane.rowIndex="2" />
+                                        <Label fx:id="opponentNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="247.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Label text="Host IP-Address:" GridPane.rowIndex="1" />
+                                        <Label fx:id="hostIpAddressLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="248.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    </children>
+                                </GridPane>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="80.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#onBackAction" text="Cancel" />
+                                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </Pane>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/TetrisMenu.css" />
+    </stylesheets>
+</AnchorPane>
