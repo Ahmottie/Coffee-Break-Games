@@ -24,7 +24,7 @@ public class HostLan {
     Label statusLabel;
 
     @FXML
-    public void onBackAction(){
+    private void onBackAction(){
         Session.clear();
         TetrisMenu controller = (TetrisMenu) c.backScene(header,vS);
         controller.handSettings(tS);
@@ -32,7 +32,7 @@ public class HostLan {
     }
 
     @FXML
-    public void onSearchAction(){
+    private void onSearchAction(){
         //TODO Open the Network Connection
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         if (c.checkNameLength(yourName,1,statusLabel)){
@@ -53,6 +53,7 @@ public class HostLan {
     public void handSettings(TetrisSettings tS){
         this.tS = tS;
     }
+
     public void handData(String hostName){
         this.hostNameTF.setText(hostName);
     }

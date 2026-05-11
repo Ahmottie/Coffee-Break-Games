@@ -5,20 +5,26 @@ import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.GameBox;
 import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.Block;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
+
+import java.util.ArrayList;
 
 
 public class TetrisMenu {
     private ViewStack vS;
     private Configuration c;
     private TetrisSettings tS;
+    private ArrayList<Block> blockList;
 
     @FXML
     private VBox header;
 
     @FXML
     protected void onLocalAction(){
-        Object controller = c.changeScene("/Views/Memory/LocalGameConfiguration.fxml",header,vS);
+        LocalGameConfiguration controller = (LocalGameConfiguration) c.changeScene("/Views/Tetris/LocalGameConfiguration.fxml",header,vS);
+        controller.handViewStack(vS,c);
+        controller.handSettings(tS);
     }
     @FXML
     protected void onHostAction(){
@@ -43,7 +49,9 @@ public class TetrisMenu {
 
     @FXML
     protected void onPartDesignerAciton(){
-        //TODO
+        BlockController controller = (BlockController) c.changeScene("/Views/Tetris/BlockCreator.fxml",header,vS);
+        controller.handSettings(tS);
+        controller.handViewStack(vS,c);
     }
 
     @FXML

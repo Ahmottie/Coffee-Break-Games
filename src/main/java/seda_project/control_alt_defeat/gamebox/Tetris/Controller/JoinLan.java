@@ -35,14 +35,14 @@ public class JoinLan implements Initializable {
     private Label joinStatus,selectedHost;
 
     @FXML
-    public void onBackAction(){
+    private void onBackAction(){
         TetrisMenu controller = (TetrisMenu) c.backScene(header,vS);
         controller.handViewStack(vS,c);
         controller.handSettings(tS);
     }
 
     @FXML
-    public void onConnectAction(){
+    private void onConnectAction(){
         //TODO The Data of the before selected Label should be used to Connect to the Host
         // If this works fine then the scene is changed to "WaitForOpponent"
         if (selectedHost == null){
@@ -99,7 +99,7 @@ public class JoinLan implements Initializable {
         // If clicked on a Label this Label should be highlighted.
     }
 
-    public void addLabel(String labelText){
+    private void addLabel(String labelText){
         Label l = new Label(labelText);
         l.setMinWidth(570);
         l.setAlignment(Pos.CENTER);
