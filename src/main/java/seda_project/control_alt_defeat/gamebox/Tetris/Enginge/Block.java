@@ -4,19 +4,13 @@ import javafx.scene.paint.Color;
 import java.io.Serializable;
 
 public class Block implements Serializable {
-    private int[][] shape;
     private int x, y;
-    private int typeId; // To identify colors/shapes later for Erik
-public class Block {
     private boolean[][] blocks;
     private Color color;
 
     Block(boolean[][] blocks, Color color) {
         this.blocks = blocks;
         this.color = color;
-    public Block(int[][] shape, int typeId) {
-        this.shape = shape;
-        this.typeId = typeId;
         this.x = 3; // Tetris spawn X middle of a 10-width board
         this.y = 0; // Spawn at the top
     }
@@ -28,30 +22,30 @@ public class Block {
 
     // Rotates the matrix 90 degrees clockwise
     public void rotateClockwise() {
-        int n = shape.length;
-        int[][] newShape = new int[n][n];
+        int n = blocks.length;
+        boolean[][] newShape = new boolean[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                newShape[j][n - 1 - i] = shape[i][j];
+                newShape[j][n - 1 - i] = blocks[i][j];
             }
         }
-        shape = newShape;
+        blocks = newShape;
     }
 
     // Rotates the matrix 90 degrees counter-clockwise (revert invalid rotation)
     public void rotateCounterClockwise() {
-        int n = shape.length;
-        int[][] newShape = new int[n][n];
+        int n = blocks.length;
+        boolean[][] newShape = new boolean[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                newShape[n - 1 - j][i] = shape[i][j];
+                newShape[n - 1 - j][i] = blocks[i][j];
             }
         }
-        shape = newShape;
+        blocks = newShape;
     }
 
-    public int[][] getShape() { return shape; }
+    public boolean[][] getShape() { return blocks; }
     public int getX() { return x; }
     public int getY() { return y; }
-    public int getTypeId() { return typeId; }
+    //public int getTypeId() { return typeId; }
 }

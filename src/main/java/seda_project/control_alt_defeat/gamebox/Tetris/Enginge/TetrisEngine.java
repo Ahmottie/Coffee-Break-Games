@@ -27,6 +27,8 @@ public class TetrisEngine {
     private boolean p2Lost;
     private boolean isGameOver;
 
+    private final BlockRegistry blockRegistry = BlockRegistry.getInstance();
+
     public TetrisEngine(String p1Name, String p2Name) {
         this.p1Name = p1Name;
         this.p2Name = p2Name;
@@ -93,7 +95,7 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum) {
-        Block newBlock = BlockFactory.generateRandomStandardBlock();
+        Block newBlock = blockRegistry.generateRandomBlock();
 
         // If inverted, spawn at the bottom of the board
         if (playerNum == 2) {

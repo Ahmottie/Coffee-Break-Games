@@ -20,11 +20,11 @@ public class BlockFactory {
     public static Block generateRandomStandardBlock() {
         int index = RANDOM.nextInt(STANDARD_SHAPES.length);
         int[][] shape = copyMatrix(STANDARD_SHAPES[index]);
-        return new Block(shape, index + 1);
+        return null;//new Block(shape, index + 1);
     }
 
     public static Block generateCustomBlock(int[][] customShape, int typeId) {
-        return new Block(copyMatrix(customShape), typeId);
+        return null;//new Block(copyMatrix(customShape), typeId);
     }
 
     // Prevents unintended modification of base templates by reference

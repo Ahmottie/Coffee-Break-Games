@@ -2,12 +2,11 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
 
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class BlockRegistry {
+    private static final Random RANDOM = new Random();
+
     private final List<TBlock> pieces = new ArrayList<>();
 
     private static BlockRegistry instance;
@@ -44,5 +43,11 @@ public class BlockRegistry {
                 .filter(p -> p instanceof CustomBlock)
                 .map(p -> (CustomBlock) p)
                 .toList();
+    }
+
+    public Block generateRandomBlock() {
+        int index = RANDOM.nextInt(getAllPieces().size());
+        TBlock tBlock = getAllPieces().get(index);
+        return tBlock.toPiece();//new Block(shape, index + 1);
     }
 }
