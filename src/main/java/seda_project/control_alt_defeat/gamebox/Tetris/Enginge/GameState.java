@@ -3,8 +3,8 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
 import java.io.Serializable;
 
 public record GameState(
-        int[][] player1Grid,
-        int[][] player2Grid,
+        boolean[][] player1Grid,
+        boolean[][] player2Grid,
         Block player1ActiveBlock,
         Block player2ActiveBlock,
         int player1Score,

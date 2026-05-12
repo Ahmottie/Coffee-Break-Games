@@ -25,12 +25,12 @@ public class LocalGameConfiguration extends Controller {
     }
 
     @FXML
-    protected void onStartAction(ActionEvent actionEvent) {
+    protected void onStartAction() {
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
             //TODO Move to GameScreen and start the Game
-            //c.changeScene()
+            c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
         }
     }
 }

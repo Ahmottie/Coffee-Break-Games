@@ -3,23 +3,23 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
 public class Board {
     private final int width = 10;
     private final int height = 20;
-    private final int[][] grid; // 0 means empty, >0 means occupied by a block type
+    private final boolean[][] grid; // 0 means empty, >0 means occupied by a block type
     private final boolean inverted;
 
     public Board(boolean inverted) {
-        this.grid = new int[height][width];
+        this.grid = new boolean[height][width];
         this.inverted = inverted;
     }
 
     // Checks if the block can exist at its current internal x,y coordinates
     public boolean isValidPosition(Block block) {
-        int[][] shape = block.getShape();
+        boolean[][] shape = block.getShape();
         int bx = block.getX();
         int by = block.getY();
 
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[row].length; col++) {
-                if (shape[row][col] != 0) {
+                if (shape[row][col] != false) {
                     int boardX = bx + col;
                     int boardY = by + row;
 
@@ -28,7 +28,7 @@ public class Board {
                         return false;
                     }
                     // Check collision with locked blocks
-                    if (grid[boardY][boardX] != 0) {
+                    if (grid[boardY][boardX] != false) {
                         return false;
                     }
                 }
@@ -39,14 +39,14 @@ public class Board {
 
     // Locks the block permanently into the grid
     public void lockBlock(Block block) {
-        int[][] shape = block.getShape();
+        boolean[][] shape = block.getShape();
         int bx = block.getX();
         int by = block.getY();
 
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[row].length; col++) {
-                if (shape[row][col] != 0) {
-                    grid[by + row][bx + col] = block.getTypeId();
+                if (shape[row][col] != false) {
+                    grid[by + row][bx + col] = true;
                 }
             }
         }
@@ -72,7 +72,7 @@ public class Board {
 
     private boolean isLineFull(int row) {
         for (int col = 0; col < width; col++) {
-            if (grid[row][col] == 0) return false;
+            if (grid[row][col] == false) return false;
         }
         return true;
     }
@@ -83,17 +83,17 @@ public class Board {
             for (int row = targetRow; row < height - 1; row++) {
                 System.arraycopy(grid[row + 1], 0, grid[row], 0, width);
             }
-            java.util.Arrays.fill(grid[height - 1], 0);
+            java.util.Arrays.fill(grid[height - 1], false);
         } else {
             // Shift blocks down
             for (int row = targetRow; row > 0; row--) {
                 System.arraycopy(grid[row - 1], 0, grid[row], 0, width);
             }
-            java.util.Arrays.fill(grid[0], 0);
+            java.util.Arrays.fill(grid[0], false);
         }
     }
 
-    public int[][] getGrid() {
+    public boolean[][] getGrid() {
         return grid;
     }
 

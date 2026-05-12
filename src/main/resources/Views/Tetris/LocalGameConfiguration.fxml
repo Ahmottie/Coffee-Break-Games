@@ -53,7 +53,7 @@
                                     <GridPane.margin>
                                         <Insets right="15.0" />
                                     </GridPane.margin></Button>
-                                <Button mnemonicParsing="false" onAction="#onStartAction" text="Search for opponent" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
+                                <Button mnemonicParsing="false" onAction="#onStartAction" text="Start Game" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin></Button>
