@@ -5,14 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class LocalGameConfiguration {
-    private ViewStack vS;
-    private Configuration c;
-    private TetrisSettings tS;
+public class LocalGameConfiguration extends Controller {
 
     @FXML
     private VBox header;
@@ -24,10 +20,8 @@ public class LocalGameConfiguration {
     private Label statusLabel;
 
     @FXML
-    protected void onBackAction(ActionEvent actionEvent) {
-        TetrisMenu controller = (TetrisMenu) c.backScene(header,vS);
-        controller.handSettings(tS);
-        controller.handViewStack(vS,c);
+    protected void onBackAction() {
+        c.backScene(header,vS);
     }
 
     @FXML
@@ -39,15 +33,4 @@ public class LocalGameConfiguration {
             //c.changeScene()
         }
     }
-
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
-    }
-
-    public void handSettings(TetrisSettings tS){
-        this.tS = tS;
-    }
-
-
 }

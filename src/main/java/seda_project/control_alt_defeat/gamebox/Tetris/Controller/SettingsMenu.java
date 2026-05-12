@@ -7,17 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class SettingsMenu{
-
-    ViewStack vS;
-    Configuration c;
-    TetrisSettings tS;
+public class SettingsMenu extends Controller implements Initializable {
+    TetrisSettings tS = TetrisSettings.getInstance();
 
     @FXML
     VBox header;
@@ -47,9 +45,7 @@ public class SettingsMenu{
 
     @FXML
     protected void onBackAction(){
-        TetrisMenu controller = (TetrisMenu) c.backScene(header, vS);
-        controller.handViewStack(vS,c);
-        controller.handSettings(tS);
+        c.backScene(header, vS);
     }
 
     private Label getPlayerLabel(int player, int position){
@@ -82,15 +78,6 @@ public class SettingsMenu{
         return null;
     }
 
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
-    }
-    public void handSettings(TetrisSettings tS){
-        this.tS = tS;
-        updateKeys();
-    }
-
     private void updateKeys() {
         ArrayList<KeyCode> p1keys = tS.getPlayer1Keys();
         player1Left.setText(p1keys.get(0).toString());
@@ -102,5 +89,10 @@ public class SettingsMenu{
         player2Right.setText(p2keys.get(1).toString());
         player2Down.setText(p2keys.get(2).toString());
         player2Up.setText(p2keys.get(3).toString());
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateKeys();
     }
 }

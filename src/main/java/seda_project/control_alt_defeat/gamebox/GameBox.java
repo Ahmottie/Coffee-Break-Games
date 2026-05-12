@@ -11,27 +11,22 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.Controller.MemoryMenu;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Tetris.Controller.TetrisMenu;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 
 
 public class GameBox extends Application {
     private static final Logger logger = LoggerFactory.getLogger(GameBox.class);
-    private static ViewStack vS;
-    Configuration c = new Configuration();
-    TetrisSettings tS = new TetrisSettings();
+    private static ViewStack vS =  ViewStack.getInstance();
+    Configuration c = Configuration.getInstance();
+
     @Override
     public void start(Stage stage) throws IOException {
-        vS = new ViewStack();
-
         stage.setTitle("GameBox");
         stage.centerOnScreen();
         stage.show();
         stage.setOnCloseRequest(_ -> cleanExit());
-
         String address = "/Views/StartingScreen.fxml";
         FXMLLoader loader = new FXMLLoader(GameBox.class.getResource(address));
         vS.addFxmlLoaders(address);
@@ -50,27 +45,16 @@ public class GameBox extends Application {
     }
     @FXML
     public void onMemoryAction(){
-        MemoryMenu controller = (MemoryMenu) c.changeScene("/Views/Memory/MemoryMenu.fxml",header, vS);
-        controller.handViewStack(vS,c);
+        c.changeScene("/Views/Memory/MemoryMenu.fxml",header, vS);
     }
     @FXML
     public void onTetrisAction(){
-        TetrisMenu controller = (TetrisMenu) c.changeScene("/Views/Tetris/TetrisMenu.fxml",header, vS);
-        controller.handViewStack(vS,c);
-        controller.handSettings(tS);
+        c.changeScene("/Views/Tetris/TetrisMenu.fxml",header, vS);
     }
 
     public static void cleanExit() {
         logger.debug("Shutting down");
         Platform.exit();
         System.exit(0);
-    }
-
-    public static ViewStack getvS(){
-        return vS;
-    }
-    public void handViewStack(ViewStack vs,Configuration c){
-        this.vS = vs;
-        this.c = c;
     }
 }

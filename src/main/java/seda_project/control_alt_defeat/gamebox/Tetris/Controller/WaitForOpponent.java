@@ -14,18 +14,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
+import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.network.*;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class WaitForOpponent {
-    private ViewStack vS;
-    private Configuration c;
-    private TetrisSettings tS;
+public class WaitForOpponent extends Controller {
     private Timeline timeline;
     private String joinName;
     private boolean ready;
@@ -41,23 +38,15 @@ public class WaitForOpponent {
 
     @FXML
     public void onBackAction(){
-        HostLan controller = (HostLan)c.backScene(header,vS);
-        controller.handViewStack(vS,c);
-        controller.handSettings(tS);
-    }
-
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
+        c.backScene(header,vS);
     }
 
     public void onStartGameAction(){
         //TODO IMPLEMENT
     }
 
-    public void passHostData(TetrisSettings tS, String hostName){
+    public void passHostData(String hostName){
         //TODO Complete
-        this.tS = tS;
 
         yourNameLabel.setText(hostName);
         startButton.setText("Ready");
@@ -87,7 +76,7 @@ public class WaitForOpponent {
         hostIpAddressLabel.setText(Lan.localIp());
     }
 
-    public void passJoinData(TetrisSettings tS,  String playerName,String ipAddress){
+    public void passJoinData(String playerName,String ipAddress){
         this.ready = false;
         this.joinName = playerName;
         yourNameLabel.setText(playerName);
@@ -203,7 +192,6 @@ public class WaitForOpponent {
             GameScreen controller = loader.getController();
 
             vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
             controller.passLanData();
             controller.startGame(
                     Session.current().config.player1Name(),

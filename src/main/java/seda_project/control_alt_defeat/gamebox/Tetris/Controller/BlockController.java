@@ -14,19 +14,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.CustomBlock;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.BlockRegistry;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BlockController implements Initializable {
-    private ViewStack vS;
-    private Configuration c;
-    private TetrisSettings tS;
+public class BlockController extends Controller implements Initializable {
     private BlockEditorController editorController;
     private Color selectedColor = Color.CYAN;
     private int selectedListIndex = -1;
@@ -226,9 +221,7 @@ public class BlockController implements Initializable {
 
     @FXML
     protected void onBackAction(){
-        TetrisMenu controller = (TetrisMenu)c.backScene(header,vS);
-        controller.handViewStack(vS,c);
-        controller.handSettings(tS);
+        c.backScene(header,vS);
     }
 
     @FXML
@@ -311,14 +304,5 @@ public class BlockController implements Initializable {
         editorController.reset();
         refreshGrid();
         refreshList();
-    }
-
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
-    }
-
-    public void handSettings(TetrisSettings tS){
-        this.tS = tS;
     }
 }

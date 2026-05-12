@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Memory;
+package seda_project.control_alt_defeat.gamebox;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,10 +7,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seda_project.control_alt_defeat.gamebox.Memory.Controller.MemoryMenu;
-import seda_project.control_alt_defeat.gamebox.network.Session;
 
 public class Configuration {
+
+    private static Configuration instance;
+
+    private Configuration() {
+    }
+
+    public static Configuration getInstance() {
+        if (instance == null) {
+            instance = new Configuration();
+        }
+        return instance;
+    }
+
 
     public void deckSize(int tupleSize, RadioButton smallGame, RadioButton mediumGame, RadioButton largeGame){
         int max = (int) 45/tupleSize;

@@ -4,15 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class HostLan {
-    ViewStack vS;
-    Configuration c;
-    TetrisSettings tS;
+public class HostLan extends Controller {
 
     @FXML
     VBox header;
@@ -24,11 +19,9 @@ public class HostLan {
     Label statusLabel;
 
     @FXML
-    private void onBackAction(){
+    protected void onBackAction(){
         Session.clear();
-        TetrisMenu controller = (TetrisMenu) c.backScene(header,vS);
-        controller.handSettings(tS);
-        controller.handViewStack(vS,c);
+        c.backScene(header,vS);
     }
 
     @FXML
@@ -41,17 +34,8 @@ public class HostLan {
             s.isHost = true;
 
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
-            controller.handViewStack(vS,c);
-            controller.passHostData(tS,hostNameTF.getText());
+            controller.passHostData(hostNameTF.getText());
         }
-    }
-
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
-    }
-    public void handSettings(TetrisSettings tS){
-        this.tS = tS;
     }
 
     public void handData(String hostName){

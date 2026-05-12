@@ -57,7 +57,10 @@
                                              <Label text="Move Right" GridPane.rowIndex="1" />
                                              <Label text="Move Down" GridPane.rowIndex="2" />
                                              <Label text="Rotate" GridPane.rowIndex="3" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="0" GridPane.columnIndex="2" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="0" GridPane.columnIndex="2">
+                                                <GridPane.margin>
+                                                   <Insets />
+                                                </GridPane.margin></Button>
                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />

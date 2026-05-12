@@ -4,25 +4,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class JoinLan implements Initializable {
-    ViewStack vS;
-    Configuration c;
-    TetrisSettings tS;
+public class JoinLan extends Controller implements Initializable {
     ArrayList<Label> availableHosts = new ArrayList<>();
 
     @FXML
@@ -35,10 +30,8 @@ public class JoinLan implements Initializable {
     private Label joinStatus,selectedHost;
 
     @FXML
-    private void onBackAction(){
-        TetrisMenu controller = (TetrisMenu) c.backScene(header,vS);
-        controller.handViewStack(vS,c);
-        controller.handSettings(tS);
+    protected void onBackAction(){
+        c.backScene(header,vS);
     }
 
     @FXML
@@ -61,8 +54,7 @@ public class JoinLan implements Initializable {
                     s.network = layer;
 
                     WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
-                    controller.passJoinData(tS,yourName,ipAddresse);
-                    controller.handViewStack(vS,c);
+                    controller.passJoinData(yourName,ipAddresse);
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -77,15 +69,6 @@ public class JoinLan implements Initializable {
 
     private NetworkLayer connectToHost(String ipAddress) throws Exception {
         return LanClient.join(ipAddress, Lan.DEFAULT_PORT);
-    }
-
-    public void handViewStack(ViewStack vs, Configuration c){
-        this.vS = vs;
-        this.c = c;
-    }
-
-    public void handSettings(TetrisSettings tS){
-        this.tS = tS;
     }
 
     @Override

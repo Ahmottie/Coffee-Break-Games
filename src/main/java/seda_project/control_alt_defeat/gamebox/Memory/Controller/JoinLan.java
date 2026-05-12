@@ -2,27 +2,20 @@ package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class JoinLan implements Initializable {
-    ViewStack vS;
-    Configuration c = new Configuration();
+public class JoinLan extends Controller implements Initializable {
 
     @FXML
     private VBox header;
@@ -34,22 +27,9 @@ public class JoinLan implements Initializable {
     private TextField joinPlayerNameTF, ipAdresseTF;
 
     @FXML
-    private void onBackAction(){
-        try{
-            Session.clear();
-            vS.popFxmlLoader();
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
-            Parent root = loader.load();
-            MemoryMenu controller = loader.getController();
-            controller.handViewStack(vS,c);
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+    protected void onBackAction(){
+        Session.clear();
+        c.backScene(header,vS);
     }
 
     @Override
@@ -58,7 +38,7 @@ public class JoinLan implements Initializable {
     }
 
     @FXML
-    private void onConnectAction(){
+    protected void onConnectAction(){
         String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
         if (c.checkNameLength(yourName,2,joinStatus)) {
             if (checkIP()) {
@@ -70,19 +50,10 @@ public class JoinLan implements Initializable {
                     s.isHost  = false;
                     s.network = layer;
 
-                    String address = "/Views/Memory/WaitForOpponent.fxml";
-                    FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-                    Parent root = loader.load();
-                    WaitForOpponent controller = loader.getController();
 
-                    vS.addFxmlLoaders(address);
+                    WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Memory/WaitForOpponent.fxml",header,vS);
                     boolean host = false;
-                    controller.passJoinData(vS, host, yourName, ipAdresseTF.getText());
-
-                    Scene newScene = new Scene(root, 800, 600);
-                    Stage stage = (Stage) header.getScene().getWindow();
-                    stage.setScene(newScene);
-                    stage.show();
+                    controller.passJoinData(host, yourName, ipAdresseTF.getText());
                 } catch (Exception e) {
                     joinStatus.setVisible(true);
                     joinStatus.setText("Could not connect: " + e.getMessage());
@@ -128,10 +99,6 @@ public class JoinLan implements Initializable {
             }
         }
         return true;
-    }
-
-    public void handViewStack(ViewStack vs){
-        this.vS = vs;
     }
 
     public void backTransfer(String joinName, String ipAddress){

@@ -7,20 +7,14 @@ import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Card;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
@@ -29,6 +23,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameEngineImpl;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameEventListener;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.MCard;
 
 
@@ -37,10 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameScreen {
-    ViewStack vS;
+public class GameScreen extends Controller {
     GameEngine engine;
-    Configuration c = new Configuration();
     int matchSize;
     int deckSize;
     ArrayList<MCard> flippedCards = new ArrayList<>();
@@ -63,29 +56,9 @@ public class GameScreen {
 
     @FXML
     private void onExitGameAction() {
-        try {
-            Session.clear();
-            vS.emtyStack();
-            String address = "/Views/Memory/MemoryMenu.fxml";
-
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            MemoryMenu controller = loader.getController();
-
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS,c);
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void handViewStack(ViewStack vS) {
-        this.vS = vS;
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 
     public void passMemoryData(String player1, String player2, int tupleSize, int deckSize) {
@@ -303,25 +276,10 @@ public class GameScreen {
         } else {
             winner = 2;
         }
-        try {
-            String address = "/Views/Memory/ResultScreen.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            ResultScreen controller = loader.getController();
-
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-            controller.passMatchData(sboardP1.getText(), sboardP2.getText(),
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/Memory/ResultScreen.fxml",header,vS);
+        controller.passMatchData(sboardP1.getText(), sboardP2.getText(),
                     sboardScoreP1.getText(), sboardScoreP2.getText(),
                     matchSize, deckSize, winner);
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void flipmotion(MCard card, int cardId) {
@@ -376,22 +334,7 @@ public class GameScreen {
         alert.showAndWait();
 
         Session.clear();
-
-        try {
-            vS.emtyStack();
-            String address = "/Views/Memory/MemoryMenu.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            MemoryMenu controller = loader.getController();
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS,c);
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 }

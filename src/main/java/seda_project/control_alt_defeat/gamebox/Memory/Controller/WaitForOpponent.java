@@ -6,16 +6,10 @@ import javafx.animation.Timeline;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
@@ -24,9 +18,9 @@ import seda_project.control_alt_defeat.gamebox.network.LanHost;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class WaitForOpponent {
-    private ViewStack vS;
+public class WaitForOpponent extends Controller {
     private boolean host;
     private boolean ready;
     private String hostName;
@@ -41,36 +35,19 @@ public class WaitForOpponent {
     @FXML private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
 
     @FXML
-    private void onBackAction() {
-        try {
-            Session.clear();
-            vS.popFxmlLoader();
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
-            Parent root = loader.load();
-            Object controller = loader.getController();
-            if (controller instanceof HostLan c) {
-                c.handViewStack(vS);
-                c.backTransfer(hostName, tupleSize, deckSize);
-                Scene newScene = new Scene(root, 800, 600);
-                Stage stage = (Stage) header.getScene().getWindow();
-                stage.setScene(newScene);
-                stage.show();
-            }
-            if (controller instanceof JoinLan c) {
-                c.handViewStack(vS);
-                c.backTransfer(joinName, ipAddress);
-                Scene newScene = new Scene(root, 800, 600);
-                Stage stage = (Stage) header.getScene().getWindow();
-                stage.setScene(newScene);
-                stage.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected void onBackAction() {
+        Session.clear();
+        Object controller = c.backScene(header,vS);
+        if (controller instanceof HostLan c) {
+            c.backTransfer(hostName, tupleSize, deckSize);
+        }
+        if (controller instanceof JoinLan c) {
+            c.backTransfer(joinName, ipAddress);
         }
     }
 
     @FXML
-    public void onStartGameAction() {
+    protected void onStartGameAction() {
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
@@ -116,31 +93,15 @@ public class WaitForOpponent {
     }
 
     private void startGameNow() {
-        try {
-            String address = "/Views/Memory/GameScreen.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            GameScreen controller = loader.getController();
-
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-            controller.passLanData();
-            controller.startGame(
-                    Session.current().config.player1Name(),
-                    Session.current().config.player2Name()
-            );
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
+        controller.passLanData();
+        controller.startGame(
+                Session.current().config.player1Name(),
+                Session.current().config.player2Name()
+        );
     }
 
-    public void passHostData(ViewStack vS, boolean host, String hostName, int tupleSize, int deckSize) {
-        this.vS = vS;
+    public void passHostData(boolean host, String hostName, int tupleSize, int deckSize) {
         this.host = host;
         this.hostName = hostName;
         this.tupleSize = tupleSize;
@@ -179,8 +140,7 @@ public class WaitForOpponent {
         hostIpAddressLabel.setText(Lan.localIp());
     }
 
-    public void passJoinData(ViewStack vs, boolean host, String playerName, String ipAddress) {
-        this.vS = vs;
+    public void passJoinData(boolean host, String playerName, String ipAddress) {
         this.host = host;
         this.ready = false;
         this.joinName = playerName;

@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import seda_project.control_alt_defeat.gamebox.Configuration;
 
 import java.awt.event.KeyEvent;
 import java.security.Key;
@@ -14,7 +15,16 @@ public class TetrisSettings {
     private ArrayList<KeyCode> player1Keys;
     private ArrayList<KeyCode> player2Keys;
 
-    public TetrisSettings() {
+    private static TetrisSettings instance;
+
+    public static TetrisSettings getInstance() {
+        if (instance == null) {
+            instance = new TetrisSettings();
+        }
+        return instance;
+    }
+
+    private TetrisSettings() {
         player1Keys = new ArrayList<>();
         player1Keys.add(KeyCode.A);
         player1Keys.add(KeyCode.D);
