@@ -1,18 +1,14 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import seda_project.control_alt_defeat.gamebox.Memory.Configuration;
-import seda_project.control_alt_defeat.gamebox.Memory.ViewStack;
+import seda_project.control_alt_defeat.gamebox.Configuration;
+import seda_project.control_alt_defeat.gamebox.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
@@ -22,7 +18,8 @@ import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 
 public class ResultScreen {
-    ViewStack vS;
+    ViewStack vS = ViewStack.getInstance();
+    Configuration c = Configuration.getInstance();
 
     String player1Name,player2Name, pointsPlayer1, pointsPlayer2;
     int tupleSize,deckSize, winner;
@@ -39,26 +36,9 @@ public class ResultScreen {
 
     @FXML
     private void onExitGameAction(){
-        try{
-            Session.clear();
-            vS.emtyStack();
-            String address = "/Views/Memory/MemoryMenu.fxml";
-
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            MemoryMenu controller = loader.getController();
-
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 
     @FXML
@@ -84,47 +64,18 @@ public class ResultScreen {
     }
 
     private void startNewLocalGame() {
-        try {
-            String address = "/Views/Memory/GameScreen.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            GameScreen controller = loader.getController();
-
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-            controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
-            controller.startGame(player1Name, player2Name);
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
+        controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
+        controller.startGame(player1Name, player2Name);
     }
 
     private void startNewGameWithSetup(GameConfig cfg, GameSetup setup) {
         Session.current().config = cfg;
         Session.current().setup  = setup;
-        try {
-            String address = "/Views/Memory/GameScreen.fxml";
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-            GameScreen controller = loader.getController();
+        GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
+        controller.passLanData();
+        controller.startGame(cfg.player1Name(), cfg.player2Name());
 
-            vS.addFxmlLoaders(address);
-            controller.handViewStack(vS);
-            controller.passLanData();
-            controller.startGame(cfg.player1Name(), cfg.player2Name());
-
-            Scene newScene = new Scene(root, 800, 600);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void handleDisconnect(String reason) {
@@ -192,9 +143,5 @@ public class ResultScreen {
             });
         }
 
-    }
-
-    public void handViewStack(ViewStack vs){
-        this.vS = vs;
     }
 }

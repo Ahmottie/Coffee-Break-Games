@@ -55,7 +55,7 @@
                         </Label>
                         <Button mnemonicParsing="false" onAction="#onLocalAction" styleClass="label" text="Start Local Game" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Button mnemonicParsing="false" onAction="#onHostAction" text="Host Game" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Button mnemonicParsing="false" onAction="#onExitAction" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Button mnemonicParsing="false" onAction="#onExitAction" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -69,5 +69,6 @@
    <stylesheets>
       <URL value="@../../css/stylesheets/fontstyle.css" />
       <URL value="@../../css/stylesheets/MemoryMenu.css" />
+       <URL value="@../../css/stylesheets/MenuStyle.css" />
    </stylesheets>
 </AnchorPane>

@@ -2,13 +2,14 @@ package seda_project.control_alt_defeat.gamebox.Memory;
 
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
+import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
 
 import java.util.ArrayList;
 
 public class LocalGame {
-    private Configuration c = new Configuration();
+    private Configuration c = Configuration.getInstance();
     private Player player1;
     private Player player2;
     private GameScreen gameScreen;

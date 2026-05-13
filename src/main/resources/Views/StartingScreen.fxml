@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.GameBox">
+    <children>
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" prefHeight="83.0" prefWidth="563.0" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="576.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="201.0" styleClass="normalText" text="Main Menu">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <AnchorPane prefHeight="552.0" prefWidth="800.0">
+                    <children>
+                        <GridPane layoutX="267.5" layoutY="100.0" prefHeight="242.0" prefWidth="265.0" styleClass="box">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="68.8" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.40001525878904" minWidth="10.0" prefWidth="167.2" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label prefHeight="28.0" prefWidth="381.0" styleClass="text" text="Memory Game" GridPane.columnSpan="2">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label prefHeight="28.0" prefWidth="367.0" styleClass="text" text="Tetris Game" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button mnemonicParsing="false" onAction="#onMemoryAction" styleClass="label" text="Play Memory" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Button mnemonicParsing="false" onAction="#onTetrisAction" text="Play Tetris" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Button mnemonicParsing="false" onAction="#onExitAction" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </GridPane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@../css/stylesheets/fontstyle.css" />
+        <URL value="@../css/stylesheets/MainMenu.css" />
+      <URL value="@../css/stylesheets/MenuStyle.css" />
+    </stylesheets>
+</AnchorPane>

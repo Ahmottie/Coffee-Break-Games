@@ -7,6 +7,7 @@ module seda_project.control_alt_defeat.gamebox {
     requires ch.qos.logback.classic;
     requires java.xml;
     requires java.desktop;
+    requires javafx.base;
 
     // Main Package
     exports seda_project.control_alt_defeat.gamebox;
@@ -24,10 +25,17 @@ module seda_project.control_alt_defeat.gamebox {
     exports seda_project.control_alt_defeat.gamebox.Memory;
     opens seda_project.control_alt_defeat.gamebox.Memory to javafx.fxml;
 
+    //Tetris
+    exports  seda_project.control_alt_defeat.gamebox.Tetris.Controller;
+    opens seda_project.control_alt_defeat.gamebox.Tetris.Controller to javafx.fxml;
+
     // UI
     exports seda_project.control_alt_defeat.gamebox.ui;
     opens seda_project.control_alt_defeat.gamebox.ui to javafx.fxml;
 
     // Network
     exports seda_project.control_alt_defeat.gamebox.network;
+    exports seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
+    opens seda_project.control_alt_defeat.gamebox.Tetris.Enginge to javafx.fxml;
+
 }
