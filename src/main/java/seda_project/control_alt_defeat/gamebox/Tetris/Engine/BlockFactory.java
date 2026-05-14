@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
+package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import java.util.Random;
 

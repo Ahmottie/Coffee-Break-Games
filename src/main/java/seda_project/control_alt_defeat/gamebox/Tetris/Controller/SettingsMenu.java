@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
