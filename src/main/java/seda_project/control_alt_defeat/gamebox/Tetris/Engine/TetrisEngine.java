@@ -1,6 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -106,6 +107,7 @@ public class TetrisEngine {
             int c = RANDOM.nextInt(board.getWidth());
             if (grid[r][c] == null && !isPowerUpAt(playerNum, r, c)) {
                 activePowerUps.add(new PowerUp(playerNum, r, c));
+                listeners.forEach(l -> l.onPowerUpSpawned(activePowerUps));
                 break;
             }
             attempts++;
@@ -122,16 +124,19 @@ public class TetrisEngine {
     }
 
     public synchronized void processInput(int playerNum, String action) {
+
         if (isGameOver) return;
         if (playerNum == 1 && p1Lost) return;
         if (playerNum == 2 && p2Lost) return;
 
         Block block = (playerNum == 1) ? p1ActiveBlock : p2ActiveBlock;
         Board board = (playerNum == 1) ? p1Board : p2Board;
+        System.out.println(block.getX());
 
         switch (action) {
             case "LEFT" -> {
                 block.moveLeft();
+                System.out.println(block.getX());
                 if (!board.isValidPosition(block)) block.moveRight();
             }
             case "RIGHT" -> {
@@ -265,7 +270,9 @@ public class TetrisEngine {
         Block newBlock = blockRegistry.generateRandomBlock();
 
         if (playerNum == 2) {
-            while(newBlock.getY() < 19) {
+            //newBlock.rotateClockwise();
+            //newBlock.rotateClockwise();
+            while(newBlock.getY() < 16) {
                 newBlock.moveDown();
             }
         }

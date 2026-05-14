@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
+package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -22,7 +22,8 @@ public class KeyHandler {
         ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
         ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
 
-        if (key == p1.get(0)) {engine.processInput(1,"LEFT"); gameScreen.render();}
+        if (key == p1.get(0)) {engine.processInput(1,"LEFT");
+            System.out.println("RENDER in KEY HANDLER");gameScreen.render();}
         else if (key == p1.get(1)) {engine.processInput(1,"RIGHT");gameScreen.render();}
         else if (key == p1.get(2)) {engine.processInput(1,"DROP");gameScreen.render();}
         else if (key == p1.get(3)) {engine.processInput(1,"ROTATE");gameScreen.render();}

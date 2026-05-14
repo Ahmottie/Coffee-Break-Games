@@ -56,7 +56,8 @@ public class BlockEditorController {
                     minCol = Math.min(minCol, c); maxCol = Math.max(maxCol, c);
                 }
         int rows = maxRow - minRow + 1, cols = maxCol - minCol + 1;
-        boolean[][] trimmed = new boolean[rows][cols];
+        int size = Math.max(rows, cols);
+        boolean[][] trimmed = new boolean[size][size];
         for (int r = 0; r < rows; r++)
             for (int c = 0; c < cols; c++)
                 trimmed[r][c] = g[r + minRow][c + minCol];

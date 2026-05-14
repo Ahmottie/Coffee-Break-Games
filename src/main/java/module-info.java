@@ -8,6 +8,7 @@ module seda_project.control_alt_defeat.gamebox {
     requires java.xml;
     requires java.desktop;
     requires javafx.base;
+    requires java.sql;
 
     // Main Package
     exports seda_project.control_alt_defeat.gamebox;

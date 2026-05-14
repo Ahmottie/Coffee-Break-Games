@@ -44,6 +44,7 @@ public class Block implements Serializable {
 
     public void rotateClockwise() {
         int n = blocks.length;
+        System.out.println("N" +n);
         boolean[][] newShape = new boolean[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -69,8 +70,5 @@ public class Block implements Serializable {
     public int getY() { return y; }
     public String getHexColor() { return hexColor; }
 
-    public Color getColor() {
-        return color;
-    }
     //public int getTypeId() { return typeId; }
 }

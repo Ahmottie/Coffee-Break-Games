@@ -173,6 +173,8 @@
             </children>
         </VBox>
           <Button mnemonicParsing="false" onAction="#onExitGameAction" prefHeight="28.0" prefWidth="120.0" text="Exit Game" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="327.0" />
+      <Label styleClass="headerText" text="Level:" AnchorPane.leftAnchor="608.0" AnchorPane.topAnchor="265.0" />
+      <Label fx:id="LevelLabel" styleClass="headerText" text="1" AnchorPane.leftAnchor="658.0" AnchorPane.topAnchor="310.0" />
     </children>
    <stylesheets>
       <URL value="@../../css/stylesheets/fontstyle.css" />
