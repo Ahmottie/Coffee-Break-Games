@@ -29,9 +29,9 @@
             <children>
                <VBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="700.0">
                   <children>
-                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="box">
+                     <VBox alignment="CENTER" prefHeight="237.0" prefWidth="700.0" styleClass="box">
                         <children>
-                           <HBox prefHeight="161.0" prefWidth="700.0">
+                           <HBox prefHeight="213.0" prefWidth="700.0">
                               <children>
                                  <VBox prefHeight="200.0" prefWidth="350.0">
                                     <children>
@@ -48,26 +48,29 @@
                                          </columnConstraints>
                                          <rowConstraints>
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                          </rowConstraints>
                                           <children>
-                                             <Label text="Move Left" />
-                                             <Label text="Move Right" GridPane.rowIndex="1" />
-                                             <Label text="Move Down" GridPane.rowIndex="2" />
-                                             <Label text="Rotate" GridPane.rowIndex="3" />
+                                             <Label styleClass="text" text="Move Left" />
+                                             <Label styleClass="text" text="Move Right" GridPane.rowIndex="2" />
+                                             <Label styleClass="text" text="Move Down" GridPane.rowIndex="4" />
+                                             <Label styleClass="text" text="Rotate" GridPane.rowIndex="6" />
                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="0" GridPane.columnIndex="2">
                                                 <GridPane.margin>
                                                    <Insets />
                                                 </GridPane.margin></Button>
-                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                             <Label fx:id="player1Left" alignment="CENTER" prefHeight="19.0" prefWidth="125.0" text="A" GridPane.columnIndex="1" />
-                                             <Label fx:id="player1Right" alignment="CENTER" prefHeight="19.0" prefWidth="129.0" text="D" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                             <Label fx:id="player1Down" alignment="CENTER" prefHeight="19.0" prefWidth="121.0" text="S" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                             <Label fx:id="player1Up" alignment="CENTER" prefHeight="19.0" prefWidth="144.0" text="W" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="1" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="2" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="3" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                             <Label fx:id="player1Left" alignment="CENTER" prefHeight="19.0" prefWidth="125.0" styleClass="text" text="A" GridPane.columnIndex="1" />
+                                             <Label fx:id="player1Right" alignment="CENTER" prefHeight="19.0" prefWidth="129.0" styleClass="text" text="D" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             <Label fx:id="player1Down" alignment="CENTER" prefHeight="19.0" prefWidth="121.0" styleClass="text" text="S" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                             <Label fx:id="player1Up" alignment="CENTER" prefHeight="19.0" prefWidth="144.0" styleClass="text" text="W" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                           </children>
                                        </GridPane>
                                     </children>
@@ -97,23 +100,26 @@
                                          </columnConstraints>
                                          <rowConstraints>
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                          </rowConstraints>
                                           <children>
-                                             <Label text="Move Left" />
-                                             <Label text="Move Right" GridPane.rowIndex="1" />
-                                             <Label text="Move Down" GridPane.rowIndex="2" />
-                                             <Label text="Rotate" GridPane.rowIndex="3" />
-                                             <Label fx:id="player2Left" text="LEFT" GridPane.columnIndex="1" />
-                                             <Label fx:id="player2Right" text="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                             <Label fx:id="player2Down" text="DOWN" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                             <Label fx:id="player2Up" text="UP" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             <Label styleClass="text" text="Move Left" />
+                                             <Label styleClass="text" text="Move Right" GridPane.rowIndex="2" />
+                                             <Label styleClass="text" text="Move Down" GridPane.rowIndex="4" />
+                                             <Label styleClass="text" text="Rotate" GridPane.rowIndex="6" />
+                                             <Label fx:id="player2Left" styleClass="text" text="LEFT" GridPane.columnIndex="1" />
+                                             <Label fx:id="player2Right" styleClass="text" text="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             <Label fx:id="player2Down" styleClass="text" text="DOWN" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                             <Label fx:id="player2Up" styleClass="text" text="UP" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                              <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="0" GridPane.columnIndex="2" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="1" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="2" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                             <Button mnemonicParsing="false" onAction="#changePlayer2" text="Change" userData="3" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                                           </children>
                                           <padding>
                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
