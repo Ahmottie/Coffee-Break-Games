@@ -18,7 +18,7 @@
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="615.0" styleClass="normalText" text="Memory Game">
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="615.0" styleClass="normalText" text="Tetris Game">
                             <font>
                                 <Font size="18.0" />
                             </font>

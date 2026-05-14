@@ -70,5 +70,9 @@ public class Block implements Serializable {
     public int getY() { return y; }
     public String getHexColor() { return hexColor; }
 
+    public void setX(int x){this.x = x;}
+    public void setY(int y){this.y = y;}
+    public void setShape(boolean[][] shape){ this.blocks = shape;}
+
     //public int getTypeId() { return typeId; }
 }

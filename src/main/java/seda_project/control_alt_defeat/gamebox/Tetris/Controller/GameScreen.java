@@ -2,27 +2,34 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.*;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameScreen extends Controller implements TetrisEventListener {
     private TetrisSettings tS = TetrisSettings.getInstance();
     private TetrisEngine engine;
-    private int speed = 500;
     private KeyHandler handler;
     private Timeline engineTicker;
+    private ArrayList<Rectangle> items = new ArrayList<>();
+
+    Image img = new Image(getClass().getResource("/Images/Tetris/swap.png").toExternalForm(),true);
+
     @FXML
     private VBox header;
 
@@ -35,6 +42,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
     @FXML
     protected void onExitGameAction(ActionEvent event) {
         Session.clear();
+        engine.reset();
+        engine.stop();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
@@ -65,7 +74,25 @@ public class GameScreen extends Controller implements TetrisEventListener {
         //setPlayerLines(2, String.valueOf(state.p2Lines()));
         drawGrid(state.p1Grid(),state.p1ActiveBlock(), player1Field);
         drawGrid(state.p2Grid(),state.p2ActiveBlock(), player2Field);
+        showPowerUP(state.powerUps(),player1Field, player2Field);
+    }
 
+    private void showPowerUP(List<PowerUp> powerUps, GridPane player1Field, GridPane player2Field) {
+        Rectangle rect = null;
+
+        for (PowerUp powerUp : powerUps) {
+            if (powerUp.playerNum() == 1){
+                rect = new Rectangle(13,13);
+                rect.setFill(new ImagePattern(img));
+                player1Field.add(rect,powerUp.col(),powerUp.row());
+            }
+            else {
+                rect = new Rectangle(13,13);
+                rect.setFill(new ImagePattern(img));
+                player2Field.add(rect,powerUp.col(),powerUp.row());
+            }
+        }
+        items.add(rect);
     }
 
     private void drawGrid(String[][] colors, Block activeBlock, GridPane grid) {
@@ -91,7 +118,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
             }
 
         }
-
     }
 
 
@@ -172,15 +198,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     @Override
-    public void onPowerUpSpawned(List<PowerUp> activePowerUps){
-        //TODO finish the visual representation of powerups
-        for (PowerUp p : activePowerUps){
-            if (p.playerNum() == 1){
+    public void onPowerUpSpawned(TetrisEngine.GameState snapshot){
+        render();
+    }
 
-            }
-            else if (p.playerNum() == 2){
-
-            }
-        }
+    @Override
+    public void onStopped (TetrisEngine.GameState snapshot){
+        engineTicker.stop();
     }
 }

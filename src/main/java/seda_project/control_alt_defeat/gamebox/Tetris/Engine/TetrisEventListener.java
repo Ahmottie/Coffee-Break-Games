@@ -11,6 +11,6 @@ public interface TetrisEventListener {
     default void onGameOver(TetrisEngine.GameState snapshot) {}
     default void onReset(TetrisEngine.GameState snapshot) {}
     default void onPowerUpTriggered(int triggeringPlayer, TetrisEngine.GameState snapshot) {}
-    default void onPowerUpSpawned(List<PowerUp> activePowerUps){}
-    default void onPowerUpDespawned(List<PowerUp> activePowerUps){}
+    default void onPowerUpSpawned(TetrisEngine.GameState snapshot){}
+    default void onStopped(TetrisEngine.GameState snapStopped){};
 }

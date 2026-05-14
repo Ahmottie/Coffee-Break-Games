@@ -20,6 +20,7 @@ public class ResultScreen extends Controller {
     @FXML
     protected void onPlayAgainAction(){
         GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
+        engine.reset();
         controller.create(state.p1Name(),state.p2Name(),false, engine);
     }
 
