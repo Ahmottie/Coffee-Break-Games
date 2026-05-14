@@ -18,7 +18,6 @@ import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.network.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 

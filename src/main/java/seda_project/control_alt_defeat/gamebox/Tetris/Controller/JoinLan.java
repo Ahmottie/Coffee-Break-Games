@@ -6,7 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;

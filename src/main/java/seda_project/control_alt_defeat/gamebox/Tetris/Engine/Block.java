@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
+package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import javafx.scene.paint.Color;
 import java.io.Serializable;
@@ -6,21 +6,42 @@ import java.io.Serializable;
 public class Block implements Serializable {
     private int x, y;
     private boolean[][] blocks;
-    private Color color;
+    private String hexColor;
 
-    Block(boolean[][] blocks, Color color) {
-        this.blocks = blocks;
-        this.color = color;
+    public Block(boolean[][] shape, Color fxColor) {
+        // Deep copy the shape to prevent mutating the Enum's base array during rotation
+        this.blocks = new boolean[shape.length][];
+        for (int i = 0; i < shape.length; i++) {
+            this.blocks[i] = shape[i].clone();
+        }
+
+        // Convert Color to String
+        this.hexColor = fxColor.toString();
+
         this.x = 3; // Tetris spawn X middle of a 10-width board
         this.y = 0; // Spawn at the top
     }
 
+    private Block(boolean[][] clonedShape, String hexColor, int x, int y) {
+        this.blocks = clonedShape;
+        this.hexColor = hexColor;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Block cloneForSnapshot() {
+        boolean[][] clonedBlocks = new boolean[blocks.length][];
+        for (int i = 0; i < blocks.length; i++) {
+            clonedBlocks[i] = blocks[i].clone();
+        }
+        return new Block(clonedBlocks, this.hexColor, this.x, this.y);
+    }
+
     public void moveDown() { y++; }
-    public void moveUp() { y--; } // Needed for the inverted top board
+    public void moveUp() { y--; }
     public void moveLeft() { x--; }
     public void moveRight() { x++; }
 
-    // Rotates the matrix 90 degrees clockwise
     public void rotateClockwise() {
         int n = blocks.length;
         boolean[][] newShape = new boolean[n][n];
@@ -32,7 +53,6 @@ public class Block implements Serializable {
         blocks = newShape;
     }
 
-    // Rotates the matrix 90 degrees counter-clockwise (revert invalid rotation)
     public void rotateCounterClockwise() {
         int n = blocks.length;
         boolean[][] newShape = new boolean[n][n];
@@ -47,5 +67,5 @@ public class Block implements Serializable {
     public boolean[][] getShape() { return blocks; }
     public int getX() { return x; }
     public int getY() { return y; }
-    //public int getTypeId() { return typeId; }
+    public String getHexColor() { return hexColor; }
 }

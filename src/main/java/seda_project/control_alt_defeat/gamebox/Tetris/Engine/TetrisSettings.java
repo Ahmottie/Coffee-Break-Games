@@ -1,14 +1,11 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
+package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import seda_project.control_alt_defeat.gamebox.Configuration;
 
-import java.awt.event.KeyEvent;
-import java.security.Key;
 import java.util.ArrayList;
 
 public class TetrisSettings {

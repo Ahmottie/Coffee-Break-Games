@@ -35,7 +35,7 @@ module seda_project.control_alt_defeat.gamebox {
 
     // Network
     exports seda_project.control_alt_defeat.gamebox.network;
-    exports seda_project.control_alt_defeat.gamebox.Tetris.Enginge;
-    opens seda_project.control_alt_defeat.gamebox.Tetris.Enginge to javafx.fxml;
+    exports seda_project.control_alt_defeat.gamebox.Tetris.Engine;
+    opens seda_project.control_alt_defeat.gamebox.Tetris.Engine to javafx.fxml;
 
 }
