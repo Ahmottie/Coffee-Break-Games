@@ -57,8 +57,10 @@ public class TetrisEngine {
         if (!p1Lost) {
             applyGravity(1, p1ActiveBlock, p1Board);
         }
+        System.out.println(p2Lost);
         if (!p2Lost) {
             applyGravity(2, p2ActiveBlock, p2Board);
+            System.out.println("MOVEMENT UPPER BOARD");
         }
 
         checkWinCondition();
@@ -67,6 +69,7 @@ public class TetrisEngine {
     private void applyGravity(int playerNum, Block activeBlock, Board board) {
         // Move block in the direction of gravity
         if (board.isInverted()) {
+            System.out.println("MoveUP");
             activeBlock.moveUp();
         } else {
             activeBlock.moveDown();
@@ -100,10 +103,13 @@ public class TetrisEngine {
         // If inverted, spawn at the bottom of the board
         if (playerNum == 2) {
             // Need a custom spawn Y for the bottom of the board
-            while(newBlock.getY() < 19) {
+            newBlock.rotateClockwise();
+            newBlock.rotateClockwise();
+            while(newBlock.getY() < 19-newBlock.getShape()[0].length) {
                 newBlock.moveDown();
             }
         }
+
 
         if (playerNum == 1) {
             p1ActiveBlock = newBlock;

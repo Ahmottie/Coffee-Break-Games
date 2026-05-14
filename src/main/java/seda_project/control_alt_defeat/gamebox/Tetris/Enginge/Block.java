@@ -47,5 +47,9 @@ public class Block implements Serializable {
     public boolean[][] getShape() { return blocks; }
     public int getX() { return x; }
     public int getY() { return y; }
+
+    public Color getColor() {
+        return color;
+    }
     //public int getTypeId() { return typeId; }
 }

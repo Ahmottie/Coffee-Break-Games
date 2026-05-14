@@ -1,11 +1,9 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.TetrisSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class LocalGameConfiguration extends Controller {
@@ -30,7 +28,8 @@ public class LocalGameConfiguration extends Controller {
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
             //TODO Move to GameScreen and start the Game
-            c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
+            GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
+            controller.create(player1Name,player2Name,false);
         }
     }
 }

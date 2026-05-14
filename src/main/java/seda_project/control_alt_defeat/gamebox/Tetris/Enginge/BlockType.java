@@ -17,9 +17,8 @@ public enum BlockType implements TBlock {
             { true, true }
     }),
     T(Color.GREEN, new boolean[][] {
+            { true, true,  true },
             { false, true,  false },
-            { false, true,  false },
-            { true,  true,  true  }
     }),
     L(Color.ORANGE, new boolean[][] {
             { true,  false, false },
