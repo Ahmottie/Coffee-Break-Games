@@ -1,8 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
 import javafx.scene.paint.Color;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.CustomBlock;
-import seda_project.control_alt_defeat.gamebox.Tetris.Enginge.BlockRegistry;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.CustomBlock;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 
 import java.util.Arrays;
 
