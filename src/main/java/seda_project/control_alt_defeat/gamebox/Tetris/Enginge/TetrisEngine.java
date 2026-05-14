@@ -20,6 +20,9 @@ public class TetrisEngine {
     private int p1Score;
     private int p2Score;
 
+    private int p1Lines;
+    private int p2Lines;
+
     private final String p1Name;
     private final String p2Name;
 
@@ -39,6 +42,9 @@ public class TetrisEngine {
 
         this.p1Score = 0;
         this.p2Score = 0;
+
+        this.p1Lines = 0;
+        this.p2Lines = 0;
 
         this.p1Lost = false;
         this.p2Lost = false;
@@ -89,8 +95,10 @@ public class TetrisEngine {
             int linesCleared = board.clearLines();
             if (playerNum == 1) {
                 p1Score += calculateScore(linesCleared);
+                p1Lines += linesCleared;
             } else {
                 p2Score += calculateScore(linesCleared);
+                p2Lines += linesCleared;
             }
 
             spawnNewBlock(playerNum);
@@ -189,6 +197,8 @@ public class TetrisEngine {
                 p2ActiveBlock,
                 p1Score,
                 p2Score,
+                p1Lines,
+                p2Lines,
                 p1Name,
                 p2Name,
                 p1Lost,

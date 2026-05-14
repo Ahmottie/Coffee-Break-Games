@@ -9,6 +9,8 @@ public record GameState(
         Block player2ActiveBlock,
         int player1Score,
         int player2Score,
+        int player1Lines,
+        int player2Lines,
         String player1Name,
         String player2Name,
         boolean player1Lost,

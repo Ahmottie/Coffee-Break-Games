@@ -39,6 +39,7 @@
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -46,15 +47,18 @@
                             </rowConstraints>
                             <children>
                                 <Label alignment="CENTER" prefHeight="52.0" prefWidth="373.0" styleClass="headerText" text="Game Result" GridPane.columnSpan="3" />
-                                <Label fx:id="positionLooserLabel" text="Lines" GridPane.rowIndex="2" />
-                                <Label fx:id="linesWinnerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <Label text="Position" GridPane.rowIndex="3" />
-                                <Label fx:id="positionLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="223.0" text="Winner" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <Label fx:id="positionWinnerLabel" text="Points" GridPane.rowIndex="1" />
-                                <Label fx:id="PointsWinnerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="83.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="PointsLooserLabel" alignment="CENTER" prefHeight="61.0" prefWidth="119.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="LinesLooserLabel" alignment="CENTER" prefHeight="54.0" prefWidth="119.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label fx:id="positionLabel2" alignment="CENTER" prefHeight="58.0" prefWidth="119.0" text="Looser" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                <Label fx:id="positionLooserLabel" text="Lines" GridPane.rowIndex="3" />
+                                <Label fx:id="LinesWinnerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Label text="Position" GridPane.rowIndex="4" />
+                                <Label fx:id="positionLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="57.0" prefWidth="223.0" text="Winner" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                <Label fx:id="positionWinnerLabel" text="Points" GridPane.rowIndex="2" />
+                                <Label fx:id="PointsWinnerLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="83.0" prefWidth="223.0" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="PointsLoserLabel" alignment="CENTER" prefHeight="61.0" prefWidth="119.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="LinesLoserLabel" alignment="CENTER" prefHeight="54.0" prefWidth="119.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label fx:id="positionLabel2" alignment="CENTER" prefHeight="58.0" prefWidth="119.0" text="Loser" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                        <Label text="Name" GridPane.rowIndex="1" />
+                        <Label fx:id="NameWinnerLabel" alignment="CENTER" prefHeight="47.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="NameLoserLabel" alignment="CENTER" prefHeight="54.0" prefWidth="119.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                             </children>
                             <padding>
                                 <Insets left="15.0" right="15.0" />

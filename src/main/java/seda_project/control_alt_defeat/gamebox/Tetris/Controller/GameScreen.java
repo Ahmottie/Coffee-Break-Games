@@ -57,6 +57,8 @@ public class GameScreen extends Controller {
         GameState state = engine.getSnapshot();
         setPlayerPoints(1, String.valueOf(state.player1Score()));
         setPlayerPoints(2, String.valueOf(state.player2Score()));
+        setPlayerLines(1, String.valueOf(state.player1Lines()));
+        setPlayerLines(2, String.valueOf(state.player2Lines()));
         drawGrid(state.player1Grid(),state.player1ActiveBlock(), player1Field);
         drawGrid(state.player2Grid(),state.player2ActiveBlock(), player2Field);
 
@@ -68,7 +70,7 @@ public class GameScreen extends Controller {
             for (int j = 0; j < booleans[i].length; j++) {
                 if (booleans[i][j]){
                     Rectangle rect = new Rectangle(12,12);
-                    rect.setFill(Color.RED);
+                    rect.setFill(Color.LIGHTGRAY);
                     grid.add(rect, j, i);
                 }
             }
@@ -101,7 +103,7 @@ public class GameScreen extends Controller {
 
         engine = new TetrisEngine(player1, player2);
 
-        handler = new KeyHandler(engine,tS);
+        handler = new KeyHandler(engine,tS, this);
         handler.attach(header.getScene());
 
         gameloop = new Timeline(
@@ -122,7 +124,8 @@ public class GameScreen extends Controller {
         GameState state = engine.getSnapshot();
         if (state.isGameOver()) {
             gameloop.stop();
-            c.changeScene("/Views/Tetris/ResultScreen.fxml",header,vS);
+            ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml",header,vS);
+            controller.handGameState(state);
         }
     }
 }
