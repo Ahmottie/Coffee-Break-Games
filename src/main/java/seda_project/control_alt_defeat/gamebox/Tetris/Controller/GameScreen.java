@@ -38,7 +38,16 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private Timeline engineTicker;
     private boolean disconnected = false;
 
-    Image img = new Image(getClass().getResource("/Images/Tetris/swap.png").toExternalForm(),true);
+    private final Image img = loadSwapImage();
+
+    private Image loadSwapImage() {
+        var stream = getClass().getResourceAsStream("/Images/Tetris/swap.png");
+        if (stream != null) {
+            return new Image(stream);
+        }
+        System.err.println("WARNING: swap.png not found in resources. Using color fallback.");
+        return null;
+    }
 
     @FXML
     private VBox header;
@@ -95,15 +104,18 @@ public class GameScreen extends Controller implements TetrisEventListener {
         Rectangle rect = null;
 
         for (PowerUp powerUp : powerUps) {
-            if (powerUp.playerNum() == 1){
-                rect = new Rectangle(13,13);
+            rect = new Rectangle(13, 13);
+
+            if (img != null) {
                 rect.setFill(new ImagePattern(img));
-                player1Field.add(rect,powerUp.col(),powerUp.row());
+            } else {
+                rect.setFill(Color.YELLOW);
             }
-            else {
-                rect = new Rectangle(13,13);
-                rect.setFill(new ImagePattern(img));
-                player2Field.add(rect,powerUp.col(),powerUp.row());
+
+            if (powerUp.playerNum() == 1) {
+                player1Field.add(rect, powerUp.col(), powerUp.row());
+            } else {
+                player2Field.add(rect, powerUp.col(), powerUp.row());
             }
         }
 
