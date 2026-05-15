@@ -1,6 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
+import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 
@@ -224,7 +225,7 @@ public class GameScreen extends Controller {
         if (net != null) {
             net.addListener(new NetworkListener() {
                 @Override
-                public void onMessage(GameMessage msg) {
+                public void onMessage(Message msg) {
                     if (msg instanceof GameMessage.Flip f) {
                         Platform.runLater(() -> applyRemoteFlip(f.cardId()));
                     }

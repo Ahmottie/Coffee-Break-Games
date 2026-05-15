@@ -13,6 +13,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
+import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
@@ -131,7 +132,7 @@ public class ResultScreen {
             }
             net.addListener(new NetworkListener() {
                 @Override
-                public void onMessage(GameMessage msg) {
+                public void onMessage(Message msg) {
                     if (msg instanceof GameMessage.NewGame ng) {
                         Platform.runLater(() -> startNewGameWithSetup(ng.config(), ng.setup()));
                     }

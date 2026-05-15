@@ -4,10 +4,16 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -15,6 +21,10 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.*;
+import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
+import seda_project.control_alt_defeat.gamebox.network.Message;
+import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
+import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
@@ -26,6 +36,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private TetrisEngine engine;
     private KeyHandler handler;
     private Timeline engineTicker;
+    private boolean disconnected = false;
 
     Image img = new Image(getClass().getResource("/Images/Tetris/swap.png").toExternalForm(),true);
 
@@ -41,8 +52,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
     @FXML
     protected void onExitGameAction(ActionEvent event) {
         Session.clear();
-        engine.reset();
-        engine.stop();
+        // engine is null in LAN-client mode
+        if (engine != null) {
+            engine.reset();
+            engine.stop();
+        }
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
@@ -142,7 +156,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     public void create(String player1, String player2, boolean multiplayer, TetrisEngine engine) {
         this.engine = engine;
-        engine.addListener(this);
         player1NameLabel.setText(player1);
         player2NameLabel.setText(player2);
         player1LinesLabel.setText("0");
@@ -150,6 +163,13 @@ public class GameScreen extends Controller implements TetrisEventListener {
         player1PointsLabel.setText("0");
         player2PointsLabel.setText("0");
 
+        // LAN-client mode: no engine, no KeyHandler etc
+        // client renders snapshots received over the network and forwards key events as input msg
+        if (engine == null) {
+            return;
+        }
+
+        engine.addListener(this);
         handler = new KeyHandler(engine,tS, this);
         handler.attach(header.getScene());
 
@@ -193,11 +213,14 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onLevelChanged(int newLevel, long newTickIntervalMs, TetrisEngine.GameState snapshot) {
-        engineTicker.stop();
-        engineTicker.getKeyFrames().setAll(
-                new KeyFrame(Duration.millis(newTickIntervalMs), e -> engine.tick())
-        );
-        engineTicker.play();
+        // engineTicker only exists in modes that own an engine like lan host or local
+        if (engineTicker != null) {
+            engineTicker.stop();
+            engineTicker.getKeyFrames().setAll(
+                    new KeyFrame(Duration.millis(newTickIntervalMs), e -> engine.tick())
+            );
+            engineTicker.play();
+        }
         LevelLabel.setText(String.valueOf(newLevel));
     }
 
@@ -208,7 +231,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onGameOver(TetrisEngine.GameState snapshot) {
-        engineTicker.stop();
+        if (engineTicker != null) engineTicker.stop();
         ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml", header, vS);
         controller.handGameState(snapshot, engine, player1LinesLabel,player2LinesLabel);
     }
@@ -226,11 +249,113 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onStopped (TetrisEngine.GameState snapshot){
-        engineTicker.stop();
+        if (engineTicker != null) engineTicker.stop();
     }
 
     @Override
     public void onBlockMovement (TetrisEngine.GameState snapshot) {
         render(snapshot);
+    }
+
+    public void attachHostNetworkBridge(NetworkLayer network) {
+        if (engine == null || network == null) return;
+
+        engine.addListener(new TetrisEventListener() {
+            @Override public void onTick(TetrisEngine.GameState s)                                  { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onBlockLocked(int p, TetrisEngine.GameState s)                    { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s)            { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onLevelChanged(int l, long ms, TetrisEngine.GameState s)          { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onPlayerLost(int p, TetrisEngine.GameState s)                     { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onGameOver(TetrisEngine.GameState s)                              { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onPowerUpTriggered(int p, TetrisEngine.GameState s)               { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onPowerUpSpawned(TetrisEngine.GameState s)                        { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onReset(TetrisEngine.GameState s)                                 { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onBlockMovement(TetrisEngine.GameState s)                         { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onStopped(TetrisEngine.GameState s)                               { network.send(new TetrisMessage.StateUpdate(s)); }
+        });
+
+        // Network to engine: Apply remote inputs 
+        network.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                if (msg instanceof TetrisMessage.Input in) {
+                    engine.processInput(in.playerNum(), in.action().name());
+                }
+            }
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> handleDisconnect(reason));
+            }
+        });
+    }
+
+
+    public void attachClientNetworkBridge(NetworkLayer network) {
+        if (engine != null || network == null) return; // only valid in client mode
+
+        // network to UI
+        network.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                if (msg instanceof TetrisMessage.StateUpdate update) {
+                    Platform.runLater(() -> applyRemoteState(update.state()));
+                }
+            }
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> handleDisconnect(reason));
+            }
+        });
+
+        // keyboard to network
+        // the client is the only player on this machineso from the hosts perspective the
+        // client is always player 2, so thats what we send
+        Scene scene = header.getScene();
+        if (scene != null) {
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                TetrisMessage.InputAction action = mapClientKey(event.getCode());
+                if (action != null) {
+                    network.send(new TetrisMessage.Input(2, action));
+                    event.consume();
+                }
+            });
+        }
+    }
+
+    private TetrisMessage.InputAction mapClientKey(KeyCode key) {
+        // Mirror KeyHandlers order
+        java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
+        if (key == p1.get(0)) return TetrisMessage.InputAction.LEFT;
+        if (key == p1.get(1)) return TetrisMessage.InputAction.RIGHT;
+        if (key == p1.get(2)) return TetrisMessage.InputAction.DROP;
+        if (key == p1.get(3)) return TetrisMessage.InputAction.ROTATE;
+        return null;
+    }
+
+    private void applyRemoteState(TetrisEngine.GameState s) {
+        render(s);
+        player1PointsLabel.setText(String.valueOf(s.p1Score()));
+        player2PointsLabel.setText(String.valueOf(s.p2Score()));
+        LevelLabel.setText(String.valueOf(s.level()));
+        if (s.powerUps() != null) showPowerUP(s.powerUps());
+    }
+
+    private void handleDisconnect(String reason) {
+        if (disconnected) return;
+        disconnected = true;
+
+        if (engineTicker != null) engineTicker.stop();
+        if (engine != null) engine.stop();
+
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
+                ButtonType.OK);
+        alert.setTitle("Disconnected");
+        alert.setHeaderText("Opponent disconnected");
+        alert.showAndWait();
+
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml", header, vS);
     }
 }

@@ -7,6 +7,17 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 18, 0.25, 0, 5);
 }
 
+.transparent-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+.transparent-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+.transparent-scroll-content {
+    -fx-background-color: transparent;
+}
+
 .error {
     -fx-background-color: rgba(180, 20, 20, 0.45);
     -fx-background-radius: 14px;
