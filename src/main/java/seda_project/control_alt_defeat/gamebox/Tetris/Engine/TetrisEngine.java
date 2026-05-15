@@ -194,6 +194,7 @@ public class TetrisEngine {
 
 
             board.lockBlock(activeBlock);
+
             GameState snapLock = getSnapshot();
             listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
 
