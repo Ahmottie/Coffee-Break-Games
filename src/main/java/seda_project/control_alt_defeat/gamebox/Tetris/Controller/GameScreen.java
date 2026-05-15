@@ -26,7 +26,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private TetrisEngine engine;
     private KeyHandler handler;
     private Timeline engineTicker;
-    private ArrayList<Rectangle> items = new ArrayList<>();
 
     Image img = new Image(getClass().getResource("/Images/Tetris/swap.png").toExternalForm(),true);
 
@@ -66,16 +65,19 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
     }
 
-    public void render(){
-        TetrisEngine.GameState state = engine.getSnapshot();
-        setPlayerPoints(1, String.valueOf(state.p1Score()));
-        setPlayerPoints(2, String.valueOf(state.p2Score()));
-        drawGrid(state.p1Grid(),state.p1ActiveBlock(), player1Field);
-        drawGrid(state.p2Grid(),state.p2ActiveBlock(), player2Field);
-        showPowerUP(state.powerUps(),player1Field, player2Field);
+    public void render(TetrisEngine.GameState state){
+        System.out.println(state.p1Lost());
+        drawGrid(state.p1Grid(),state.p1ActiveBlock(), player1Field, state.p1Lost());
+        drawGrid(state.p2Grid(),state.p2ActiveBlock(), player2Field, state.p2Lost());
     }
 
-    private void showPowerUP(List<PowerUp> powerUps, GridPane player1Field, GridPane player2Field) {
+    private void showPowerUP(List<PowerUp> powerUps) {
+        if (powerUps.isEmpty()){
+            player1Field.getChildren().removeIf(node -> (node instanceof Rectangle r
+                    && r.getFill() instanceof ImagePattern));
+            player2Field.getChildren().removeIf(node ->(node instanceof Rectangle r && r.getFill() instanceof ImagePattern));
+        }
+
         Rectangle rect = null;
 
         for (PowerUp powerUp : powerUps) {
@@ -90,16 +92,30 @@ public class GameScreen extends Controller implements TetrisEventListener {
                 player2Field.add(rect,powerUp.col(),powerUp.row());
             }
         }
-        items.add(rect);
+
+        ScaleTransition pulse = new ScaleTransition(Duration.seconds(0.5), rect);
+        pulse.setFromX(1.0);
+        pulse.setToX(2.0);
+        pulse.setFromY(1.0);
+        pulse.setToY(2.0);
+        pulse.setAutoReverse(true);
+        pulse.setCycleCount(Animation.INDEFINITE);
+        pulse.play();
     }
 
-    private void drawGrid(String[][] colors, Block activeBlock, GridPane grid) {
-        grid.getChildren().clear();
+    private void drawGrid(String[][] colors, Block activeBlock, GridPane grid, boolean isLost) {
+        grid.getChildren().removeIf(node -> !(node instanceof Rectangle r
+                && r.getFill() instanceof ImagePattern));
         for (int i = 0; i < colors.length; i++) {
             for (int j = 0; j < colors[i].length; j++) {
                 if (colors[i][j] != null){
                     Rectangle rect = new Rectangle(12,12);
-                    rect.setFill(Color.web(colors[i][j]));
+                    if (isLost){
+                        rect.setFill(Color.LIGHTGRAY);
+                    }
+                    else {
+                        rect.setFill(Color.web(colors[i][j]));
+                    }
                     grid.add(rect, j, i);
                 }
             }
@@ -110,7 +126,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
             for (int j = 0; j < block[0].length; j++) {
                 if (block[i][j]){
                     Rectangle rect = new Rectangle(12,12);
-                    rect.setFill(Color.web(activeBlock.getHexColor()));
+                    if (isLost){
+                        rect.setFill(Color.LIGHTGRAY);
+                    }
+                    else {
+                        rect.setFill(Color.web(activeBlock.getHexColor()));
+                    }
                     grid.add(rect, j + activeBlock.getX(), i+activeBlock.getY());
                 }
             }
@@ -145,7 +166,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onTick(TetrisEngine.GameState snapshot) {
-        render();
+        render(snapshot);
     }
 
     @Override
@@ -160,10 +181,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
         if (playerNum == 1 ){
             int current = Integer.parseInt(player1LinesLabel.getText());
             setPlayerLines(playerNum, String.valueOf(current+lineCount));
+            setPlayerPoints(1, String.valueOf(snapshot.p1Score()));
         }
         else {
             int current = Integer.parseInt(player2LinesLabel.getText());
             setPlayerLines(playerNum, String.valueOf(current+lineCount));
+            setPlayerPoints(2, String.valueOf(snapshot.p2Score()));
         }
 
     }
@@ -180,7 +203,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onPlayerLost(int playerNum, TetrisEngine.GameState snapshot) {
-        //TODO Reflect this in the UI
+        render(snapshot);
     }
 
     @Override
@@ -192,16 +215,22 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onPowerUpTriggered(int triggeringPlayer, TetrisEngine.GameState snapshot) {
-        render();
+        render(snapshot);
+        showPowerUP(snapshot.powerUps());
     }
 
     @Override
     public void onPowerUpSpawned(TetrisEngine.GameState snapshot){
-        render();
+        showPowerUP(snapshot.powerUps());
     }
 
     @Override
     public void onStopped (TetrisEngine.GameState snapshot){
         engineTicker.stop();
+    }
+
+    @Override
+    public void onBlockMovement (TetrisEngine.GameState snapshot) {
+        render(snapshot);
     }
 }

@@ -22,15 +22,15 @@ public class KeyHandler {
         ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
         ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
 
-        if (key == p1.get(0)) {engine.processInput(1,"LEFT");gameScreen.render();}
-        else if (key == p1.get(1)) {engine.processInput(1,"RIGHT");gameScreen.render();}
-        else if (key == p1.get(2)) {engine.processInput(1,"DROP");gameScreen.render();}
-        else if (key == p1.get(3)) {engine.processInput(1,"ROTATE");gameScreen.render();}
+        if (key == p1.get(0)) {engine.processInput(1,"LEFT");}
+        else if (key == p1.get(1)) {engine.processInput(1,"RIGHT");}
+        else if (key == p1.get(2)) {engine.processInput(1,"DROP");}
+        else if (key == p1.get(3)) {engine.processInput(1,"ROTATE");}
 
-        if (key == p2.get(0)) {engine.processInput(2,"LEFT");gameScreen.render();}
-        else if (key == p2.get(1)) {engine.processInput(2,"RIGHT");gameScreen.render();}
-        else if (key  == p2.get(2)) {engine.processInput(2,"DROP");gameScreen.render();}
-        else if (key  == p2.get(3)) {engine.processInput(2,"ROTATE");gameScreen.render();}
+        if (key == p2.get(0)) {engine.processInput(2,"LEFT");}
+        else if (key == p2.get(1)) {engine.processInput(2,"RIGHT");}
+        else if (key  == p2.get(2)) {engine.processInput(2,"DROP");}
+        else if (key  == p2.get(3)) {engine.processInput(2,"ROTATE");}
     }
     public void attach(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
