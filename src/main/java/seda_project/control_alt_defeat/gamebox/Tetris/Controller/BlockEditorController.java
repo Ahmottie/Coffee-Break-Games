@@ -48,14 +48,20 @@ public class BlockEditorController {
     }
 
     private boolean[][] trimGrid(boolean[][] g) {
-        int minRow = MAX_GRID_SIZE, maxRow = 0, minCol = MAX_GRID_SIZE, maxCol = 0;
+        int minRow = MAX_GRID_SIZE;
+        int maxRow = 0;
+        int minCol = MAX_GRID_SIZE;
+        int maxCol = 0;
         for (int r = 0; r < MAX_GRID_SIZE; r++)
             for (int c = 0; c < MAX_GRID_SIZE; c++)
                 if (g[r][c]) {
-                    minRow = Math.min(minRow, r); maxRow = Math.max(maxRow, r);
-                    minCol = Math.min(minCol, c); maxCol = Math.max(maxCol, c);
+                    minRow = Math.min(minRow, r);
+                    maxRow = Math.max(maxRow, r);
+                    minCol = Math.min(minCol, c);
+                    maxCol = Math.max(maxCol, c);
                 }
-        int rows = maxRow - minRow + 1, cols = maxCol - minCol + 1;
+        int rows = maxRow - minRow + 1;
+        int cols = maxCol - minCol + 1;
         int size = Math.max(rows, cols);
         boolean[][] trimmed = new boolean[size][size];
         for (int r = 0; r < rows; r++)

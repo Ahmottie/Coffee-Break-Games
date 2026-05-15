@@ -70,8 +70,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         TetrisEngine.GameState state = engine.getSnapshot();
         setPlayerPoints(1, String.valueOf(state.p1Score()));
         setPlayerPoints(2, String.valueOf(state.p2Score()));
-        //setPlayerLines(1, String.valueOf(state.p1Lines()));
-        //setPlayerLines(2, String.valueOf(state.p2Lines()));
         drawGrid(state.p1Grid(),state.p1ActiveBlock(), player1Field);
         drawGrid(state.p2Grid(),state.p2ActiveBlock(), player2Field);
         showPowerUP(state.powerUps(),player1Field, player2Field);
