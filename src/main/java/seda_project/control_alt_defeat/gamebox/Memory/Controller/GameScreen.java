@@ -207,6 +207,7 @@ public class GameScreen extends Controller {
 
             @Override
             public void onMismatch(List<Integer> flippedIds, GameSnapshot snapshot) {
+                canClick = false;
                 Platform.runLater(() -> {
                     turnCardsBack();
                     setStatusLabel(false);
@@ -239,7 +240,6 @@ public class GameScreen extends Controller {
     }
 
     public void turnCardsBack() {
-        canClick = false;
         pause.setOnFinished(e -> {
             for (MCard c : flippedCards) {
                 flipmotion(c, cardIdOf.get(c));
@@ -299,9 +299,12 @@ public class GameScreen extends Controller {
         secondHalf.setToX(1);
 
         if (!card.getFaceUp()) {
+            flippedCards.add(card);
+            if (flippedCards.size() >= matchSize) {
+                canClick = false;
+            }
             firstHalf.setOnFinished(e -> {
                 card.setFaceUp(true);
-                flippedCards.add(card);
                 boolean wasRemote = remoteFlipIds.remove(cardId);
                 engine.flip(cardId);
                 NetworkLayer net = Session.current().network;
