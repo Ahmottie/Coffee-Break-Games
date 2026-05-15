@@ -3,6 +3,7 @@ package seda_project.control_alt_defeat.gamebox.network;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameEngine;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 
 public final class Session {
 
@@ -26,8 +27,15 @@ public final class Session {
     public GameConfig   config;
     public GameSetup    setup;
     public GameEngine   engine;
+
+    // Tetris-specific. tetrisEngine is host-only; the client renders
+    // received GameState snapshots directly and never owns an engine
+    public TetrisEngine tetrisEngine;
+
+    // identity / lobby state shared by both games
     public String       myName;
+    public String       peerName;
     public boolean      isHost;
-    public boolean      localReady; // boolean java defaults to false
+    public boolean      localReady; 
     public boolean      peerReady;
 }

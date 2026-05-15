@@ -1,16 +1,26 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
+import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
+import seda_project.control_alt_defeat.gamebox.network.Message;
+import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
+import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class ResultScreen extends Controller {
     TetrisEngine.GameState state;
     TetrisEngine engine;
+    private NetworkLayer network;
+    private boolean disconnected = false;
 
     @FXML
     private VBox header;
@@ -19,10 +29,31 @@ public class ResultScreen extends Controller {
     private Label PointsWinnerLabel, PointsLoserLabel, LinesWinnerLabel, LinesLoserLabel, positionLabel1, positionLabel2,NameWinnerLabel, NameLoserLabel;
 
     @FXML
+    private Button playAgainButton;
+
+    @FXML
     protected void onPlayAgainAction(){
-        GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
-        TetrisEngine engine = new TetrisEngine(state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
-        controller.create(state.p1Name(),state.p2Name(),false, engine);
+        Session s = Session.current();
+
+        // Local mode so original behaviour fresh engine and game
+        if (s.network == null) {
+            TetrisEngine fresh = new TetrisEngine(
+                    state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
+            GameScreen controller = (GameScreen) c.changeScene(
+                    "/Views/Tetris/GameScreen.fxml", header, vS);
+            controller.create(state.p1Name(), state.p2Name(), false, fresh);
+            return;
+        }
+
+        // LAN host: build new engine, broadcast Restart and navigate to lan game
+        TetrisEngine fresh = new TetrisEngine(
+                state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
+        s.tetrisEngine = fresh;
+        s.localReady = false;
+        s.peerReady  = false;
+
+        s.network.send(new TetrisMessage.Restart());
+        navigateToLanGame(fresh);
     }
 
     @FXML
@@ -39,7 +70,7 @@ public class ResultScreen extends Controller {
         int scorep2 = state.p2Score();
         int linesp1 = Integer.parseInt(p1Lines.getText());
         int linesp2 = Integer.parseInt(p2Lines.getText());
-        
+
         boolean p1Wins = scorep1 >= scorep2;
 
         String winnerName  = p1Wins ? state.p1Name() : state.p2Name();
@@ -60,5 +91,56 @@ public class ResultScreen extends Controller {
             positionLabel1.setText("DRAW");
             positionLabel2.setText("DRAW");
         }
+
+        // disable client play again button, only host can do that 
+        Session s = Session.current();
+        if (s.network != null) {
+            this.network = s.network;
+            if (!s.isHost) {
+                playAgainButton.setText("Waiting for host...");
+                playAgainButton.setDisable(true);
+            }
+            this.network.addListener(new NetworkListener() {
+                @Override
+                public void onMessage(Message msg) {
+                    if (msg instanceof TetrisMessage.Restart) {
+                        // Client side: host wants a new game
+                        // the new GameScreen renders received state
+                        Platform.runLater(() -> navigateToLanGame(null));
+                    }
+                }
+                @Override
+                public void onDisconnected(String reason) {
+                    Platform.runLater(() -> handleDisconnect(reason));
+                }
+            });
+        }
+    }
+
+
+    private void navigateToLanGame(TetrisEngine engineForHost) {
+        Session s = Session.current();
+        GameScreen controller = (GameScreen) c.changeScene(
+                "/Views/Tetris/GameScreen.fxml", header, vS);
+        controller.create(state.p1Name(), state.p2Name(), true, engineForHost);
+        if (s.isHost) {
+            controller.attachHostNetworkBridge(s.network);
+        } else {
+            controller.attachClientNetworkBridge(s.network);
+        }
+    }
+
+    private void handleDisconnect(String reason) {
+        if (disconnected) return;
+        disconnected = true;
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
+                ButtonType.OK);
+        alert.setTitle("Disconnected");
+        alert.setHeaderText("Opponent disconnected");
+        alert.showAndWait();
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml", header, vS);
     }
 }

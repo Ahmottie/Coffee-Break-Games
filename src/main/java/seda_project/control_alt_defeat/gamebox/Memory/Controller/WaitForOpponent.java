@@ -14,6 +14,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
+import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.LanHost;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
@@ -159,7 +160,7 @@ public class WaitForOpponent extends Controller {
         // Listen for the host to send us the lobby config
         layer.addListener(new NetworkListener() {
             @Override
-            public void onMessage(GameMessage msg) {
+            public void onMessage(Message msg) {
                 Platform.runLater(() -> handleJoinMessage(msg));
             }
             @Override
@@ -175,7 +176,7 @@ public class WaitForOpponent extends Controller {
     private void attachHostListener(NetworkLayer layer) {
         layer.addListener(new NetworkListener() {
             @Override
-            public void onMessage(GameMessage msg) {
+            public void onMessage(Message msg) {
                 Platform.runLater(() -> handleHostMessage(layer, msg));
             }
             @Override
@@ -185,7 +186,7 @@ public class WaitForOpponent extends Controller {
         });
     }
 
-    private void handleHostMessage(NetworkLayer layer, GameMessage msg) {
+    private void handleHostMessage(NetworkLayer layer, Message msg) {
         if (msg instanceof GameMessage.Hello h) {
             // Now we know the joiner's name. Patch config + setup so they
             // reflect reality (instead of the "Opponent" placeholder).
@@ -215,7 +216,7 @@ public class WaitForOpponent extends Controller {
         }
     }
 
-    private void handleJoinMessage(GameMessage msg) {
+    private void handleJoinMessage(Message msg) {
         if (msg instanceof GameMessage.LobbyConfig lc) {
             Session.current().config = lc.config();
             Session.current().setup  = lc.setup();

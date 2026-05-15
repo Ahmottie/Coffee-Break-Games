@@ -1,105 +1,168 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import seda_project.control_alt_defeat.gamebox.network.Lan;
+import javafx.util.Duration;
+import seda_project.control_alt_defeat.gamebox.Tetris.network.Discovery;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class JoinLan extends Controller implements Initializable {
-    ArrayList<Label> availableHosts = new ArrayList<>();
+    private final ArrayList<Label> availableHosts = new ArrayList<>();
+
+    private Discovery.Listener discoveryListener;
+    private Timeline            refreshTimeline;
+    private Set<String>         shownHostIps = new HashSet<>();
 
     @FXML
-    VBox header,scrollElements;
+    VBox header, scrollElements;
 
     @FXML
     private TextField joinPlayerNameTF;
 
     @FXML
-    private Label joinStatus,selectedHost;
+    private Label joinStatus, selectedHost;
 
     @FXML
     protected void onBackAction(){
+        stopDiscovery();
         c.backScene(header,vS);
     }
 
     @FXML
     private void onConnectAction(){
-        //TODO The Data of the before selected Label should be used to Connect to the Host
-        // If this works fine then the scene is changed to "WaitForOpponent"
         if (selectedHost == null){
             joinStatus.setVisible(true);
             joinStatus.setText("Select a Game to join!");
+            return;
         }
-        else {
-            String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
-            if (c.checkNameLength(yourName,2,joinStatus)) {
-                String ipAddresse = selectedHost.getText().split(": ")[1];
-                try {
-                    NetworkLayer layer = connectToHost(ipAddresse);
-                    Session s = Session.current();
-                    s.myName  = yourName;
-                    s.isHost  = false;
-                    s.network = layer;
 
-                    WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
-                    controller.passJoinData(yourName,ipAddresse);
-
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            else{
-                joinStatus.setVisible(true);
-                joinStatus.setText("Your name may not be longer than 16 character!");
-            }
+        String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
+        if (!c.checkNameLength(yourName,2,joinStatus)) {
+            joinStatus.setVisible(true);
+            joinStatus.setText("Your name cant be longer than 16 characters");
+            return;
         }
-    }
 
-    private NetworkLayer connectToHost(String ipAddress) throws Exception {
-        return LanClient.join(ipAddress, Lan.DEFAULT_PORT);
+        Discovery.Advertisement ad = (Discovery.Advertisement) selectedHost.getUserData();
+        stopDiscovery();
+
+        try {
+            NetworkLayer layer = LanClient.join(ad.ipAddress(), ad.tcpPort());
+            Session s = Session.current();
+            s.myName   = yourName;
+            s.isHost   = false;
+            s.network  = layer;
+            s.peerName = ad.name();
+
+            WaitForOpponent controller = (WaitForOpponent) c.changeScene(
+                    "/Views/Tetris/WaitForOpponent.fxml", header, vS);
+            controller.passJoinData(yourName, ad.ipAddress());
+        } catch (Exception e) {
+            joinStatus.setVisible(true);
+            joinStatus.setText("Could not connect: " + e.getMessage());
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         joinStatus.setVisible(false);
-        for (int i = 0; i < 20; i++) {
-            addLabel("NameSpace: " + i);
-        }
-        //TODO Network Stuff To get all open Network connections
-        // Each Host should be represented as a Label with the Name of the Host and the IP-Address
-        // If clicked on a Label this Label should be highlighted.
+        startDiscovery();
     }
 
-    private void addLabel(String labelText){
-        Label l = new Label(labelText);
+
+    private void startDiscovery() {
+        try {
+            discoveryListener = Discovery.listen();
+            discoveryListener.disableSelfFilter();
+        } catch (IOException e) {
+            joinStatus.setVisible(true);
+            joinStatus.setText("Could not start discovery: " + e.getMessage());
+            return;
+        }
+
+        // poll the listener every 500ms
+        refreshTimeline = new Timeline(
+                new KeyFrame(Duration.millis(500), e -> refreshHostList()));
+        refreshTimeline.setCycleCount(Animation.INDEFINITE);
+        refreshTimeline.play();
+        refreshHostList();
+    }
+
+    private void stopDiscovery() {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+            refreshTimeline = null;
+        }
+        if (discoveryListener != null) {
+            try { discoveryListener.close(); } catch (Exception ignored) {}
+            discoveryListener = null;
+        }
+    }
+
+    private void refreshHostList() {
+        if (discoveryListener == null) return;
+        List<Discovery.Advertisement> ads = discoveryListener.currentHosts();
+
+        Set<String> newIps = new HashSet<>();
+        for (Discovery.Advertisement ad : ads) newIps.add(ad.ipAddress());
+        if (newIps.equals(shownHostIps)) return;
+
+        String previouslySelectedIp = null;
+        if (selectedHost != null) {
+            Discovery.Advertisement prev = (Discovery.Advertisement) selectedHost.getUserData();
+            previouslySelectedIp = prev != null ? prev.ipAddress() : null;
+        }
+
+        scrollElements.getChildren().clear();
+        availableHosts.clear();
+        selectedHost = null;
+
+        for (Discovery.Advertisement ad : ads) {
+            Label l = makeHostLabel(ad);
+            availableHosts.add(l);
+            scrollElements.getChildren().add(l);
+            if (ad.ipAddress().equals(previouslySelectedIp)) {
+                selectedHost = l;
+                l.getStyleClass().add("box");
+                l.getStyleClass().add("ready");
+            }
+        }
+        shownHostIps = newIps;
+    }
+
+    private Label makeHostLabel(Discovery.Advertisement ad) {
+        Label l = new Label(ad.name() + "   (" + ad.ipAddress() + ")");
+        l.setUserData(ad);                  
         l.setMinWidth(570);
         l.setAlignment(Pos.CENTER);
-        availableHosts.add(l);
-        scrollElements.getChildren().add(l);
         l.setOnMouseClicked(mouseEvent -> {
-            selectedHost = l;
             deselectAll();
+            selectedHost = l;
             l.getStyleClass().add("box");
             l.getStyleClass().add("ready");
         });
+        return l;
     }
 
     private void deselectAll() {
-        for (int i = 0; i < availableHosts.size(); i++) {
-            Label l = availableHosts.get(i);
-            l.getStyleClass().clear();
-        }
+        for (Label l : availableHosts) l.getStyleClass().clear();
     }
-
 }

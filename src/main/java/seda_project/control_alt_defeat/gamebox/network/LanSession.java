@@ -43,7 +43,7 @@ final class LanSession implements NetworkLayer {
     }
 
     @Override
-    public void send(GameMessage msg) {
+    public void send(Message msg) {
         if (closed.get()) return;
         try {
             synchronized (out) {
@@ -61,9 +61,9 @@ final class LanSession implements NetworkLayer {
         try {
             while (!closed.get()) {
                 Object obj = in.readObject();
-                if (!(obj instanceof GameMessage msg)) continue;
-                if (msg instanceof GameMessage.Heartbeat) continue;
-                if (msg instanceof GameMessage.Disconnect d) {
+                if (!(obj instanceof Message msg)) continue;
+                if (msg instanceof HeartbeatMessage) continue;
+                if (msg instanceof DisconnectMessage d) {
                     disconnect("peer: " + d.reason());
                     return;
                 }
@@ -86,7 +86,7 @@ final class LanSession implements NetworkLayer {
             while (!closed.get()) {
                 Thread.sleep(HEARTBEAT_INTERVAL_MS);
                 if (closed.get()) return;
-                send(new GameMessage.Heartbeat(System.currentTimeMillis()));
+                send(new Heartbeat(System.currentTimeMillis()));
             }
         } catch (InterruptedException ignored) {}
     }
@@ -114,7 +114,7 @@ final class LanSession implements NetworkLayer {
     @Override
     public void close() {
         if (closed.get()) return;
-        try { send(new GameMessage.Disconnect("graceful")); }
+        try { send(new Disconnect("graceful")); }
         catch (Exception ignored) {}
         disconnect("local close");
     }

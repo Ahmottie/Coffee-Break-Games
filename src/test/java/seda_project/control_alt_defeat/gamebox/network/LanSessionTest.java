@@ -15,8 +15,8 @@ class LanSessionTest {
 
     @Test
     void roundtripHello() throws Exception {
-        AtomicReference<GameMessage> hostReceived   = new AtomicReference<>();
-        AtomicReference<GameMessage> clientReceived = new AtomicReference<>();
+        AtomicReference<Message> hostReceived   = new AtomicReference<>();
+        AtomicReference<Message> clientReceived = new AtomicReference<>();
         CountDownLatch hostGot   = new CountDownLatch(1);
         CountDownLatch clientGot = new CountDownLatch(1);
 
@@ -26,7 +26,7 @@ class LanSessionTest {
                 NetworkLayer host = LanHost.host(TEST_PORT);
                 hostLayer.set(host);
                 host.addListener(new NetworkListener() {
-                    @Override public void onMessage(GameMessage msg) {
+                    @Override public void onMessage(Message msg) {
                         hostReceived.set(msg);
                         hostGot.countDown();
                     }
@@ -42,7 +42,7 @@ class LanSessionTest {
 
         NetworkLayer client = LanClient.join("127.0.0.1", TEST_PORT);
         client.addListener(new NetworkListener() {
-            @Override public void onMessage(GameMessage msg) {
+            @Override public void onMessage(Message msg) {
                 clientReceived.set(msg);
                 clientGot.countDown();
             }

@@ -26,7 +26,6 @@ public class HostLan extends Controller {
 
     @FXML
     private void onSearchAction(){
-        //TODO Open the Network Connection
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         if (c.checkNameLength(yourName,1,statusLabel)){
             Session s = Session.current();
@@ -34,7 +33,7 @@ public class HostLan extends Controller {
             s.isHost = true;
 
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
-            controller.passHostData(hostNameTF.getText());
+            controller.passHostData(yourName);
         }
     }
 

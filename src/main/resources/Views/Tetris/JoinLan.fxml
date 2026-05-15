@@ -61,9 +61,9 @@
                                         <Insets right="5.0" />
                                     </GridPane.margin></TextField>
                                 <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="1">
+                        <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" styleClass="transparent-scroll" GridPane.columnSpan="4" GridPane.rowIndex="1">
                            <content>
-                              <VBox fx:id="scrollElements" prefHeight="200.0" prefWidth="100.0" />
+                              <VBox fx:id="scrollElements" prefHeight="200.0" prefWidth="100.0" styleClass="transparent-scroll-content" />
                            </content>
                         </ScrollPane>
                             </children>
