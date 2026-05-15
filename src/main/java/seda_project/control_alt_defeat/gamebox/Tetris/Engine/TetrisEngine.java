@@ -3,6 +3,7 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 import java.io.Serializable;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,6 +26,9 @@ public class TetrisEngine {
     private boolean isGameOver;
     private int level = 1;
 
+    private List<TBlock> p1Blocks;
+    private List<TBlock> p2Blocks;
+
     private final BlockRegistry blockRegistry;
 
     private final List<TetrisEventListener> listeners = new CopyOnWriteArrayList<>();
@@ -37,7 +41,7 @@ public class TetrisEngine {
     // Power-up mechanics
     private final List<PowerUp> activePowerUps = new CopyOnWriteArrayList<>();
     private long lastPowerUpSpawnTime;
-    private static final long POWERUP_INTERVAL_MS = 30000;
+    private static final long POWERUP_INTERVAL_MS = 10000;
     private static final long POWERUP_LIFESPAN_MS  = 7000;
     private static final Random RANDOM = new Random();
 
@@ -59,8 +63,17 @@ public class TetrisEngine {
         this.isGameOver = false;
         this.lastPowerUpSpawnTime = System.currentTimeMillis();
 
+        p1Blocks = generateBlocks();
+        p2Blocks = generateBlocks();
+
         spawnNewBlock(1);
         spawnNewBlock(2);
+    }
+
+    private List<TBlock> generateBlocks() {
+        List<TBlock> allPieces = new ArrayList<>(blockRegistry.getAllPieces());
+        Collections.shuffle(allPieces);
+        return allPieces;
     }
 
     public synchronized void stop(){
@@ -86,7 +99,6 @@ public class TetrisEngine {
 
     public synchronized void tick() {
         if (isGameOver || isStopped) return;
-        System.out.println("TICK");
 
         if (!p1Lost) applyGravity(1, p1ActiveBlock, p1Board);
         if (!p2Lost) applyGravity(2, p2ActiveBlock, p2Board);
@@ -113,7 +125,6 @@ public class TetrisEngine {
             listeners.forEach(l -> l.onPowerUpSpawned(snapExpired));
         }
 
-
         if (now - lastPowerUpSpawnTime >= POWERUP_INTERVAL_MS) {
             spawnRandomPowerUp(now);
             lastPowerUpSpawnTime = now;
@@ -122,17 +133,24 @@ public class TetrisEngine {
 
     private void spawnRandomPowerUp(long now ) {
         int playerNum = RANDOM.nextBoolean() ? 1 : 2;
+        if (p1Lost) {playerNum = 2;}
+        if (p2Lost) {playerNum = 1;}
+
         Board board = (playerNum == 1) ? p1Board : p2Board;
         String[][] grid = board.getGrid();
 
         // Find an empty cell
         int attempts = 0;
         while (attempts < 50) {
-            int r = RANDOM.nextInt(board.getHeight());
+            int r = RANDOM.nextInt(board.getHeight()-3);
             int c = RANDOM.nextInt(board.getWidth());
-            if (grid[r][c] == null && !isPowerUpAt(playerNum, r, c)) {
+            if (playerNum == 1 && grid[r+3][c] == null && !isPowerUpAt(playerNum, r+3, c)) {
+                activePowerUps.add(new PowerUp(playerNum, r+3, c,now));
+                listeners.forEach(l -> l.onPowerUpSpawned(this.getSnapshot()));
+                break;
+            }
+            else if (playerNum == 2 && grid[r][c] == null && !isPowerUpAt(playerNum, r, c)) {
                 activePowerUps.add(new PowerUp(playerNum, r, c,now));
-                System.out.println("Spawned Power Up for Player " + playerNum + " at Row" + r + " Col" + c);
                 listeners.forEach(l -> l.onPowerUpSpawned(this.getSnapshot()));
                 break;
             }
@@ -157,7 +175,6 @@ public class TetrisEngine {
 
         Block block = (playerNum == 1) ? p1ActiveBlock : p2ActiveBlock;
         Board board = (playerNum == 1) ? p1Board : p2Board;
-        System.out.println(block.getX());
 
         switch (action) {
             case "LEFT" -> {
@@ -174,6 +191,7 @@ public class TetrisEngine {
             }
             case "DROP" -> applyGravity(playerNum, block, board);
         }
+        listeners.forEach(l -> l.onBlockMovement(getSnapshot()));
     }
 
     private void applyGravity(int playerNum, Block activeBlock, Board board) {
@@ -182,8 +200,6 @@ public class TetrisEngine {
         } else {
             activeBlock.moveDown();
         }
-        boolean triggeredSwap = checkPowerUpTrigger(playerNum, activeBlock);
-        if (triggeredSwap) System.out.println("SWAP SWAP SWAP SWAP SWAP ");
 
         if (!board.isValidPosition(activeBlock)) {
             if (board.isInverted()) {
@@ -211,7 +227,7 @@ public class TetrisEngine {
             }
             spawnNewBlock(playerNum);
         }
-        else if (triggeredSwap) {
+        else if (checkPowerUpTrigger(playerNum, activeBlock)) {
                 executePlayerSwap();
                 GameState snapSwap = getSnapshot();
                 listeners.forEach(l -> l.onPowerUpTriggered(playerNum, snapSwap));
@@ -282,13 +298,11 @@ public class TetrisEngine {
 
         // Validation immediately following swap
         if (p1ActiveBlock != null && !p1Board.isValidPosition(p1ActiveBlock)) {
-            System.out.println("Out Player 1");
             p1Lost = true;
             GameState snapLost = getSnapshot();
             listeners.forEach(l -> l.onPlayerLost(1, snapLost));
         }
         if (p2ActiveBlock != null && !p2Board.isValidPosition(p2ActiveBlock)) {
-            System.out.println("Out Player 2");
             p2Lost = true;
             GameState snapLost = getSnapshot();
             listeners.forEach(l -> l.onPlayerLost(2, snapLost));
@@ -303,7 +317,7 @@ public class TetrisEngine {
 
         boolean[][] shape = activeBlock.getShape();
         int rows = shape.length;
-        int cols = shape.length;
+        int cols = shape[0].length;
 
         boolean[][] rotated = new boolean[rows][cols];
         for (int row = 0; row < rows; row++) {
@@ -343,22 +357,37 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum) {
-        Block newBlock = blockRegistry.generateRandomBlock();
-
+        //Block newBlock = blockRegistry.generateRandomBlock();
+        /*
         if (playerNum == 2) {
             while(newBlock.getY() < 20-newBlock.getShape()[0].length) {
                 newBlock.moveDown();
             }
         }
+        */
+        if (p2Blocks.isEmpty()) {
+            p2Blocks = generateBlocks();
+        }
+        if (p1Blocks.isEmpty()) {
+            p1Blocks = generateBlocks();
+        }
 
         if (playerNum == 1) {
+            Block newBlock = p1Blocks.getFirst().toPiece();
+            p1Blocks.removeFirst();
             p1ActiveBlock = newBlock;
             if (!p1Board.isValidPosition(p1ActiveBlock)) {
                 p1Lost = true;
                 GameState snapLost = getSnapshot();
                 listeners.forEach(l -> l.onPlayerLost(1, snapLost));
             }
+
         } else {
+            Block newBlock = p2Blocks.getFirst().toPiece();
+            p2Blocks.removeFirst();
+            while(newBlock.getY() < 20-newBlock.getShape()[0].length) {
+                newBlock.moveDown();
+            }
             p2ActiveBlock = newBlock;
             if (!p2Board.isValidPosition(p2ActiveBlock)) {
                 p2Lost = true;

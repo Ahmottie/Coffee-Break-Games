@@ -21,6 +21,9 @@ public class MCard extends Button {
         this.faceUp = false;
         this.removed = false;
 
+        this.getStyleClass().remove("button");
+        this.getStyleClass().add("card");
+
         BackgroundSize backgroundSize = new BackgroundSize(
                 BackgroundSize.AUTO,
                 BackgroundSize.AUTO,

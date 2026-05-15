@@ -3,6 +3,7 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -20,7 +21,7 @@ public class ResultScreen extends Controller {
     @FXML
     protected void onPlayAgainAction(){
         GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
-        engine.reset();
+        TetrisEngine engine = new TetrisEngine(state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
         controller.create(state.p1Name(),state.p2Name(),false, engine);
     }
 

@@ -8,3 +8,11 @@
 .playground{
     -fx-background-color: rgb(37, 151, 151);
 }
+
+.card{
+    -fx-cursor: hand;
+}
+
+.card:hover{
+    -fx-effect: dropshadow(gaussian, #ffffff, 13, 0, 5, 5);
+}

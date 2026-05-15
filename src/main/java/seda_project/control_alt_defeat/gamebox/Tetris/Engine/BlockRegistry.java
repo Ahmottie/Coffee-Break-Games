@@ -9,6 +9,9 @@ public class BlockRegistry {
 
     private final List<TBlock> pieces = new ArrayList<>();
 
+    private Stack<TBlock> player1Pieces = new Stack<>();
+    private Stack<TBlock> player2Pieces = new Stack<>();
+
     private static BlockRegistry instance;
 
     public static BlockRegistry getInstance() {
@@ -35,7 +38,7 @@ public class BlockRegistry {
     }
 
     public List<TBlock> getAllPieces(){
-        return Collections.unmodifiableList(pieces);
+        return pieces;
     }
 
     public List<CustomBlock> getCustomPieces() {
@@ -43,11 +46,5 @@ public class BlockRegistry {
                 .filter(p -> p instanceof CustomBlock)
                 .map(p -> (CustomBlock) p)
                 .toList();
-    }
-
-    public Block generateRandomBlock() {
-        int index = RANDOM.nextInt(getAllPieces().size());
-        TBlock tBlock = getAllPieces().get(index);
-        return tBlock.toPiece();//new Block(shape, index + 1);
     }
 }

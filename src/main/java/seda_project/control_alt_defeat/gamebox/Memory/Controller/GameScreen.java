@@ -99,15 +99,22 @@ public class GameScreen extends Controller {
         List<Card> deck = setup.initialDeck();
         int n = deck.size();
 
-        int col = (int) Math.ceil(Math.sqrt(n));
-        int row = (int) Math.ceil((double) n / col);
+        int row = 5;
+        int col = (int) Math.ceil((double) n / row);
 
-        int gridSize = 340;
-        playingGrid.setPrefSize(gridSize, gridSize);
-        playingGrid.setMaxSize(gridSize, gridSize);
-        playingGrid.setMinSize(gridSize, gridSize);
+        if (row > col){
+            int tmp = col;
+            col = row;
+            row = tmp;
+        }
 
-        double size = (double) gridSize / row;
+        int height = 340;
+
+        double size = height/row;
+
+        playingGrid.setPrefSize(size*col, size*row);
+        playingGrid.setMaxSize(size*col, size*row);
+        playingGrid.setMinSize(size*col, size*row);
 
         for (int i = 0; i < col; i++) {
             playingGrid.getColumnConstraints().add(new ColumnConstraints(size));
@@ -153,7 +160,7 @@ public class GameScreen extends Controller {
         }
 
         gamePane.getChildren().add(playingGrid);
-        StackPane.setAlignment(playingGrid, Pos.CENTER);
+        //StackPane.setAlignment(playingGrid, Pos.CENTER);
     }
 
     public void setStatusLabel(boolean match) {
@@ -200,6 +207,7 @@ public class GameScreen extends Controller {
 
             @Override
             public void onMismatch(List<Integer> flippedIds, GameSnapshot snapshot) {
+                canClick = false;
                 Platform.runLater(() -> {
                     turnCardsBack();
                     setStatusLabel(false);
@@ -232,7 +240,6 @@ public class GameScreen extends Controller {
     }
 
     public void turnCardsBack() {
-        canClick = false;
         pause.setOnFinished(e -> {
             for (MCard c : flippedCards) {
                 flipmotion(c, cardIdOf.get(c));
@@ -292,9 +299,12 @@ public class GameScreen extends Controller {
         secondHalf.setToX(1);
 
         if (!card.getFaceUp()) {
+            flippedCards.add(card);
+            if (flippedCards.size() >= matchSize) {
+                canClick = false;
+            }
             firstHalf.setOnFinished(e -> {
                 card.setFaceUp(true);
-                flippedCards.add(card);
                 boolean wasRemote = remoteFlipIds.remove(cardId);
                 engine.flip(cardId);
                 NetworkLayer net = Session.current().network;
