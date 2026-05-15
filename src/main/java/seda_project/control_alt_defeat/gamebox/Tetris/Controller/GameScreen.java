@@ -183,7 +183,10 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
 
         engine.addListener(this);
-        handler = new KeyHandler(engine,tS, this);
+        // In LAN host mode this keyboard only drives player 1; player 2 input
+        // arrives from the client over the network.
+        boolean lanHost = Session.current().network != null;
+        handler = new KeyHandler(engine, tS, this, lanHost);
         handler.attach(header.getScene());
 
         engineTicker = new Timeline(
