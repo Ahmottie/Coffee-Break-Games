@@ -10,6 +10,7 @@ public sealed interface TetrisMessage extends Message
                 TetrisMessage.StartCountdown,
                 TetrisMessage.Input,
                 TetrisMessage.StateUpdate,
+                TetrisMessage.LinesCleared,
                 TetrisMessage.Restart {
 
     record Hello(String playerName) implements TetrisMessage {}
@@ -23,6 +24,8 @@ public sealed interface TetrisMessage extends Message
     record Input(int playerNum, InputAction action) implements TetrisMessage {}
 
     record StateUpdate(TetrisEngine.GameState state) implements TetrisMessage {}
+
+    record LinesCleared(int playerNum, int lineCount) implements TetrisMessage {}
 
     record Restart() implements TetrisMessage {}
 

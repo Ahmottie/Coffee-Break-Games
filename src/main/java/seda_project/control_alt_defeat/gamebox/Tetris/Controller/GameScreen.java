@@ -37,6 +37,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private KeyHandler handler;
     private Timeline engineTicker;
     private boolean disconnected = false;
+    private boolean gameOverHandled = false;
 
     private final Image img = loadSwapImage();
 
@@ -275,7 +276,10 @@ public class GameScreen extends Controller implements TetrisEventListener {
         engine.addListener(new TetrisEventListener() {
             @Override public void onTick(TetrisEngine.GameState s)                                  { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onBlockLocked(int p, TetrisEngine.GameState s)                    { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s)            { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s)            {
+                network.send(new TetrisMessage.StateUpdate(s));
+                network.send(new TetrisMessage.LinesCleared(p, n));
+            }
             @Override public void onLevelChanged(int l, long ms, TetrisEngine.GameState s)          { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onPlayerLost(int p, TetrisEngine.GameState s)                     { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onGameOver(TetrisEngine.GameState s)                              { network.send(new TetrisMessage.StateUpdate(s)); }
@@ -311,6 +315,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
             public void onMessage(Message msg) {
                 if (msg instanceof TetrisMessage.StateUpdate update) {
                     Platform.runLater(() -> applyRemoteState(update.state()));
+                } else if (msg instanceof TetrisMessage.LinesCleared lc) {
+                    Platform.runLater(() -> incrementLines(lc.playerNum(), lc.lineCount()));
                 }
             }
             @Override
@@ -344,12 +350,25 @@ public class GameScreen extends Controller implements TetrisEventListener {
         return null;
     }
 
+    private void incrementLines(int playerNum, int lineCount) {
+        Label target = playerNum == 1 ? player1LinesLabel : player2LinesLabel;
+        int current = Integer.parseInt(target.getText());
+        target.setText(String.valueOf(current + lineCount));
+    }
+
     private void applyRemoteState(TetrisEngine.GameState s) {
         render(s);
         player1PointsLabel.setText(String.valueOf(s.p1Score()));
         player2PointsLabel.setText(String.valueOf(s.p2Score()));
         LevelLabel.setText(String.valueOf(s.level()));
         if (s.powerUps() != null) showPowerUP(s.powerUps());
+
+        if (s.gameOver() && !gameOverHandled) {
+            gameOverHandled = true;
+            ResultScreen controller = (ResultScreen) c.changeScene(
+                    "/Views/Tetris/ResultScreen.fxml", header, vS);
+            controller.handGameState(s, null, player1LinesLabel, player2LinesLabel);
+        }
     }
 
     private void handleDisconnect(String reason) {
