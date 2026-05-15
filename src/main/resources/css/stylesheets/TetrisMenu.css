@@ -6,15 +6,16 @@
 }
 
 .gameField {
-    -fx-grid-lines-visible: true;
+    -fx-border-color: #1ecfcf;
     -fx-background-color: #000000;
+    -fx-border-width: 2px;
+    -fx-effect: innershadow(gaussian, rgba(30,207,207,0.3), 10, 0.5, 0, 0);
 }
 
 .gameField Line{
     -fx-stroke: #4a4a4a;
 }
 
-.playground{
-    -fx-background-color: rgb(37, 151, 151);
+.playground {
+    -fx-background-color: #0a1a2e;
 }
-

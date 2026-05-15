@@ -1,22 +1,53 @@
 .box {
-    -fx-background-color: rgba(255,255,255,0.5);
-    -fx-background-radius: 20px;
+    -fx-background-color: rgba(10, 20, 40, 0.72);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 18, 0.25, 0, 5);
 }
 
 .error {
-    -fx-background-color: rgba(255,0,0,0.5);
-    -fx-border-radius: 20px;
-    -fx-border-color: rgb(121, 0, 0);
+    -fx-background-color: rgba(180, 20, 20, 0.45);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(220, 60, 60, 0.75);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(200, 0, 0, 0.4), 12, 0.3, 0, 0);
 }
 
 .information {
-    -fx-background-color: rgba(255, 193, 2, 0.5);
-    -fx-border-radius: 20px;
-    -fx-border-color: rgb(154, 119, 1);
+    -fx-background-color: rgba(180, 130, 0, 0.45);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 200, 30, 0.75);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(220, 170, 0, 0.4), 12, 0.3, 0, 0);
 }
 
 .ready {
-    -fx-background-color: rgba(27, 255, 2, 0.5);
-    -fx-border-radius: 20px;
-    -fx-border-color: rgb(16, 151, 0);
+    -fx-background-color: rgba(10, 160, 60, 0.45);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(40, 220, 100, 0.75);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 200, 80, 0.4), 12, 0.3, 0, 0);
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #1ecfcf, #0d8a8a);
+    -fx-text-fill: white;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.4), 8, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #25e8e8, #14a3a3);
+    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.7), 14, 0, 0, 3);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #0d8a8a, #066060);
 }

@@ -54,7 +54,7 @@
                               <ToggleGroup fx:id="DeckSizeGroup" />
                            </toggleGroup></RadioButton>
                               <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                              <RadioButton fx:id="largeGame" mnemonicParsing="false" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <RadioButton fx:id="largeGame" mnemonicParsing="false" styleClass=".label" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                               <Label text="Match Size" GridPane.rowIndex="1" />
                               <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                            <GridPane.margin>
