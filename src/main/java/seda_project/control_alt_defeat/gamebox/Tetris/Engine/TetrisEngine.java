@@ -24,7 +24,9 @@ public class TetrisEngine {
     private boolean p1Lost;
     private boolean p2Lost;
     private boolean isGameOver;
-    private int level = 1;
+
+    private int p1Level = 1;
+    private int p2Level = 1;
 
     private List<TBlock> p1Blocks;
     private List<TBlock> p2Blocks;
@@ -32,11 +34,16 @@ public class TetrisEngine {
     private final BlockRegistry blockRegistry;
 
     private final List<TetrisEventListener> listeners = new CopyOnWriteArrayList<>();
-    private int totalLinesCleared = 0;
+
+    private int p1LinesCleared = 0;
+    private int p2LinesCleared = 0;
 
     private static final long INITIAL_TICK_INTERVAL_MS = 800;
     private static final long MIN_TICK_INTERVAL_MS     = 100;
-    private long tickIntervalMs = INITIAL_TICK_INTERVAL_MS;
+
+    private long p1TickInterval = INITIAL_TICK_INTERVAL_MS;
+    private long p2TickInterval = INITIAL_TICK_INTERVAL_MS;
+
 
     // Power-up mechanics
     private final List<PowerUp> activePowerUps = new CopyOnWriteArrayList<>();
@@ -83,8 +90,9 @@ public class TetrisEngine {
         listeners.forEach(l -> l.onStopped(snapStopped));
     }
 
-    public synchronized long getTickIntervalMs() {
-        return tickIntervalMs;
+    public synchronized long getTickIntervalMs(int player) {
+        return player == 1 ? p1TickInterval : p2TickInterval;
+
     }
 
     public synchronized void addListener(TetrisEventListener listener) {
@@ -216,14 +224,20 @@ public class TetrisEngine {
 
             int linesCleared = board.clearLines();
             if (linesCleared > 0) {
-                if (playerNum == 1) p1Score += calculateScore(linesCleared);
-                else p2Score += calculateScore(linesCleared);
+                if (playerNum == 1) {
+                    p1LinesCleared +=  linesCleared;
+                    p1Score += calculateScore(linesCleared);
+                }
+                else {
+                    p2LinesCleared +=  linesCleared;
+                    p2Score += calculateScore(linesCleared);
+                }
 
                 GameState snapLines = getSnapshot();
                 final int finalLinesCleared = linesCleared;
                 listeners.forEach(l -> l.onLinesCleared(playerNum, finalLinesCleared, snapLines));
 
-                handleLevelProgression(linesCleared);
+                handleLevelProgression(playerNum);
             }
             spawnNewBlock(playerNum);
         }
@@ -340,19 +354,28 @@ public class TetrisEngine {
         return rotated;
     }
 
-    private void handleLevelProgression(int linesCleared) {
-        totalLinesCleared += linesCleared;
-        int newLevel = (totalLinesCleared / 10) + 1;
+    private void handleLevelProgression(int player) {
+        int level = player == 1 ? p1Level : p2Level;
+        int playerLines = player == 1 ? p1LinesCleared : p2LinesCleared;
 
-        if (newLevel > this.level) {
-            this.level = newLevel;
-            this.tickIntervalMs = (long) Math.max(
+        int newLevel = (playerLines / 10) + 1;
+        if (newLevel > level) {
+            long newTickInterval = (long) Math.max(
                     MIN_TICK_INTERVAL_MS,
-                    INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, this.level - 1)
+                    INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, level - 1)
             );
+            if (player == 1){
+                p1Level = newLevel;
+                p1TickInterval = newTickInterval;
+            }
+            else if (player == 2){
+                p2Level = newLevel;
+                p2TickInterval = newTickInterval;
+            }
 
             GameState snapLevel = getSnapshot();
-            listeners.forEach(l -> l.onLevelChanged(this.level, this.tickIntervalMs, snapLevel));
+            System.out.println("LEVEL UP in Engine");
+            listeners.forEach(l -> l.onLevelChanged(newTickInterval, snapLevel, player));
         }
     }
 
@@ -422,10 +445,10 @@ public class TetrisEngine {
                 p1ActiveBlock != null ? p1ActiveBlock.cloneForSnapshot() : null,
                 p2ActiveBlock != null ? p2ActiveBlock.cloneForSnapshot() : null,
                 p1Score, p2Score,
+                p1Level, p2Level,
                 p1Name, p2Name,
                 p1Lost, p2Lost,
                 isGameOver,
-                level,
                 new ArrayList<>(activePowerUps)
         );
     }
@@ -445,12 +468,13 @@ public class TetrisEngine {
             Block      p2ActiveBlock,
             int        p1Score,
             int        p2Score,
+            int        p1Level,
+            int        p2Level,
             String     p1Name,
             String     p2Name,
             boolean    p1Lost,
             boolean    p2Lost,
             boolean    gameOver,
-            int        level,
             List<PowerUp> powerUps
     ) implements Serializable {}
 
@@ -459,13 +483,17 @@ public class TetrisEngine {
         p2Board.clear();
         p1Score = 0;
         p2Score = 0;
+        p1Level = 1;
+        p2Level = 1;
         p1Lost = false;
         p2Lost = false;
         isGameOver = false;
 
-        level = 1;
-        totalLinesCleared = 0;
-        tickIntervalMs = INITIAL_TICK_INTERVAL_MS;
+        p1LinesCleared = 0;
+        p2LinesCleared = 0;
+
+        p1TickInterval = INITIAL_TICK_INTERVAL_MS;
+        p2TickInterval = INITIAL_TICK_INTERVAL_MS;
 
         activePowerUps.clear();
         lastPowerUpSpawnTime = System.currentTimeMillis();
