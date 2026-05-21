@@ -1,6 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.ui;
 
 import seda_project.control_alt_defeat.gamebox.Configuration;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.ViewStack;
 
 public class Controller {

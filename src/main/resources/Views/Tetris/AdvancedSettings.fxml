@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import seda_project.control_alt_defeat.gamebox.ui.IntField?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.AdvancedSettings">
+    <children>
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" fillWidth="false" prefHeight="111.0" prefWidth="622.0" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Tetris Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Advanced Settings" />
+                    </children>
+                </VBox>
+                <StackPane prefHeight="516.0" prefWidth="800.0">
+                    <children>
+                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="469.0" prefWidth="624.0" styleClass="box">
+                            <children>
+                                <GridPane alignment="CENTER">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.59999999999997" minWidth="10.0" prefWidth="137.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.00000000000003" minWidth="10.0" prefWidth="134.00000000000003" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="9.20000762939452" prefWidth="154.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="98.20000000000005" />
+                                        <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                              <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                              <Label prefHeight="52.0" prefWidth="156.0" text="Gameboard Layout" GridPane.rowIndex="1" />
+                              <RadioButton mnemonicParsing="false" selected="true" text="Vertical" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="Layout" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Horizontal" toggleGroup="$Layout" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label prefHeight="41.0" prefWidth="156.0" text="Item Spawnrate" GridPane.rowIndex="3" />
+                              <Label text="Item Despawntime" GridPane.rowIndex="4" />
+                              <IntField fx:id="itemSpawnRate" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <IntField fx:id="itemDespawnTime" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER" prefHeight="28.0" prefWidth="614.0" styleClass="headerText" text="Items" GridPane.columnSpan="4" GridPane.rowIndex="2" />
+                              <Label GridPane.rowIndex="5" />
+                              <Label text="Affect Both" GridPane.rowIndex="5" />
+                              <CheckBox fx:id="swapBoards" mnemonicParsing="false" text="Swap Boards" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <CheckBox fx:id="swapBlocks" mnemonicParsing="false" text="Swap Blocks" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <CheckBox fx:id="portals" mnemonicParsing="false" text="Portals" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                              <Label text="Affect Opponent" GridPane.rowIndex="6" />
+                              <Label text="Affect Self" GridPane.rowIndex="7" />
+                              <CheckBox fx:id="opponentSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                              <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                              <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                              <Label alignment="CENTER" prefHeight="55.0" prefWidth="675.0" styleClass="headerText" text="General" GridPane.columnSpan="4" />
+                              <Label alignment="CENTER" prefHeight="55.0" prefWidth="648.0" styleClass="headerText" text="Bombs" GridPane.columnSpan="4" GridPane.rowIndex="8" />
+                              <Label text="Activate" GridPane.rowIndex="9" />
+                              <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
+                                </GridPane>
+                                <HBox alignment="CENTER" prefHeight="61.0" prefWidth="623.0">
+                                    <children>
+                                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                                            <HBox.margin>
+                                                <Insets right="10.0" />
+                                            </HBox.margin>
+                                        </Button>
+                                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSaveAction" text="Save">
+                                            <HBox.margin>
+                                                <Insets left="10.0" />
+                                            </HBox.margin>
+                                        </Button>
+                                    </children></HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </StackPane>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/TetrisMenu.css" />
+    </stylesheets>
+
+</AnchorPane>

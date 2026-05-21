@@ -65,11 +65,11 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="40.0">
                            <children>
-                                      <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect">
+                                      <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin></Button>
-                                      <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                                      <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin></Button>

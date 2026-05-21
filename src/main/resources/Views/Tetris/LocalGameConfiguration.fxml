@@ -22,7 +22,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Host Game Setup" />
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Local Game Setup" />
                     </children>
                 </VBox>
             <StackPane prefHeight="516.0" prefWidth="800.0">
@@ -62,6 +62,7 @@
                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                   </padding>
                               </GridPane>
+                        <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
                         <Label fx:id="statusLabel" prefHeight="59.0" prefWidth="497.0" />
                         <HBox alignment="CENTER" prefHeight="38.0" prefWidth="496.0">
                            <children>

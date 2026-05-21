@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
@@ -14,6 +15,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LocalGameConfiguration extends Controller implements Initializable {
+
+    protected TetrisAdvancedSettings advancedSettings = TetrisAdvancedSettings.getInstance();
 
     @FXML
     private VBox header;
@@ -48,13 +51,25 @@ public class LocalGameConfiguration extends Controller implements Initializable 
     }
 
     @FXML
+    protected void onAdvancedSettingsAction(){
+        c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+    }
+
+    @FXML
     protected void onStartAction() {
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
         int p2Level =  player2Level.getSelectionModel().getSelectedItem();
+        String address =  "";
+        if (advancedSettings.isVertical()){
+            address = "/Views/Tetris/GameScreen.fxml";
+        }
+        else { address = "/Views/Tetris/GameScreenHorizontal.fxml";
+        }
+
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
-            GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
+            GameScreen controller = (GameScreen) c.changeScene(address,header,vS);
             TetrisEngine engine = new TetrisEngine(player1Name,player2Name, p1Level,p2Level, BlockRegistry.getInstance());
             controller.create(player1Name,player2Name,p1Level, p2Level,false, engine);
             controller.setInitialLevels(p1Level,p2Level);
