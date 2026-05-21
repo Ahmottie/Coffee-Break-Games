@@ -13,9 +13,9 @@ public sealed interface TetrisMessage extends Message
                 TetrisMessage.LinesCleared,
                 TetrisMessage.Restart {
 
-    record Hello(String playerName) implements TetrisMessage {}
+    record Hello(String playerName, int playerLevel) implements TetrisMessage {}
 
-    record LobbyInfo(String hostName, String clientName) implements TetrisMessage {}
+    record LobbyInfo(String hostName, String clientName, int hostLevel, int clientLevel) implements TetrisMessage {}
 
     record Ready(boolean ready) implements TetrisMessage {}
 

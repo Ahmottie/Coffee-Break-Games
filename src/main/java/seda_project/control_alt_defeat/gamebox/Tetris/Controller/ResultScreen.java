@@ -22,6 +22,8 @@ public class ResultScreen extends Controller {
     private NetworkLayer network;
     private boolean disconnected = false;
 
+    private int initP1Level,initP2Level;
+
     @FXML
     private VBox header;
 
@@ -37,17 +39,20 @@ public class ResultScreen extends Controller {
 
         // Local mode so original behaviour fresh engine and game
         if (s.network == null) {
+            System.out.println(initP1Level);
+            System.out.println(initP2Level);
             TetrisEngine fresh = new TetrisEngine(
-                    state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
+                    state.p1Name(), state.p2Name(),initP1Level,initP2Level, BlockRegistry.getInstance());
             GameScreen controller = (GameScreen) c.changeScene(
                     "/Views/Tetris/GameScreen.fxml", header, vS);
-            controller.create(state.p1Name(), state.p2Name(), false, fresh);
+            controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,false, fresh);
+            controller.setInitialLevels(initP1Level,initP2Level);
             return;
         }
 
         // LAN host: build new engine, broadcast Restart and navigate to lan game
         TetrisEngine fresh = new TetrisEngine(
-                state.p1Name(), state.p2Name(), BlockRegistry.getInstance());
+                state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,BlockRegistry.getInstance());
         s.tetrisEngine = fresh;
         s.localReady = false;
         s.peerReady  = false;
@@ -122,10 +127,15 @@ public class ResultScreen extends Controller {
         Session s = Session.current();
         GameScreen controller = (GameScreen) c.changeScene(
                 "/Views/Tetris/GameScreen.fxml", header, vS);
-        controller.create(state.p1Name(), state.p2Name(), true, engineForHost);
+
         if (s.isHost) {
+            System.out.println("Ich bin ein Host");
+            controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,true, engineForHost);
             controller.attachHostNetworkBridge(s.network);
         } else {
+            System.out.println("Ich bin kein Host");
+            System.out.println(s.network);
+            controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel,true, engineForHost);
             controller.attachClientNetworkBridge(s.network);
         }
     }
@@ -142,5 +152,10 @@ public class ResultScreen extends Controller {
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml", header, vS);
+    }
+
+    public void setInitialLevels(int initP1Level,int initP2Level){
+        this.initP1Level = initP1Level;
+        this.initP2Level = initP2Level;
     }
 }

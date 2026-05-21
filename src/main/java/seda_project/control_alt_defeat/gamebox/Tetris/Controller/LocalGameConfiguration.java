@@ -1,6 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -8,7 +10,10 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class LocalGameConfiguration extends Controller {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LocalGameConfiguration extends Controller implements Initializable {
 
     @FXML
     private VBox header;
@@ -20,6 +25,24 @@ public class LocalGameConfiguration extends Controller {
     private Label statusLabel;
 
     @FXML
+    private ComboBox<Integer> player1Level,player2Level;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        statusLabel.setVisible(false);
+
+        player1Level.getItems().clear();
+        player2Level.getItems().clear();
+
+        for (int i = 0; i < 20; i++) {
+            player1Level.getItems().add(i+1);
+            player2Level.getItems().add(i+1);
+        }
+        player1Level.getSelectionModel().select(0);
+        player2Level.getSelectionModel().select(0);
+    }
+
+    @FXML
     protected void onBackAction() {
         c.backScene(header,vS);
     }
@@ -28,10 +51,13 @@ public class LocalGameConfiguration extends Controller {
     protected void onStartAction() {
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
+        int p1Level =  player1Level.getSelectionModel().getSelectedItem();
+        int p2Level =  player2Level.getSelectionModel().getSelectedItem();
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
             GameScreen controller = (GameScreen) c.changeScene("/Views/Tetris/GameScreen.fxml",header,vS);
-            TetrisEngine engine = new TetrisEngine(player1Name,player2Name, BlockRegistry.getInstance());
-            controller.create(player1Name,player2Name,false, engine);
+            TetrisEngine engine = new TetrisEngine(player1Name,player2Name, p1Level,p2Level, BlockRegistry.getInstance());
+            controller.create(player1Name,player2Name,p1Level, p2Level,false, engine);
+            controller.setInitialLevels(p1Level,p2Level);
         }
     }
 }

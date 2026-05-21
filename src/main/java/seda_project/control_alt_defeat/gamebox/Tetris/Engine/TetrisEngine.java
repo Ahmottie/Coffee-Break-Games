@@ -54,7 +54,7 @@ public class TetrisEngine {
 
     private boolean isStopped = false;
 
-    public TetrisEngine(String p1Name, String p2Name, BlockRegistry registry) {
+    public TetrisEngine(String p1Name, String p2Name, int p1Level, int p2Level, BlockRegistry registry) {
         this.p1Name = p1Name;
         this.p2Name = p2Name;
         this.blockRegistry = registry;
@@ -64,6 +64,23 @@ public class TetrisEngine {
 
         this.p1Score = 0;
         this.p2Score = 0;
+
+        this.p1Level = p1Level;
+        this.p2Level = p2Level;
+
+        if (p1Level > 1){
+            p1TickInterval = (long) Math.max(
+                    MIN_TICK_INTERVAL_MS,
+                    INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, p1Level - 1)
+            );
+        }
+
+        if (p2Level > 1){
+            p2TickInterval = (long) Math.max(
+                    MIN_TICK_INTERVAL_MS,
+                    INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, p2Level - 1)
+            );
+        }
 
         this.p1Lost = false;
         this.p2Lost = false;
@@ -105,17 +122,17 @@ public class TetrisEngine {
         listeners.remove(listener);
     }
 
-    public synchronized void tick() {
+    public synchronized void tick(int player) {
         if (isGameOver || isStopped) return;
 
-        if (!p1Lost) applyGravity(1, p1ActiveBlock, p1Board);
-        if (!p2Lost) applyGravity(2, p2ActiveBlock, p2Board);
+        if (!p1Lost && player == 1) applyGravity(1, p1ActiveBlock, p1Board);
+        if (!p2Lost && player == 2) applyGravity(2, p2ActiveBlock, p2Board);
 
         checkWinCondition();
         managePowerUpSpawning();
 
         GameState snap = getSnapshot();
-        listeners.forEach(l -> l.onTick(snap));
+        listeners.forEach(l -> l.onTick(snap, player));
     }
 
     private void managePowerUpSpawning() {
@@ -199,7 +216,7 @@ public class TetrisEngine {
             }
             case "DROP" -> applyGravity(playerNum, block, board);
         }
-        listeners.forEach(l -> l.onBlockMovement(getSnapshot()));
+        listeners.forEach(l -> l.onBlockMovement(getSnapshot(),playerNum));
     }
 
     private void applyGravity(int playerNum, Block activeBlock, Board board) {

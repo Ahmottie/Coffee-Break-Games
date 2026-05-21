@@ -36,6 +36,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private TetrisEngine engine;
     private KeyHandler handler;
     private Timeline engineTicker;
+    private int initP1Level, initP2Level;
 
     private Timeline p1EngineTicker;
     private Timeline p2EngineTicker;
@@ -93,10 +94,14 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
     }
 
-    public void render(TetrisEngine.GameState state){
+    public void render(TetrisEngine.GameState state, int player ){
         //System.out.println(state.p1Lost());
-        drawGrid(state.p1Grid(),state.p1ActiveBlock(), player1Field, state.p1Lost());
-        drawGrid(state.p2Grid(),state.p2ActiveBlock(), player2Field, state.p2Lost());
+        if (player == 1) {
+            drawGrid(state.p1Grid(), state.p1ActiveBlock(), player1Field, state.p1Lost());
+        }
+        else {
+            drawGrid(state.p2Grid(), state.p2ActiveBlock(), player2Field, state.p2Lost());
+        }
     }
 
     private void showPowerUP(List<PowerUp> powerUps) {
@@ -171,7 +176,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
 
-    public void create(String player1, String player2, boolean multiplayer, TetrisEngine engine) {
+    public void create(String player1, String player2, int p1Level, int p2Level, boolean multiplayer, TetrisEngine engine) {
         this.engine = engine;
         player1NameLabel.setText(player1);
         player2NameLabel.setText(player2);
@@ -179,6 +184,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
         player2LinesLabel.setText("0");
         player1PointsLabel.setText("0");
         player2PointsLabel.setText("0");
+        p1LevelLabel.setText(p1Level +"");
+        p2LevelLabel.setText(p2Level +"");
 
         // LAN-client mode: no engine, no KeyHandler etc
         // client renders snapshots received over the network and forwards key events as input msg
@@ -196,27 +203,28 @@ public class GameScreen extends Controller implements TetrisEventListener {
         p1EngineTicker = new Timeline(
                 new KeyFrame(
                         Duration.millis(engine.getTickIntervalMs(1)),
-                        e -> engine.tick()
+                        e -> engine.tick(1)
                 )
         );
         p1EngineTicker.setCycleCount(Animation.INDEFINITE);
         p1EngineTicker.play();
-
+        System.out.println("P1 Ticks " +  engine.getTickIntervalMs(1));
         p2EngineTicker = new Timeline(
                 new KeyFrame(
                         Duration.millis(engine.getTickIntervalMs(2)),
-                        e -> engine.tick()
+                        e -> engine.tick(2)
                 )
         );
         p2EngineTicker.setCycleCount(Animation.INDEFINITE);
         p2EngineTicker.play();
+        System.out.println("P2 Ticks " + engine.getTickIntervalMs(2));
 
     }
 
 
     @Override
-    public void onTick(TetrisEngine.GameState snapshot) {
-        render(snapshot);
+    public void onTick(TetrisEngine.GameState snapshot, int player) {
+        render(snapshot, player);
     }
 
     @Override
@@ -249,7 +257,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
         if (timeline != null) {
             timeline.stop();
             timeline.getKeyFrames().setAll(
-                    new KeyFrame(Duration.millis(newTickIntervalMs), e -> engine.tick())
+                    new KeyFrame(Duration.millis(newTickIntervalMs), e -> engine.tick(player))
             );
             timeline.play();
         }
@@ -262,7 +270,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onPlayerLost(int playerNum, TetrisEngine.GameState snapshot) {
-        render(snapshot);
+        render(snapshot, playerNum);
     }
 
     @Override
@@ -272,12 +280,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
             p2EngineTicker.stop();
         }
         ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml", header, vS);
+        controller.setInitialLevels(initP1Level,initP2Level);
         controller.handGameState(snapshot, engine, player1LinesLabel,player2LinesLabel);
     }
 
     @Override
     public void onPowerUpTriggered(int triggeringPlayer, TetrisEngine.GameState snapshot) {
-        render(snapshot);
         showPowerUP(snapshot.powerUps());
     }
 
@@ -295,15 +303,15 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     @Override
-    public void onBlockMovement (TetrisEngine.GameState snapshot) {
-        render(snapshot);
+    public void onBlockMovement (TetrisEngine.GameState snapshot, int player) {
+        render(snapshot, player);
     }
 
     public void attachHostNetworkBridge(NetworkLayer network) {
         if (engine == null || network == null) return;
 
         engine.addListener(new TetrisEventListener() {
-            @Override public void onTick(TetrisEngine.GameState s)                                  { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onTick(TetrisEngine.GameState s, int player)                                  { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onBlockLocked(int p, TetrisEngine.GameState s)                    { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s)            {
                 network.send(new TetrisMessage.StateUpdate(s));
@@ -315,7 +323,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             @Override public void onPowerUpTriggered(int p, TetrisEngine.GameState s)               { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onPowerUpSpawned(TetrisEngine.GameState s)                        { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onReset(TetrisEngine.GameState s)                                 { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onBlockMovement(TetrisEngine.GameState s)                         { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onBlockMovement(TetrisEngine.GameState s, int player)                         { network.send(new TetrisMessage.StateUpdate(s)); }
             @Override public void onStopped(TetrisEngine.GameState s)                               { network.send(new TetrisMessage.StateUpdate(s)); }
         });
 
@@ -386,8 +394,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     private void applyRemoteState(TetrisEngine.GameState s) {
-        System.out.println("REMOTE STATEs");
-        render(s);
+        render(s,2);
+        render(s,1);
         player1PointsLabel.setText(String.valueOf(s.p1Score()));
         player2PointsLabel.setText(String.valueOf(s.p2Score()));
         p1LevelLabel.setText(String.valueOf(s.p1Level()));
@@ -399,6 +407,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             ResultScreen controller = (ResultScreen) c.changeScene(
                     "/Views/Tetris/ResultScreen.fxml", header, vS);
             controller.handGameState(s, null, player1LinesLabel, player2LinesLabel);
+            controller.setInitialLevels(initP1Level, initP2Level);
         }
     }
 
@@ -422,5 +431,9 @@ public class GameScreen extends Controller implements TetrisEventListener {
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml", header, vS);
+    }
+    public void setInitialLevels(int initP1Level,int initP2Level){
+        this.initP1Level = initP1Level;
+        this.initP2Level = initP2Level;
     }
 }

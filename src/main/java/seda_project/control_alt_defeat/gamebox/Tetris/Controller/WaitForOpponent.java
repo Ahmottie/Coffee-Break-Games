@@ -58,7 +58,7 @@ public class WaitForOpponent extends Controller {
         maybeStartCountdown();
     }
 
-    public void passHostData(String hostName) {
+    public void passHostData(String hostName, int hostLevel) {
         yourNameLabel.setText(hostName);
         hostIpAddressLabel.setText(Lan.localIp());
         startButton.setText("Ready");
@@ -75,7 +75,7 @@ public class WaitForOpponent extends Controller {
         loadingDots.play();
 
         // Start UDP broadcast so joiners can discover us 
-        announcer = Discovery.announce(hostName, Lan.DEFAULT_PORT);
+        announcer = Discovery.announce(hostName, Lan.DEFAULT_PORT, hostLevel);
 
         // Open the server socket on the background
         LanHost.hostAsync(Lan.DEFAULT_PORT,
@@ -106,8 +106,10 @@ public class WaitForOpponent extends Controller {
 
     private void handleHostMessage(NetworkLayer layer, Message msg) {
         if (msg instanceof TetrisMessage.Hello h) {
-            Session.current().peerName = h.playerName();
-            layer.send(new TetrisMessage.LobbyInfo(Session.current().myName, h.playerName()));
+            Session s = Session.current();
+            s.peerName = h.playerName();
+            s.peerLevel = h.playerLevel();
+            layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel));
             playerJoin(h.playerName());
         } else if (msg instanceof TetrisMessage.Ready r) {
             Session.current().peerReady = r.ready();
@@ -144,7 +146,7 @@ public class WaitForOpponent extends Controller {
         });
 
         // Greet the host
-        layer.send(new TetrisMessage.Hello(playerName));
+        layer.send(new TetrisMessage.Hello(playerName,Session.current().myLevel));
     }
 
     private void handleJoinMessage(Message msg) {
@@ -184,17 +186,22 @@ public class WaitForOpponent extends Controller {
         // Player 1 = host , Player 2 = client
         String p1 = s.isHost ? s.myName  : s.peerName;
         String p2 = s.isHost ? s.peerName : s.myName;
+        int p1L = s.isHost ? s.myLevel : s.peerLevel;
+        int p2L = s.isHost ? s.peerLevel : s.myLevel;
+        System.out.println("P1Level " + p1L);
+        System.out.println("P2Level " + p2L);
 
         // Build the engine on the host only
+        System.out.println(p1L+"    "+p2L);
         TetrisEngine engine = null;
         if (s.isHost) {
-            engine = new TetrisEngine(p1, p2, BlockRegistry.getInstance());
+            engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance());
             s.tetrisEngine = engine;
         }
 
         GameScreen controller = (GameScreen) c.changeScene(
                 "/Views/Tetris/GameScreen.fxml", header, vS);
-        controller.create(p1, p2, true, engine);
+        controller.create(p1, p2, p1L,p2L, true, engine);
 
         if (s.isHost) {
             controller.attachHostNetworkBridge(s.network);
