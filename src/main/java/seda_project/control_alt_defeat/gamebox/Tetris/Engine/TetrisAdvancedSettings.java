@@ -14,7 +14,7 @@ public class TetrisAdvancedSettings {
     private boolean opponentSlowDown = false;
     private boolean opponentSpeedUp = false;
     private boolean opponentDelayRotation = false;
-    private boolean selfSlowDown = false;
+    private boolean selfDelayRotation = false;
     private boolean selfSpeedUp = false;
     private boolean radialBomb = false;
     private boolean columnBomb = false;
@@ -37,7 +37,7 @@ public class TetrisAdvancedSettings {
         this.opponentSlowDown = booleanList.get(4);
         this.opponentSpeedUp = booleanList.get(5);
         this.opponentDelayRotation = booleanList.get(6);
-        this.selfSlowDown = booleanList.get(7);
+        this.selfDelayRotation = booleanList.get(7);
         this.selfSpeedUp = booleanList.get(8);
         this.radialBomb = booleanList.get(9);
         this.columnBomb = booleanList.get(10);
@@ -84,8 +84,8 @@ public class TetrisAdvancedSettings {
         return opponentDelayRotation;
     }
 
-    public boolean isSelfSlowDown() {
-        return selfSlowDown;
+    public boolean isSelfDelayRotation() {
+        return selfDelayRotation;
     }
 
     public boolean isSelfSpeedUp() {
