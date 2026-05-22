@@ -18,6 +18,7 @@ public class TetrisAdvancedSettings {
     private boolean selfSpeedUp = false;
     private boolean radialBomb = false;
     private boolean columnBomb = false;
+    private boolean twoBlocks = false;
 
 
     private static TetrisAdvancedSettings instance;
@@ -98,5 +99,13 @@ public class TetrisAdvancedSettings {
 
     public boolean isColumnBomb() {
         return columnBomb;
+    }
+
+    public boolean isTwoBlocks() {
+        return twoBlocks;
+    }
+
+    public void setTwoBlocks(boolean twoBlocks) {
+        this.twoBlocks = twoBlocks;
     }
 }

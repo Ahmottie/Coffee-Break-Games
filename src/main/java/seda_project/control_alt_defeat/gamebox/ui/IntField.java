@@ -25,5 +25,8 @@ public class IntField extends TextField {
                 }
             }
         });
+        this.textProperty().addListener((obs, oldText, newText) -> {
+            value = newText.isEmpty() ? 0 : Integer.parseInt(newText);
+        });
     }
 }

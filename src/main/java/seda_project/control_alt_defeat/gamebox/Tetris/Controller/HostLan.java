@@ -6,14 +6,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
+import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HostLan extends Controller implements Initializable {
+    private TetrisAdvancedSettings advancedSettings = TetrisAdvancedSettings.getInstance();
 
     @FXML
     VBox header;
@@ -28,9 +31,13 @@ public class HostLan extends Controller implements Initializable {
     private ComboBox<Integer> yourLevel;
 
     @FXML
+    private ToggleSwitch toggleSwitch;
+
+    @FXML
     protected void onBackAction(){
         Session.clear();
         c.backScene(header,vS);
+        advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
     }
 
     @FXML
@@ -42,7 +49,7 @@ public class HostLan extends Controller implements Initializable {
             s.myName = yourName;
             s.myLevel = hostLevel;
             s.isHost = true;
-
+            advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
             controller.passHostData(yourName,hostLevel);
         }
@@ -50,6 +57,12 @@ public class HostLan extends Controller implements Initializable {
 
     public void handData(String hostName){
         this.hostNameTF.setText(hostName);
+    }
+
+    @FXML
+    private void onAdvancedSettingsAction(){
+        c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+        advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
     }
 
     @Override
@@ -62,5 +75,7 @@ public class HostLan extends Controller implements Initializable {
             yourLevel.getItems().add(i+1);
         }
         yourLevel.getSelectionModel().select(0);
+
+        toggleSwitch.setSwitchedOn(advancedSettings.isTwoBlocks());
     }
 }

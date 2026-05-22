@@ -73,5 +73,8 @@ public class AdvancedSettings extends Controller implements Initializable {
         selfDelayRotation.setSelected(advancedSettings.isSelfDelayRotation());
         radialBomb.setSelected(advancedSettings.isRadialBomb());
         columnBomb.setSelected(advancedSettings.isColumnBomb());
+
+        itemSpawnRate.setText((advancedSettings.getItemSpawnRate()/1000)+"");
+        itemDespawnTime.setText((advancedSettings.getItemDespawnRate()/1000)+"");
     }
 }

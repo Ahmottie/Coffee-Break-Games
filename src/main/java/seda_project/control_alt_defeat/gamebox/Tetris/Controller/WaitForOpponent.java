@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.Discovery;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
@@ -195,7 +196,7 @@ public class WaitForOpponent extends Controller {
         System.out.println(p1L+"    "+p2L);
         TetrisEngine engine = null;
         if (s.isHost) {
-            engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance());
+            engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             s.tetrisEngine = engine;
         }
 

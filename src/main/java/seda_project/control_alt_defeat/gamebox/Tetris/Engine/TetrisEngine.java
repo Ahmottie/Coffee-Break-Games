@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import java.io.Serializable;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +31,7 @@ public class TetrisEngine {
     private List<TBlock> p2Blocks;
 
     private final BlockRegistry blockRegistry;
+    private final TetrisAdvancedSettings advancedSettings;
 
     private final List<TetrisEventListener> listeners = new CopyOnWriteArrayList<>();
 
@@ -54,10 +54,12 @@ public class TetrisEngine {
 
     private boolean isStopped = false;
 
-    public TetrisEngine(String p1Name, String p2Name, int p1Level, int p2Level, BlockRegistry registry) {
+    public TetrisEngine(String p1Name, String p2Name, int p1Level, int p2Level, BlockRegistry registry, TetrisAdvancedSettings advancedSettings) {
         this.p1Name = p1Name;
         this.p2Name = p2Name;
+
         this.blockRegistry = registry;
+        this.advancedSettings = advancedSettings;
 
         this.p1Board = new Board(false);
         this.p2Board = new Board(true);
@@ -232,13 +234,17 @@ public class TetrisEngine {
             } else {
                 activeBlock.moveUp();
             }
+            if (activeBlock instanceof BombBlock bb){
+                explode(playerNum, bb, board);
+                GameState snapExplode = getSnapshot();
+                listeners.forEach(l -> l.onBlockMovement(snapExplode,playerNum));
+            }
+            else {
+                board.lockBlock(activeBlock);
 
-
-            board.lockBlock(activeBlock);
-
-            GameState snapLock = getSnapshot();
-            listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
-
+                GameState snapLock = getSnapshot();
+                listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
+            }
             int linesCleared = board.clearLines();
             if (linesCleared > 0) {
                 if (playerNum == 1) {
@@ -265,6 +271,39 @@ public class TetrisEngine {
             }
 
 
+    }
+
+    private void explode(int playerNum, BombBlock bb, Board board) {
+        BombType type = bb.getType();
+        int posX = bb.getX(); //Spalte
+        int posY = bb.getY(); //Zeile
+        String[][] grid = board.getGrid();
+        if (type == BombType.RADIUS) {
+            for (int i = 0; i <= 3; i++) {
+                for (int j = 0; j <= 3; j++) {
+                    int posXminus = posX - i;
+                    int posXplus  = posX + i;
+                    int posYminus = posY - j;
+                    int posYplus  = posY + j;
+
+                    if (posXminus >= 0 && posYminus >= 0)
+                        grid[posYminus][posXminus] = null;
+                    if (posXminus >= 0 && posYplus < grid.length)
+                        grid[posYplus][posXminus] = null;
+                    if (posXplus < grid[0].length && posYplus < grid.length)
+                        grid[posYplus][posXplus] = null;
+                    if (posXplus < grid[0].length && posYminus >= 0)
+                        grid[posYminus][posXplus] = null;
+                }
+            }
+        }
+        if (type == BombType.CLEAR_BELOW){
+            int i = posY;
+            while (playerNum == 1 ? i < grid.length : i >= 0) {
+                grid[i][posX] = null;
+                if (playerNum == 1) i++; else i--;
+            }
+        }
     }
 
 
@@ -397,38 +436,61 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum) {
-        //Block newBlock = blockRegistry.generateRandomBlock();
-        /*
-        if (playerNum == 2) {
-            while(newBlock.getY() < 20-newBlock.getShape()[0].length) {
-                newBlock.moveDown();
+        boolean bomb = RANDOM.nextInt(1, 100) > 90;
+        if (bomb){
+            BombType selectedType = (RANDOM.nextInt(1,2) == 1) ? BombType.RADIUS : BombType.RADIUS;
+            BombBlock newBombBlock = new BombBlock(selectedType);
+            if (playerNum == 1){
+                p1ActiveBlock = newBombBlock;
+                checkValidPosition(playerNum);
+            }
+            else {
+                while (newBombBlock.getY() < 20 - newBombBlock.getShape()[0].length) {
+                    newBombBlock.moveDown();
+                }
+                p2ActiveBlock = newBombBlock;
+                checkValidPosition(playerNum);
             }
         }
-        */
-        if (p2Blocks.isEmpty()) {
-            p2Blocks = generateBlocks();
-        }
-        if (p1Blocks.isEmpty()) {
-            p1Blocks = generateBlocks();
+        else {
+            if (playerNum == 1) {
+                refillBlocks(1);
+                Block newBlock = p1Blocks.getFirst().toPiece();
+                p1Blocks.removeFirst();
+                p1ActiveBlock = newBlock;
+                checkValidPosition(playerNum);
+
+            } else {
+                refillBlocks(2);
+                Block newBlock = p2Blocks.getFirst().toPiece();
+                p2Blocks.removeFirst();
+                while (newBlock.getY() < 20 - newBlock.getShape()[0].length) {
+                    newBlock.moveDown();
+                }
+                p2ActiveBlock = newBlock;
+                checkValidPosition(playerNum);
+            }
         }
 
+    }
+
+    private void refillBlocks(int i) {
+        if (i == 1 && p1Blocks.isEmpty()) {
+            p1Blocks = generateBlocks();
+        } else if (i != 1 && p2Blocks.isEmpty()) {
+            p2Blocks = generateBlocks();
+        }
+    }
+
+    private void checkValidPosition(int playerNum){
         if (playerNum == 1) {
-            Block newBlock = p1Blocks.getFirst().toPiece();
-            p1Blocks.removeFirst();
-            p1ActiveBlock = newBlock;
             if (!p1Board.isValidPosition(p1ActiveBlock)) {
                 p1Lost = true;
                 GameState snapLost = getSnapshot();
                 listeners.forEach(l -> l.onPlayerLost(1, snapLost));
             }
-
-        } else {
-            Block newBlock = p2Blocks.getFirst().toPiece();
-            p2Blocks.removeFirst();
-            while(newBlock.getY() < 20-newBlock.getShape()[0].length) {
-                newBlock.moveDown();
-            }
-            p2ActiveBlock = newBlock;
+        }
+        else {
             if (!p2Board.isValidPosition(p2ActiveBlock)) {
                 p2Lost = true;
                 GameState snapLost = getSnapshot();

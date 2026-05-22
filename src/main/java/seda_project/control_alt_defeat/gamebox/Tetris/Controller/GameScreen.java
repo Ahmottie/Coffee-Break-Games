@@ -107,7 +107,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private void showPowerUP(List<PowerUp> powerUps) {
         if (powerUps.isEmpty()){
             player1Field.getChildren().removeIf(node -> (node instanceof Rectangle r
-                    && r.getFill() instanceof ImagePattern));
+                    && r.getStyleClass().contains("PowerUp")));
             player2Field.getChildren().removeIf(node ->(node instanceof Rectangle r && r.getFill() instanceof ImagePattern));
         }
 
@@ -118,6 +118,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
             if (img != null) {
                 rect.setFill(new ImagePattern(img));
+                rect.getStyleClass().add("PowerUp");
             } else {
                 rect.setFill(Color.YELLOW);
             }
@@ -141,7 +142,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     private void drawGrid(String[][] colors, Block activeBlock, GridPane grid, boolean isLost) {
         grid.getChildren().removeIf(node -> !(node instanceof Rectangle r
-                && r.getFill() instanceof ImagePattern));
+                && r.getStyleClass().contains("PowerUp")));
         for (int i = 0; i < colors.length; i++) {
             for (int j = 0; j < colors[i].length; j++) {
                 if (colors[i][j] != null){
@@ -156,22 +157,24 @@ public class GameScreen extends Controller implements TetrisEventListener {
                 }
             }
         }
-
         boolean[][] block = activeBlock.getShape();
         for (int i = 0; i < block.length; i++) {
             for (int j = 0; j < block[0].length; j++) {
-                if (block[i][j]){
-                    Rectangle rect = new Rectangle(12,12);
-                    if (isLost){
-                        rect.setFill(Color.LIGHTGRAY);
+                if (block[i][j]) {
+                    Rectangle rect = new Rectangle(12, 12);
+                    if (activeBlock instanceof BombBlock bb) {
+                        rect.setFill(bb.getImagePattern());
                     }
                     else {
-                        rect.setFill(Color.web(activeBlock.getHexColor()));
+                        if (isLost) {
+                            rect.setFill(Color.LIGHTGRAY);
+                        } else {
+                            rect.setFill(Color.web(activeBlock.getHexColor()));
+                        }
                     }
-                    grid.add(rect, j + activeBlock.getX(), i+activeBlock.getY());
+                    grid.add(rect, j + activeBlock.getX(), i + activeBlock.getY());
                 }
             }
-
         }
     }
 

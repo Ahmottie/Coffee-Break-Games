@@ -8,6 +8,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
 import seda_project.control_alt_defeat.gamebox.network.Message;
@@ -42,7 +43,7 @@ public class ResultScreen extends Controller {
             System.out.println(initP1Level);
             System.out.println(initP2Level);
             TetrisEngine fresh = new TetrisEngine(
-                    state.p1Name(), state.p2Name(),initP1Level,initP2Level, BlockRegistry.getInstance());
+                    state.p1Name(), state.p2Name(),initP1Level,initP2Level, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             GameScreen controller = (GameScreen) c.changeScene(
                     "/Views/Tetris/GameScreen.fxml", header, vS);
             controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,false, fresh);
@@ -52,7 +53,7 @@ public class ResultScreen extends Controller {
 
         // LAN host: build new engine, broadcast Restart and navigate to lan game
         TetrisEngine fresh = new TetrisEngine(
-                state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,BlockRegistry.getInstance());
+                state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
         s.tetrisEngine = fresh;
         s.localReady = false;
         s.peerReady  = false;
@@ -129,11 +130,9 @@ public class ResultScreen extends Controller {
                 "/Views/Tetris/GameScreen.fxml", header, vS);
 
         if (s.isHost) {
-            System.out.println("Ich bin ein Host");
             controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,true, engineForHost);
             controller.attachHostNetworkBridge(s.network);
         } else {
-            System.out.println("Ich bin kein Host");
             System.out.println(s.network);
             controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel,true, engineForHost);
             controller.attachClientNetworkBridge(s.network);
