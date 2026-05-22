@@ -439,7 +439,6 @@ public class TetrisEngine {
             }
 
             GameState snapLevel = getSnapshot();
-            System.out.println("LEVEL UP in Engine");
             listeners.forEach(l -> l.onLevelChanged(newTickInterval, snapLevel, player));
         }
     }

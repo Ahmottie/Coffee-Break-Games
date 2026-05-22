@@ -1,8 +1,9 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TetrisAdvancedSettings {
+public class TetrisAdvancedSettings implements Serializable {
 
     // Normal Configuration is with a vertical screen and the item that swaps the boards
     private boolean vertical = true;

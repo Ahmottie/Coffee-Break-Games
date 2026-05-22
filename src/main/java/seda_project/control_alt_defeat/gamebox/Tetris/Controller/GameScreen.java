@@ -28,7 +28,6 @@ import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameScreen extends Controller implements TetrisEventListener {
@@ -44,15 +43,15 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private boolean disconnected = false;
     private boolean gameOverHandled = false;
 
-    private final Image img = loadSwapImage();
+    private Image swapImage;
+    private Image radialBombImage, columnBombImage;
 
-    private Image loadSwapImage() {
-        var stream = getClass().getResourceAsStream("/Images/Tetris/swap.png");
+
+    private void loadSwapImage() {
+        var stream = getClass().getResource("/Images/Tetris/Swap.png").toExternalForm();
         if (stream != null) {
-            return new Image(stream);
+            swapImage =  new Image(stream);
         }
-        System.err.println("WARNING: swap.png not found in resources. Using color fallback.");
-        return null;
     }
 
     @FXML
@@ -95,7 +94,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     public void render(TetrisEngine.GameState state, int player ){
-        //System.out.println(state.p1Lost());
         if (player == 1) {
             drawGrid(state.p1Grid(), state.p1ActiveBlock(), player1Field, state.p1Lost());
         }
@@ -116,8 +114,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
         for (PowerUp powerUp : powerUps) {
             rect = new Rectangle(13, 13);
 
-            if (img != null) {
-                rect.setFill(new ImagePattern(img));
+            if (swapImage != null) {
+                rect.setFill(new ImagePattern(swapImage));
                 rect.getStyleClass().add("PowerUp");
             } else {
                 rect.setFill(Color.YELLOW);
@@ -163,7 +161,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
                 if (block[i][j]) {
                     Rectangle rect = new Rectangle(12, 12);
                     if (activeBlock instanceof BombBlock bb) {
-                        rect.setFill(bb.getImagePattern());
+                        rect.setFill(new ImagePattern((bb.getType() == BombType.RADIUS) ? radialBombImage : columnBombImage));
                     }
                     else {
                         if (isLost) {
@@ -189,6 +187,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
         player2PointsLabel.setText("0");
         p1LevelLabel.setText(p1Level +"");
         p2LevelLabel.setText(p2Level +"");
+
+        loadImages();
 
         // LAN-client mode: no engine, no KeyHandler etc
         // client renders snapshots received over the network and forwards key events as input msg
@@ -222,6 +222,22 @@ public class GameScreen extends Controller implements TetrisEventListener {
         p2EngineTicker.play();
         System.out.println("P2 Ticks " + engine.getTickIntervalMs(2));
 
+    }
+
+    private void loadImages() {
+        loadSwapImage();
+        loadBombImages();
+    }
+
+    private void loadBombImages() {
+        var stream = getClass().getResource("/Images/Tetris/RadialBomb.png").toExternalForm();
+        if (stream != null) {
+            radialBombImage =  new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/ColumnBomb.png").toExternalForm();
+        if (stream != null) {
+            columnBombImage = new Image(stream);
+        }
     }
 
 
