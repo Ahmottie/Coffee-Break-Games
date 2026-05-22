@@ -48,9 +48,11 @@ public class TetrisEngine {
     // Power-up mechanics
     private final List<PowerUp> activePowerUps = new CopyOnWriteArrayList<>();
     private long lastPowerUpSpawnTime;
-    private static final long POWERUP_INTERVAL_MS = 10000;
-    private static final long POWERUP_LIFESPAN_MS  = 7000;
+    private static long POWERUP_INTERVAL_MS = 10000;
+    private static long POWERUP_LIFESPAN_MS  = 7000;
     private static final Random RANDOM = new Random();
+
+    private List<BombType> activeBombs;
 
     private boolean isStopped = false;
 
@@ -69,6 +71,13 @@ public class TetrisEngine {
 
         this.p1Level = p1Level;
         this.p2Level = p2Level;
+
+        POWERUP_INTERVAL_MS = advancedSettings.getItemSpawnRate();
+        POWERUP_LIFESPAN_MS = advancedSettings.getItemDespawnRate();
+
+        activeBombs = new ArrayList<>();
+        if (advancedSettings.isRadialBomb()) activeBombs.add(BombType.RADIUS);
+        if (advancedSettings.isColumnBomb()) activeBombs.add(BombType.CLEAR_BELOW);
 
         if (p1Level > 1){
             p1TickInterval = (long) Math.max(
@@ -436,9 +445,9 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum) {
-        boolean bomb = RANDOM.nextInt(1, 100) > 90;
+        boolean bomb = !activeBombs.isEmpty() && RANDOM.nextInt(1, 100) > 70;
         if (bomb){
-            BombType selectedType = (RANDOM.nextInt(1,2) == 1) ? BombType.RADIUS : BombType.RADIUS;
+            BombType selectedType = activeBombs.get(RANDOM.nextInt(0,activeBombs.size()));
             BombBlock newBombBlock = new BombBlock(selectedType);
             if (playerNum == 1){
                 p1ActiveBlock = newBombBlock;
