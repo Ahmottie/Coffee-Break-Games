@@ -43,14 +43,22 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private boolean disconnected = false;
     private boolean gameOverHandled = false;
 
-    private Image swapImage;
+    private Image swapImage, portalImage, swapBlockImage;
     private Image radialBombImage, columnBombImage;
 
 
-    private void loadSwapImage() {
+    private void loadPowerUpImages() {
         var stream = getClass().getResource("/Images/Tetris/Swap.png").toExternalForm();
         if (stream != null) {
-            swapImage =  new Image(stream);
+            swapImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/Portal.png").toExternalForm();
+        if (stream != null) {
+            portalImage =  new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/SwapBlocks.png").toExternalForm();
+        if ( stream != null) {
+            swapBlockImage = new Image(stream);
         }
     }
 
@@ -113,9 +121,14 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
         for (PowerUp powerUp : powerUps) {
             rect = new Rectangle(13, 13);
-
-            if (swapImage != null) {
-                rect.setFill(new ImagePattern(swapImage));
+            Image i = null;
+            switch (powerUp.type()){
+                case PORTAL -> i =portalImage;
+                case SWAPBOARDS ->  i = swapImage;
+                case SWAPACTIVEBLOCKS -> i = swapBlockImage;
+            }
+            if (i != null) {
+                rect.setFill(new ImagePattern(i));
                 rect.getStyleClass().add("PowerUp");
             } else {
                 rect.setFill(Color.YELLOW);
@@ -225,7 +238,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     private void loadImages() {
-        loadSwapImage();
+        loadPowerUpImages();
         loadBombImages();
     }
 

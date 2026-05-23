@@ -14,6 +14,9 @@ public class TetrisEngine {
     private Block p1ActiveBlock;
     private Block p2ActiveBlock;
 
+    private ArrayList<Block> p1NextActiveBlock;
+    private ArrayList<Block> p2NextActiveBlock;
+
     private int p1Score;
     private int p2Score;
 
@@ -52,13 +55,17 @@ public class TetrisEngine {
     private static long POWERUP_LIFESPAN_MS  = 7000;
     private static final Random RANDOM = new Random();
 
-    private List<BombType> activeBombs;
+    private List<BombType> possibleBombs;
+    private List<PowerUpType> possiblePowerUps;
 
     private boolean isStopped = false;
 
     public TetrisEngine(String p1Name, String p2Name, int p1Level, int p2Level, BlockRegistry registry, TetrisAdvancedSettings advancedSettings) {
         this.p1Name = p1Name;
         this.p2Name = p2Name;
+
+        this.p1NextActiveBlock = new ArrayList<>();
+        this.p2NextActiveBlock = new ArrayList<>();
 
         this.blockRegistry = registry;
         this.advancedSettings = advancedSettings;
@@ -75,9 +82,20 @@ public class TetrisEngine {
         POWERUP_INTERVAL_MS = advancedSettings.getItemSpawnRate();
         POWERUP_LIFESPAN_MS = advancedSettings.getItemDespawnRate();
 
-        activeBombs = new ArrayList<>();
-        if (advancedSettings.isRadialBomb()) activeBombs.add(BombType.RADIUS);
-        if (advancedSettings.isColumnBomb()) activeBombs.add(BombType.CLEAR_BELOW);
+        possibleBombs = new ArrayList<>();
+        if (advancedSettings.isRadialBomb()) possibleBombs.add(BombType.RADIUS);
+        if (advancedSettings.isColumnBomb()) possibleBombs.add(BombType.CLEAR_BELOW);
+
+        possiblePowerUps = new ArrayList<>();
+        if (advancedSettings.isOpponentDelayRotation()) possiblePowerUps.add(PowerUpType.OPPONENTROTATIONDELAY);
+        if (advancedSettings.isOpponentSlowDown()) possiblePowerUps.add(PowerUpType.OPPONENTSPEEDDOWN);
+        if (advancedSettings.isOpponentSpeedUp()) possiblePowerUps.add(PowerUpType.OPPONENTSPEEDUP);
+        if (advancedSettings.isSelfDelayRotation()) possiblePowerUps.add(PowerUpType.SELFROTATIONDELAY);
+        if (advancedSettings.isSelfSpeedDown()) possiblePowerUps.add(PowerUpType.SELFSPEEDDOWN);
+        if (advancedSettings.isPortals()) possiblePowerUps.add(PowerUpType.PORTAL);
+        if (advancedSettings.isSwapBlocks()) possiblePowerUps.add(PowerUpType.SWAPACTIVEBLOCKS);
+        if (advancedSettings.isSwapBoards()) possiblePowerUps.add(PowerUpType.SWAPBOARDS);
+        System.out.println(possiblePowerUps.size());
 
         if (p1Level > 1){
             p1TickInterval = (long) Math.max(
@@ -161,7 +179,7 @@ public class TetrisEngine {
             listeners.forEach(l -> l.onPowerUpSpawned(snapExpired));
         }
 
-        if (now - lastPowerUpSpawnTime >= POWERUP_INTERVAL_MS) {
+        if (now - lastPowerUpSpawnTime >= POWERUP_INTERVAL_MS && !possiblePowerUps.isEmpty()) {
             spawnRandomPowerUp(now);
             lastPowerUpSpawnTime = now;
         }
@@ -174,19 +192,20 @@ public class TetrisEngine {
 
         Board board = (playerNum == 1) ? p1Board : p2Board;
         String[][] grid = board.getGrid();
-
+        PowerUpType selected = possiblePowerUps.get(RANDOM.nextInt(possiblePowerUps.size()));
         // Find an empty cell
         int attempts = 0;
         while (attempts < 50) {
             int r = RANDOM.nextInt(board.getHeight()-3);
             int c = RANDOM.nextInt(board.getWidth());
             if (playerNum == 1 && grid[r+3][c] == null && !isPowerUpAt(playerNum, r+3, c)) {
-                activePowerUps.add(new PowerUp(playerNum, r+3, c,now));
+
+                activePowerUps.add(new PowerUp(playerNum, r+3, c,now,selected));
                 listeners.forEach(l -> l.onPowerUpSpawned(this.getSnapshot()));
                 break;
             }
             else if (playerNum == 2 && grid[r][c] == null && !isPowerUpAt(playerNum, r, c)) {
-                activePowerUps.add(new PowerUp(playerNum, r, c,now));
+                activePowerUps.add(new PowerUp(playerNum, r, c,now,selected));
                 listeners.forEach(l -> l.onPowerUpSpawned(this.getSnapshot()));
                 break;
             }
@@ -273,13 +292,64 @@ public class TetrisEngine {
             }
             spawnNewBlock(playerNum);
         }
-        else if (checkPowerUpTrigger(playerNum, activeBlock)) {
-                executePlayerSwap();
+        else{
+            PowerUp hit = checkPowerUpTrigger(playerNum, activeBlock);
+            if (hit != null) {
+                switch (hit.type()) {
+                    case PORTAL : {
+                        executePortal(playerNum,activeBlock);
+                        break;
+                        }
+                    case SELFSPEEDDOWN:{
+                        break;
+                    }
+                    case OPPONENTSPEEDUP:break;
+                    case SWAPACTIVEBLOCKS: {
+                        swapActiveBlocks();
+                        break;
+                    }
+                    case OPPONENTSPEEDDOWN:break;
+                    case SELFROTATIONDELAY: break;
+                    case OPPONENTROTATIONDELAY: break;
+                    case SWAPBOARDS:{
+                        executePlayerSwap();
+                        break;
+                    }
+                }
                 GameState snapSwap = getSnapshot();
                 listeners.forEach(l -> l.onPowerUpTriggered(playerNum, snapSwap));
             }
+        }
 
+    }
 
+    private void swapActiveBlocks() {
+        int p1BX = p1ActiveBlock.getX();
+        int p1BY = p1ActiveBlock.getY();
+
+        int p2BX = p2ActiveBlock.getX();
+        int p2BY = p2ActiveBlock.getY();
+
+        Block tmp = p1ActiveBlock;
+        p1ActiveBlock = p2ActiveBlock;
+        p2ActiveBlock = tmp;
+
+        p1ActiveBlock.setX(p1BX);
+        p1ActiveBlock.setY(p1BY);
+
+        p2ActiveBlock.setX(p2BX);
+        p2ActiveBlock.setY(p2BY);
+    }
+
+    private void executePortal(int playerNum, Block activeBlock) {
+        if (playerNum == 1) {
+            p2NextActiveBlock.add(activeBlock);
+            spawnNewBlock(1);
+        }
+        else {
+            p1NextActiveBlock.add(activeBlock);
+            spawnNewBlock(2);
+        }
     }
 
     private void explode(int playerNum, BombBlock bb, Board board) {
@@ -316,8 +386,8 @@ public class TetrisEngine {
     }
 
 
-    private boolean checkPowerUpTrigger(int playerNum, Block block) {
-        boolean triggered = false;
+    private PowerUp checkPowerUpTrigger(int playerNum, Block block) {
+        PowerUp hit = null;
         boolean[][] shape = block.getShape();
         int bx = block.getX();
         int by = block.getY();
@@ -331,7 +401,7 @@ public class TetrisEngine {
                     int boardY = by + row;
                     for (PowerUp p : activePowerUps) {
                         if (p.playerNum() == playerNum && p.col() == boardX && p.row() == boardY) {
-                            triggered = true;
+                            hit = p;
                             toRemove.add(p);
                         }
                     }
@@ -339,7 +409,7 @@ public class TetrisEngine {
             }
         }
         activePowerUps.removeAll(toRemove);
-        return triggered;
+        return hit;
     }
 
     private void executePlayerSwap() {
@@ -368,7 +438,7 @@ public class TetrisEngine {
         // Swap power-up ownership mappings
         List<PowerUp> swappedPowerUps = new ArrayList<>();
         for (PowerUp p : activePowerUps) {
-            swappedPowerUps.add(new PowerUp(p.playerNum() == 1 ? 2 : 1, Math.abs(20-p.row()), Math.abs(10-p.col()),p.spawnTime()));
+            swappedPowerUps.add(new PowerUp(p.playerNum() == 1 ? 2 : 1, Math.abs(20-p.row()), Math.abs(10-p.col()),p.spawnTime(),p.type()));
         }
 
         activePowerUps.clear();
@@ -444,9 +514,9 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum) {
-        boolean bomb = !activeBombs.isEmpty() && RANDOM.nextInt(1, 100) > 70;
+        boolean bomb = !possibleBombs.isEmpty() && RANDOM.nextInt(1, 100) > 70;
         if (bomb){
-            BombType selectedType = activeBombs.get(RANDOM.nextInt(0,activeBombs.size()));
+            BombType selectedType = possibleBombs.get(RANDOM.nextInt(0, possibleBombs.size()));
             BombBlock newBombBlock = new BombBlock(selectedType);
             if (playerNum == 1){
                 p1ActiveBlock = newBombBlock;
@@ -463,15 +533,32 @@ public class TetrisEngine {
         else {
             if (playerNum == 1) {
                 refillBlocks(1);
-                Block newBlock = p1Blocks.getFirst().toPiece();
-                p1Blocks.removeFirst();
+                Block newBlock = null;
+                if (p1NextActiveBlock.isEmpty()) {
+                    newBlock = p1Blocks.getFirst().toPiece();
+                    p1Blocks.removeFirst();
+
+                }
+                else {
+                    newBlock = p1NextActiveBlock.getFirst();
+                    p1NextActiveBlock.removeFirst();
+                }
                 p1ActiveBlock = newBlock;
                 checkValidPosition(playerNum);
 
             } else {
                 refillBlocks(2);
-                Block newBlock = p2Blocks.getFirst().toPiece();
-                p2Blocks.removeFirst();
+                Block newBlock = null;
+                if (p2NextActiveBlock.isEmpty()) {
+                    newBlock = p2Blocks.getFirst().toPiece();
+                    p2Blocks.removeFirst();
+                }
+                else {
+                    newBlock = p2NextActiveBlock.getFirst();
+                    newBlock.setY(0);
+                    newBlock.setX(3);
+                    p2NextActiveBlock.removeFirst();
+                }
                 while (newBlock.getY() < 20 - newBlock.getShape()[0].length) {
                     newBlock.moveDown();
                 }

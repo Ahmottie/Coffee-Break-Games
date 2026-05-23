@@ -16,7 +16,7 @@ public class TetrisAdvancedSettings implements Serializable {
     private boolean opponentSpeedUp = false;
     private boolean opponentDelayRotation = false;
     private boolean selfDelayRotation = false;
-    private boolean selfSpeedUp = false;
+    private boolean selfSpeedDown = false;
     private boolean radialBomb = false;
     private boolean columnBomb = false;
     private boolean twoBlocks = false;
@@ -40,7 +40,7 @@ public class TetrisAdvancedSettings implements Serializable {
         this.opponentSpeedUp = booleanList.get(5);
         this.opponentDelayRotation = booleanList.get(6);
         this.selfDelayRotation = booleanList.get(7);
-        this.selfSpeedUp = booleanList.get(8);
+        this.selfSpeedDown = booleanList.get(8);
         this.radialBomb = booleanList.get(9);
         this.columnBomb = booleanList.get(10);
     }
@@ -90,8 +90,8 @@ public class TetrisAdvancedSettings implements Serializable {
         return selfDelayRotation;
     }
 
-    public boolean isSelfSpeedUp() {
-        return selfSpeedUp;
+    public boolean isSelfSpeedDown() {
+        return selfSpeedDown;
     }
 
     public boolean isRadialBomb() {
