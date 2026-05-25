@@ -269,7 +269,6 @@ public class TetrisEngine {
             }
             else {
                 board.lockBlock(activeBlock);
-
                 GameState snapLock = getSnapshot();
                 listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
             }
@@ -306,6 +305,7 @@ public class TetrisEngine {
                     case OPPONENTSPEEDUP:break;
                     case SWAPACTIVEBLOCKS: {
                         swapActiveBlocks();
+                        listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
                         break;
                     }
                     case OPPONENTSPEEDDOWN:break;

@@ -14,4 +14,5 @@ public interface TetrisEventListener {
     default void onPowerUpSpawned(TetrisEngine.GameState snapshot){}
     default void onStopped(TetrisEngine.GameState snapStopped){};
     default void onBlockMovement(TetrisEngine.GameState snapshot, int player){};
+    default void onBlockSwap(TetrisEngine.GameState snapshot){};
 }

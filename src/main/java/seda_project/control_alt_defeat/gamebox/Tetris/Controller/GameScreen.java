@@ -339,6 +339,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
         render(snapshot, player);
     }
 
+    @Override
+    public void onBlockSwap(TetrisEngine.GameState snapshot){
+        render(snapshot, 1);
+        render(snapshot,2);
+    }
+
     public void attachHostNetworkBridge(NetworkLayer network) {
         if (engine == null || network == null) return;
 
