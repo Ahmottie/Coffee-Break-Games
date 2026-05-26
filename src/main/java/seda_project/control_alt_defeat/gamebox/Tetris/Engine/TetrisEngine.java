@@ -277,6 +277,7 @@ public class TetrisEngine {
                 GameState snapLock = getSnapshot();
                 listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
             }
+
             int linesCleared = board.clearLines();
             if (linesCleared > 0) {
                 if (playerNum == 1) {
@@ -285,6 +286,7 @@ public class TetrisEngine {
                     if (advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
                         p1Board.expand(linesCleared);
                         p2Board.shrink(linesCleared);
+                        p2ActiveBlock.setY(p2ActiveBlock.getY() + linesCleared);
                         listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                     }
                 }
@@ -294,6 +296,7 @@ public class TetrisEngine {
                     if( advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
                         p2Board.expand(linesCleared);
                         p1Board.shrink(linesCleared);
+                        p1ActiveBlock.setY(p1ActiveBlock.getY() - linesCleared);
                         listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                     }
                 }
@@ -443,9 +446,11 @@ public class TetrisEngine {
         int change = Math.abs(p1Board.getHeight()-p2Board.getHeight());
         if (change > 0 && p1Board.getHeight() > p2Board.getHeight()) {
             listeners.forEach(l -> l.onBoardSizeChange(1,change,getSnapshot()));
+            p2ActiveBlock.setY(p2ActiveBlock.getY()+change);
         }
         else if(change > 0 && p2Board.getHeight() > p1Board.getHeight()) {
             listeners.forEach(l -> l.onBoardSizeChange(2,change,getSnapshot()));
+            p1ActiveBlock.setY(p1ActiveBlock.getY()-change);
         }
         Block tempBlock = p1ActiveBlock;
         p1ActiveBlock = p2ActiveBlock;
