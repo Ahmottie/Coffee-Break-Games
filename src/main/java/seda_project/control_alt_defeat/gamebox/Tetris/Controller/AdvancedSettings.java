@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.IntField;
+import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 import java.net.URL;
 import java.util.List;
@@ -35,6 +36,9 @@ public class AdvancedSettings extends Controller implements Initializable {
     private ToggleGroup Layout;
 
     @FXML
+    private ToggleSwitch toggleSwitch;
+
+    @FXML
     protected void onBackAction(){
         c.backScene(header,vS);
     }
@@ -52,7 +56,8 @@ public class AdvancedSettings extends Controller implements Initializable {
                 selfSlowDown.isSelected(),
                 selfDelayRotation.isSelected(),
                 radialBomb.isSelected(),
-                columnBomb.isSelected()
+                columnBomb.isSelected(),
+                toggleSwitch.switchOnProperty().getValue()
         ).toList();
         advancedSettings.saveBoolSettings(bools);
     }
@@ -63,6 +68,7 @@ public class AdvancedSettings extends Controller implements Initializable {
         if (!advancedSettings.isVertical()){
             toggels.get(1).setSelected(true);
         }
+        toggleSwitch.setSwitchedOn(advancedSettings.isBoardChange());
         swapBoards.setSelected(advancedSettings.isSwapBoards());
         swapBlocks.setSelected(advancedSettings.isSwapBlocks());
         portals.setSelected(advancedSettings.isPortals());

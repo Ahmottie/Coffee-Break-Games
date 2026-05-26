@@ -4,14 +4,7 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 
 public sealed interface TetrisMessage extends Message
-        permits TetrisMessage.Hello,
-                TetrisMessage.LobbyInfo,
-                TetrisMessage.Ready,
-                TetrisMessage.StartCountdown,
-                TetrisMessage.Input,
-                TetrisMessage.StateUpdate,
-                TetrisMessage.LinesCleared,
-                TetrisMessage.Restart {
+        permits TetrisMessage.Hello, TetrisMessage.Input, TetrisMessage.LinesCleared, TetrisMessage.LobbyInfo, TetrisMessage.Ready, TetrisMessage.Restart, TetrisMessage.StartCountdown, TetrisMessage.StateUpdate {
 
     record Hello(String playerName, int playerLevel) implements TetrisMessage {}
 

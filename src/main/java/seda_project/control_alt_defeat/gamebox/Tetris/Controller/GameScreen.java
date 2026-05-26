@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -28,6 +30,7 @@ import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameScreen extends Controller implements TetrisEventListener {
@@ -45,6 +48,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     private Image swapImage, portalImage, swapBlockImage;
     private Image radialBombImage, columnBombImage;
+
+    private List<PowerUp> currentPowerUps;
 
 
     private void loadPowerUpImages() {
@@ -114,30 +119,33 @@ public class GameScreen extends Controller implements TetrisEventListener {
         if (powerUps.isEmpty()){
             player1Field.getChildren().removeIf(node -> (node instanceof Rectangle r
                     && r.getStyleClass().contains("PowerUp")));
-            player2Field.getChildren().removeIf(node ->(node instanceof Rectangle r && r.getFill() instanceof ImagePattern));
+            player2Field.getChildren().removeIf(node -> (node instanceof Rectangle r
+                    && r.getStyleClass().contains("PowerUp")));
         }
 
         Rectangle rect = null;
 
         for (PowerUp powerUp : powerUps) {
-            rect = new Rectangle(13, 13);
-            Image i = null;
-            switch (powerUp.type()){
-                case PORTAL -> i =portalImage;
-                case SWAPBOARDS ->  i = swapImage;
-                case SWAPACTIVEBLOCKS -> i = swapBlockImage;
-            }
-            if (i != null) {
-                rect.setFill(new ImagePattern(i));
-                rect.getStyleClass().add("PowerUp");
-            } else {
-                rect.setFill(Color.YELLOW);
-            }
+            if (!currentPowerUps.contains(powerUp)) {
+                rect = new Rectangle(13, 13);
+                Image i = null;
+                switch (powerUp.getType()) {
+                    case PORTAL -> i = portalImage;
+                    case SWAPBOARDS -> i = swapImage;
+                    case SWAPACTIVEBLOCKS -> i = swapBlockImage;
+                }
+                if (i != null) {
+                    rect.setFill(new ImagePattern(i));
+                    rect.getStyleClass().add("PowerUp");
+                } else {
+                    rect.setFill(Color.YELLOW);
+                }
 
-            if (powerUp.playerNum() == 1) {
-                player1Field.add(rect, powerUp.col(), powerUp.row());
-            } else {
-                player2Field.add(rect, powerUp.col(), powerUp.row());
+                if (powerUp.getPlayerNum() == 1) {
+                    player1Field.add(rect, powerUp.getCol(), powerUp.getRow());
+                } else {
+                    player2Field.add(rect, powerUp.getCol(), powerUp.getRow());
+                }
             }
         }
 
@@ -151,10 +159,25 @@ public class GameScreen extends Controller implements TetrisEventListener {
         pulse.play();
     }
 
+    private void removePowerUP(PowerUp powerUp) {
+        GridPane targetField = powerUp.getPlayerNum() == 1 ? player1Field : player2Field;
+
+        targetField.getChildren().removeIf(node ->
+                node instanceof Rectangle r
+                        && r.getStyleClass().contains("PowerUp")
+                        && GridPane.getColumnIndex(r) == powerUp.getCol()
+                        && GridPane.getRowIndex(r) == powerUp.getRow()
+        );
+    }
+
     private void drawGrid(String[][] colors, Block activeBlock, GridPane grid, boolean isLost) {
         grid.getChildren().removeIf(node -> !(node instanceof Rectangle r
                 && r.getStyleClass().contains("PowerUp")));
+
+        int maxRows = grid.getRowConstraints().size();
+
         for (int i = 0; i < colors.length; i++) {
+            if (i>= maxRows) break;
             for (int j = 0; j < colors[i].length; j++) {
                 if (colors[i][j] != null){
                     Rectangle rect = new Rectangle(12,12);
@@ -200,6 +223,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
         player2PointsLabel.setText("0");
         p1LevelLabel.setText(p1Level +"");
         p2LevelLabel.setText(p2Level +"");
+
+        currentPowerUps = new ArrayList<>();
 
         loadImages();
 
@@ -253,7 +278,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
     }
 
-
     @Override
     public void onTick(TetrisEngine.GameState snapshot, int player) {
         render(snapshot, player);
@@ -264,6 +288,28 @@ public class GameScreen extends Controller implements TetrisEventListener {
         setPlayerPoints(playerNum, String.valueOf(
                 playerNum == 1 ? snapshot.p1Score() : snapshot.p2Score()
         ));
+    }
+
+    @Override
+    public void onBoardSizeChange (int playerNum, int linesCleared, TetrisEngine.GameState snapshot) {
+        RowConstraints row = new RowConstraints();
+        row.setPrefHeight(12);
+        row.setMinHeight(12);
+        row.setMaxHeight(12);
+        row.setVgrow(Priority.NEVER);
+        for (int i = 0; i < linesCleared; i++) {
+            if (playerNum == 1) {
+                player1Field.getRowConstraints().addFirst(row);
+                player2Field.getRowConstraints().removeLast();
+            }
+            else {
+                System.out.println("REMOVED IN FIELD 1");
+                player1Field.getRowConstraints().removeFirst();
+                player2Field.getRowConstraints().add(row);
+            }
+        }
+        render(snapshot, 1);
+        render(snapshot, 2);
     }
 
     @Override
@@ -278,6 +324,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             setPlayerLines(playerNum, String.valueOf(current+lineCount));
             setPlayerPoints(2, String.valueOf(snapshot.p2Score()));
         }
+        render(snapshot,playerNum);
 
     }
 
@@ -317,13 +364,24 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     @Override
-    public void onPowerUpTriggered(int triggeringPlayer, TetrisEngine.GameState snapshot) {
-        showPowerUP(snapshot.powerUps());
+    public void onPowerUpTriggered(TetrisEngine.GameState snapshot, PowerUp p) {
+        removePowerUP(p);
+        currentPowerUps = snapshot.powerUps();
+    }
+
+    @Override
+    public void clearPowerUps(){
+        player1Field.getChildren().removeIf(node -> (node instanceof Rectangle r
+                && r.getStyleClass().contains("PowerUp")));
+        player2Field.getChildren().removeIf(node -> (node instanceof Rectangle r
+                && r.getStyleClass().contains("PowerUp")));
+        currentPowerUps.clear();
     }
 
     @Override
     public void onPowerUpSpawned(TetrisEngine.GameState snapshot){
         showPowerUP(snapshot.powerUps());
+        currentPowerUps = snapshot.powerUps();
     }
 
     @Override
@@ -345,24 +403,49 @@ public class GameScreen extends Controller implements TetrisEventListener {
         render(snapshot,2);
     }
 
+    public void test(){
+        System.out.println("MOVEMENT");
+    }
+
     public void attachHostNetworkBridge(NetworkLayer network) {
         if (engine == null || network == null) return;
 
         engine.addListener(new TetrisEventListener() {
-            @Override public void onTick(TetrisEngine.GameState s, int player)                                  { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onBlockLocked(int p, TetrisEngine.GameState s)                    { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s)            {
+            @Override public void onTick(TetrisEngine.GameState s, int player) {
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onBlockLocked(int p, TetrisEngine.GameState s){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s){
                 network.send(new TetrisMessage.StateUpdate(s));
                 network.send(new TetrisMessage.LinesCleared(p, n));
             }
-            @Override public void onLevelChanged(long ms, TetrisEngine.GameState s, int player){ network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onPlayerLost(int p, TetrisEngine.GameState s)                     { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onGameOver(TetrisEngine.GameState s)                              { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onPowerUpTriggered(int p, TetrisEngine.GameState s)               { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onPowerUpSpawned(TetrisEngine.GameState s)                        { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onReset(TetrisEngine.GameState s)                                 { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onBlockMovement(TetrisEngine.GameState s, int player)                         { network.send(new TetrisMessage.StateUpdate(s)); }
-            @Override public void onStopped(TetrisEngine.GameState s)                               { network.send(new TetrisMessage.StateUpdate(s)); }
+            @Override public void onLevelChanged(long ms, TetrisEngine.GameState s, int player){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onPlayerLost(int p, TetrisEngine.GameState s){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onGameOver(TetrisEngine.GameState s) {
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onPowerUpTriggered(TetrisEngine.GameState s, PowerUp p ){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onPowerUpSpawned(TetrisEngine.GameState s){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onReset(TetrisEngine.GameState s){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
+            @Override public void onBlockMovement(TetrisEngine.GameState s, int player){
+                test();
+                network.send(new TetrisMessage.StateUpdate(s)); }
+
+            @Override public void onStopped(TetrisEngine.GameState s){
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
         });
 
         // Network to engine: Apply remote inputs 
@@ -380,7 +463,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
         });
     }
 
-
+    private int count = 0;
     public void attachClientNetworkBridge(NetworkLayer network) {
         if (engine != null || network == null) return; // only valid in client mode
 
@@ -438,7 +521,15 @@ public class GameScreen extends Controller implements TetrisEventListener {
         player2PointsLabel.setText(String.valueOf(s.p2Score()));
         p1LevelLabel.setText(String.valueOf(s.p1Level()));
         p2LevelLabel.setText(String.valueOf(s.p2Level()));
-        if (s.powerUps() != null) showPowerUP(s.powerUps());
+        if (s.powerUps() != null) {
+            for (PowerUp old : currentPowerUps) {
+                if (!s.powerUps().contains(old)) {
+                    removePowerUP(old);
+                }
+            }
+            showPowerUP(s.powerUps());
+            currentPowerUps = s.powerUps();
+        }
 
         if (s.gameOver() && !gameOverHandled) {
             gameOverHandled = true;

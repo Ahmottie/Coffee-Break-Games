@@ -165,8 +165,7 @@ public class JoinLan extends Controller implements Initializable {
 
     private Label makeHostLabel(Discovery.Advertisement ad) {
         Label l = new Label(ad.name() + "   (" + ad.ipAddress() + ")");
-        l.setUserData(ad);                  
-        l.setMinWidth(570);
+        l.setUserData(ad);
         l.setAlignment(Pos.CENTER);
         l.setOnMouseClicked(mouseEvent -> {
             deselectAll();

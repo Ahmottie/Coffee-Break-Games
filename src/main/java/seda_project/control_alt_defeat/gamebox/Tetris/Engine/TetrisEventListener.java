@@ -10,9 +10,11 @@ public interface TetrisEventListener {
     default void onLevelChanged(long newTickIntervalMs, TetrisEngine.GameState snapshot, int player) {}
     default void onGameOver(TetrisEngine.GameState snapshot) {}
     default void onReset(TetrisEngine.GameState snapshot) {}
-    default void onPowerUpTriggered(int triggeringPlayer, TetrisEngine.GameState snapshot) {}
+    default void onPowerUpTriggered(TetrisEngine.GameState snapshot, PowerUp p) {}
     default void onPowerUpSpawned(TetrisEngine.GameState snapshot){}
     default void onStopped(TetrisEngine.GameState snapStopped){};
     default void onBlockMovement(TetrisEngine.GameState snapshot, int player){};
     default void onBlockSwap(TetrisEngine.GameState snapshot){};
+    default void clearPowerUps(){}
+    default void onBoardSizeChange(int playerNum,int linesCleared,TetrisEngine.GameState snapshot) {}
 }

@@ -20,6 +20,7 @@ public class TetrisAdvancedSettings implements Serializable {
     private boolean radialBomb = false;
     private boolean columnBomb = false;
     private boolean twoBlocks = false;
+    private boolean isBoardChange = false;
 
 
     private static TetrisAdvancedSettings instance;
@@ -43,6 +44,7 @@ public class TetrisAdvancedSettings implements Serializable {
         this.selfSpeedDown = booleanList.get(8);
         this.radialBomb = booleanList.get(9);
         this.columnBomb = booleanList.get(10);
+        this.isBoardChange = booleanList.get(11);
     }
 
     public void saveIntSettings(int itemSpawnRate, int itemDespawnRate){
@@ -108,5 +110,9 @@ public class TetrisAdvancedSettings implements Serializable {
 
     public void setTwoBlocks(boolean twoBlocks) {
         this.twoBlocks = twoBlocks;
+    }
+
+    public boolean isBoardChange() {
+        return isBoardChange;
     }
 }

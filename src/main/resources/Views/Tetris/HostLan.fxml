@@ -8,6 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
+
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.HostLan">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
@@ -31,7 +32,7 @@
                <children>
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                      <children>
-                              <GridPane alignment="CENTER" prefHeight="97.0" prefWidth="350.0">
+                              <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                                   <columnConstraints>
                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.599999999999994" />
@@ -41,7 +42,7 @@
                                   <rowConstraints>
                                       <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="77.60000000000001" minHeight="10.0" prefHeight="77.60000000000001" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   </rowConstraints>
                                   <children>
                                       <Label alignment="CENTER" text="Your Name:" />
@@ -60,13 +61,19 @@
                                   </padding>
                               </GridPane>
                         <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
-                        <Label fx:id="statusLabel" alignment="CENTER" prefHeight="50.0" prefWidth="400.0" textAlignment="CENTER" visible="false" wrapText="true">
+                         <Label fx:id="statusLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="0.0" textAlignment="CENTER" visible="false" wrapText="true">
                            <styleClass>
                               <String fx:value="information" />
                               <String fx:value="box" />
                            </styleClass>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="61.0" prefWidth="350.0">
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
                                       <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back">
                                  <HBox.margin>
@@ -77,6 +84,9 @@
                                     <Insets left="10.0" />
                                  </HBox.margin></Button>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>

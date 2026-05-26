@@ -5,7 +5,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
+<?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 <?import seda_project.control_alt_defeat.gamebox.ui.IntField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.AdvancedSettings">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
@@ -27,58 +31,116 @@
                 </VBox>
                 <StackPane prefHeight="516.0" prefWidth="800.0">
                     <children>
-                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="469.0" prefWidth="624.0" styleClass="box">
+                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="470.0" prefWidth="696.0" styleClass="box">
                             <children>
-                                <GridPane alignment="CENTER">
+                                <GridPane alignment="CENTER" prefHeight="333.0" prefWidth="653.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.59999999999997" minWidth="10.0" prefWidth="137.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.00000000000003" minWidth="10.0" prefWidth="134.00000000000003" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="9.20000762939452" prefWidth="154.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="98.20000000000005" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="150.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="150.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="150.0" prefWidth="80.0" />
                                         <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
-                                    </columnConstraints>
+                                        </columnConstraints>
                                     <rowConstraints>
-                              <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                              <Label prefHeight="52.0" prefWidth="156.0" text="Gameboard Layout" GridPane.rowIndex="1" />
-                              <RadioButton mnemonicParsing="false" selected="true" text="Vertical" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="Layout" />
-                                 </toggleGroup>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Horizontal" toggleGroup="$Layout" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                              <Label prefHeight="41.0" prefWidth="156.0" text="Item Spawnrate" GridPane.rowIndex="3" />
-                              <Label text="Item Despawntime" GridPane.rowIndex="4" />
-                              <IntField fx:id="itemSpawnRate" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <IntField fx:id="itemDespawnTime" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label alignment="CENTER" prefHeight="28.0" prefWidth="614.0" styleClass="headerText" text="Items" GridPane.columnSpan="4" GridPane.rowIndex="2" />
-                              <Label GridPane.rowIndex="5" />
-                              <Label text="Affect Both" GridPane.rowIndex="5" />
-                              <CheckBox fx:id="swapBoards" mnemonicParsing="false" text="Swap Boards" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <CheckBox fx:id="swapBlocks" mnemonicParsing="false" text="Swap Blocks" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                              <CheckBox fx:id="portals" mnemonicParsing="false" text="Portals" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                              <Label text="Affect Opponent" GridPane.rowIndex="6" />
-                              <Label text="Affect Self" GridPane.rowIndex="7" />
-                              <CheckBox fx:id="opponentSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                              <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                              <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                              <Label alignment="CENTER" prefHeight="55.0" prefWidth="675.0" styleClass="headerText" text="General" GridPane.columnSpan="4" />
-                              <Label alignment="CENTER" prefHeight="55.0" prefWidth="648.0" styleClass="headerText" text="Bombs" GridPane.columnSpan="4" GridPane.rowIndex="8" />
-                              <Label text="Activate" GridPane.rowIndex="9" />
-                              <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                              <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                                        <Label prefHeight="52.0" prefWidth="156.0" text="Gameboard Layout" GridPane.rowIndex="1" />
+                                        <RadioButton mnemonicParsing="false" selected="true" text="Vertical" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <toggleGroup>
+                                            <ToggleGroup fx:id="Layout" />
+                                        </toggleGroup>
+                                        </RadioButton>
+                                        <RadioButton mnemonicParsing="false" text="Horizontal" toggleGroup="$Layout" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <Label prefHeight="41.0" prefWidth="156.0" text="Item Spawnrate" GridPane.rowIndex="4" />
+                                        <Label text="Item Despawntime" GridPane.rowIndex="5" />
+
+                                        <IntField fx:id="itemSpawnRate" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                            <tooltip><Tooltip text="Input the time in seconds. Lower value increases item frequency." showDelay="0ms"/></tooltip>
+                                        </IntField>
+                                        <IntField fx:id="itemDespawnTime" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                            <tooltip><Tooltip text="Input the time in seconds. Influences the time an item remains active on the screen." showDelay="0ms"/></tooltip>
+                                        </IntField>
+                                        <Label alignment="CENTER" prefHeight="28.0" prefWidth="614.0" styleClass="normalText" text="Items" GridPane.columnSpan="4" GridPane.rowIndex="3" />
+                                        <Label GridPane.rowIndex="6" />
+                                        <Label text="Affect Both" GridPane.rowIndex="6" />
+                                        <CheckBox fx:id="swapBoards" mnemonicParsing="false" text="Swap Boards" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                            <tooltip>
+                                                <Tooltip text="Swap the Boards of both players." showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/Swap.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="swapBlocks" mnemonicParsing="false" text="Swap Blocks" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                            <tooltip>
+                                                <Tooltip text="Swap the active Blocks of both players." showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/SwapBlocks.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="portals" mnemonicParsing="false" text="Portals" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                            <tooltip>
+                                                <Tooltip text="Forwards your active Block to the opponent as their next active Block." showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/Portal.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <Label text="Affect Opponent" GridPane.rowIndex="7" />
+                                        <Label text="Affect Self" GridPane.rowIndex="8" />
+                                        <CheckBox fx:id="opponentSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                            <tooltip>
+                                                <Tooltip text="Slows down the tickrate of the opponent for 3 seconds" showDelay="0ms">
+                                                    <!--
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/SwapBlocks.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                    -->
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                        <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                                        <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                        <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                        <Label alignment="CENTER" prefHeight="55.0" prefWidth="675.0" styleClass="normalText" text="General" GridPane.columnSpan="4" />
+                                        <Label alignment="CENTER" prefHeight="55.0" prefWidth="648.0" styleClass="normalText" text="Bombs" GridPane.columnSpan="4" GridPane.rowIndex="9" />
+                                        <Label text="Activate" GridPane.rowIndex="10" />
+                                        <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                        <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                                        <Label text="Change Board on Lineclear" GridPane.rowIndex="2" />
+                                        <ToggleSwitch fx:id="toggleSwitch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>
                                     <padding>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
