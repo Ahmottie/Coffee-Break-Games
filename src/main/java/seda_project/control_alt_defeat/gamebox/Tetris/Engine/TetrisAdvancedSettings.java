@@ -32,20 +32,18 @@ public class TetrisAdvancedSettings implements Serializable {
 
     private TetrisAdvancedSettings (){}
 
-    public void saveBoolSettings(List<Boolean> booleanList ){
-        this.vertical = booleanList.get(0);
-        this.swapBoards = booleanList.get(1);
-        this.swapBlocks = booleanList.get(2);
-        this.portals = booleanList.get(3);
-        this.opponentSlowDown = booleanList.get(4);
-        this.opponentSpeedUp = booleanList.get(5);
-        this.opponentDelayRotation = booleanList.get(6);
-        this.selfDelayRotation = booleanList.get(7);
-        this.selfSpeedDown = booleanList.get(8);
-        this.radialBomb = booleanList.get(9);
-        this.columnBomb = booleanList.get(10);
-        this.isBoardChange = booleanList.get(11);
-    }
+    public void setVertical(boolean vertical) { this.vertical = vertical; }
+    public void setSwapBoards(boolean swapBoards) { this.swapBoards = swapBoards; }
+    public void setSwapBlocks(boolean swapBlocks) { this.swapBlocks = swapBlocks; }
+    public void setPortals(boolean portals) { this.portals = portals; }
+    public void setOpponentSlowDown(boolean opponentSlowDown) { this.opponentSlowDown = opponentSlowDown; }
+    public void setOpponentSpeedUp(boolean opponentSpeedUp) { this.opponentSpeedUp = opponentSpeedUp; }
+    public void setOpponentDelayRotation(boolean opponentDelayRotation) { this.opponentDelayRotation = opponentDelayRotation; }
+    public void setSelfDelayRotation(boolean selfDelayRotation) { this.selfDelayRotation = selfDelayRotation; }
+    public void setSelfSpeedDown(boolean selfSpeedDown) { this.selfSpeedDown = selfSpeedDown; }
+    public void setRadialBomb(boolean radialBomb) { this.radialBomb = radialBomb; }
+    public void setColumnBomb(boolean columnBomb) { this.columnBomb = columnBomb; }
+    public void setBoardChange(boolean isBoardChange) { this.isBoardChange = isBoardChange; }
 
     public void saveIntSettings(int itemSpawnRate, int itemDespawnRate){
         this.itemDespawnRate = itemDespawnRate* 1000L;

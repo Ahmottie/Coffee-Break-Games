@@ -117,28 +117,98 @@
                                         <Label text="Affect Self" GridPane.rowIndex="8" />
                                         <CheckBox fx:id="opponentSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                             <tooltip>
-                                                <Tooltip text="Slows down the tickrate of the opponent for 3 seconds" showDelay="0ms">
-                                                    <!--
+                                                <Tooltip text="Slows down the tickrate of the opponent for 10 ticks" showDelay="0ms">
                                                     <graphic>
                                                         <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/SwapBlocks.png"/>
+                                                                <Image url="@../../Images/Tetris/DecreaseTickOpponent.png"/>
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
-                                                    -->
                                                 </Tooltip>
                                             </tooltip>
                                         </CheckBox>
-                                        <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                                        <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-                                        <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                        <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                        <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                            <tooltip>
+                                                <Tooltip text="Increase the tickrate of the opponent for 10 ticks" showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/IncreaseTickOpponent.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                            <tooltip>
+                                                <Tooltip text="Slows down the Rotation speed of the opponent for 10 rotations (two moves are needed for oen rotation)" showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/DecreaseRotationOpponent.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                            <tooltip>
+                                                <Tooltip text="Slows down the tickrate for you for 10 ticks" showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/DecreaseTickSelf.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                            <tooltip>
+                                                <Tooltip text="Slows down the Rotation speed for you for 10 rotations (two moves are needed for oen rotation)" showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/DecreaseRotationSelf.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
                                         <Label alignment="CENTER" prefHeight="55.0" prefWidth="675.0" styleClass="normalText" text="General" GridPane.columnSpan="4" />
                                         <Label alignment="CENTER" prefHeight="55.0" prefWidth="648.0" styleClass="normalText" text="Bombs" GridPane.columnSpan="4" GridPane.rowIndex="9" />
                                         <Label text="Activate" GridPane.rowIndex="10" />
-                                        <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                                        <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                                        <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                            <tooltip>
+                                                <Tooltip text="When reaching its final destination this block destroys all blocks within a radius of 3" showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/RadialBomb.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
+                                        <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                                            <tooltip>
+                                                <Tooltip text="When reaching its final destination this block destroys all blocks in this column that are below this one." showDelay="0ms">
+                                                    <graphic>
+                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../../Images/Tetris/DecreaseRotationSelf.png"/>
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Tooltip>
+                                            </tooltip>
+                                        </CheckBox>
                                         <Label text="Change Board on Lineclear" GridPane.rowIndex="2" />
                                         <ToggleSwitch fx:id="toggleSwitch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     </children>

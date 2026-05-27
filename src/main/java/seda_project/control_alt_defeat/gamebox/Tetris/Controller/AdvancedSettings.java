@@ -45,21 +45,19 @@ public class AdvancedSettings extends Controller implements Initializable {
     @FXML
     protected void onSaveAction(){
         advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue());
-        boolean vertical = ((RadioButton)Layout.getSelectedToggle()).getText().equals("Vertical");
-        List<Boolean> bools = Stream.of(vertical,
-                swapBoards.isSelected(),
-                swapBlocks.isSelected(),
-                portals.isSelected(),
-                opponentSlowDown.isSelected(),
-                opponentSpeedUp.isSelected(),
-                opponentDelayRotation.isSelected(),
-                selfSlowDown.isSelected(),
-                selfDelayRotation.isSelected(),
-                radialBomb.isSelected(),
-                columnBomb.isSelected(),
-                toggleSwitch.switchOnProperty().getValue()
-        ).toList();
-        advancedSettings.saveBoolSettings(bools);
+
+        advancedSettings.setSwapBoards(swapBoards.isSelected());
+        advancedSettings.setSwapBlocks(swapBlocks.isSelected());
+        advancedSettings.setPortals(portals.isSelected());
+        advancedSettings.setOpponentDelayRotation(opponentDelayRotation.isSelected());
+        advancedSettings.setOpponentSpeedUp(opponentSpeedUp.isSelected());
+        advancedSettings.setOpponentSlowDown(opponentSlowDown.isSelected());
+        advancedSettings.setSelfDelayRotation(selfDelayRotation.isSelected());
+        advancedSettings.setSelfSpeedDown(selfSlowDown.isSelected());
+        advancedSettings.setRadialBomb(radialBomb.isSelected());
+        advancedSettings.setColumnBomb(columnBomb.isSelected());
+        advancedSettings.setBoardChange(toggleSwitch.switchOnProperty().getValue());
+        advancedSettings.setVertical(((RadioButton)Layout.getSelectedToggle()).getText().equals("Vertical"));
     }
 
     @Override

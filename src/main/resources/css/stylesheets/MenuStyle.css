@@ -56,7 +56,7 @@
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #25e8e8, #14a3a3);
-    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.7), 14, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.7), 16, 0, 0, 0);
 }
 
 .button:pressed {

@@ -46,7 +46,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private boolean disconnected = false;
     private boolean gameOverHandled = false;
 
-    private Image swapImage, portalImage, swapBlockImage;
+    private Image swapImage, portalImage, swapBlockImage, decreaseRotationOpponentImage,decreaseRotationSelfImage,decreaseTickOpponentImage,decreaseTickSelfImage,increaseTickOpponentImage;
     private Image radialBombImage, columnBombImage;
 
     private List<PowerUp> currentPowerUps;
@@ -64,6 +64,26 @@ public class GameScreen extends Controller implements TetrisEventListener {
         stream = getClass().getResource("/Images/Tetris/SwapBlocks.png").toExternalForm();
         if ( stream != null) {
             swapBlockImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/DecreaseRotationOpponent.png").toExternalForm();
+        if ( stream != null) {
+            decreaseRotationOpponentImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/DecreaseRotationSelf.png").toExternalForm();
+        if ( stream != null) {
+            decreaseRotationSelfImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/DecreaseTickOpponent.png").toExternalForm();
+        if ( stream != null) {
+            decreaseTickOpponentImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/DecreaseTickSelf.png").toExternalForm();
+        if ( stream != null) {
+            decreaseTickSelfImage = new Image(stream);
+        }
+        stream = getClass().getResource("/Images/Tetris/IncreaseTickOpponent.png").toExternalForm();
+        if ( stream != null) {
+            increaseTickOpponentImage = new Image(stream);
         }
     }
 
@@ -133,6 +153,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
                     case PORTAL -> i = portalImage;
                     case SWAPBOARDS -> i = swapImage;
                     case SWAPACTIVEBLOCKS -> i = swapBlockImage;
+                    case OPPONENTROTATIONDELAY -> i = decreaseRotationOpponentImage;
+                    case SELFROTATIONDELAY -> i = decreaseRotationSelfImage;
+                    case OPPONENTSPEEDDOWN -> i = decreaseTickOpponentImage;
+                    case OPPONENTSPEEDUP -> i = increaseTickOpponentImage;
+                    case SELFSPEEDDOWN -> i = decreaseTickSelfImage;
                 }
                 if (i != null) {
                     rect.setFill(new ImagePattern(i));
@@ -344,6 +369,18 @@ public class GameScreen extends Controller implements TetrisEventListener {
             p1LevelLabel.setText(String.valueOf(snapshot.p1Level()));
         } else {
             p2LevelLabel.setText(String.valueOf(snapshot.p2Level()));
+        }
+    }
+
+    public void changeTickSpeed(int playerNum, long newTickSpeed) {
+        Timeline timeline = playerNum == 1 ? p1EngineTicker : p2EngineTicker;
+        if (timeline != null) {
+            timeline.stop();
+            timeline.getKeyFrames().setAll(
+                    new KeyFrame(Duration.millis(newTickSpeed), e -> engine.tick(playerNum))
+            );
+            timeline.play();
+            System.out.println("newTickSpeedSet to " + newTickSpeed + " For Player "+ playerNum);
         }
     }
 

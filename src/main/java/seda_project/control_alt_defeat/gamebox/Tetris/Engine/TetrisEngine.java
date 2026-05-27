@@ -47,6 +47,21 @@ public class TetrisEngine {
     private long p1TickInterval = INITIAL_TICK_INTERVAL_MS;
     private long p2TickInterval = INITIAL_TICK_INTERVAL_MS;
 
+    private long p1BaseTickInterval;
+    private long p2BaseTickInterval;
+
+
+    private final List<Integer> p1SlowEffects = new ArrayList<>();
+    private final List<Integer> p2SlowEffects = new ArrayList<>();
+    private final List<Integer> p1FastEffects = new ArrayList<>();
+    private final List<Integer> p2FastEffects = new ArrayList<>();
+
+    private int p1RotationDelayCounter;
+    private int p2RotationDelayCounter;
+    private boolean p1RotationDelayCheck;
+    private boolean p2RotationDelayCheck;
+    private boolean p1RotationLocked;
+    private boolean p2RotationLocked;
 
     // Power-up mechanics
     private final List<PowerUp> activePowerUps = new CopyOnWriteArrayList<>();
@@ -103,6 +118,7 @@ public class TetrisEngine {
                     INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, p1Level - 1)
             );
         }
+        p1BaseTickInterval = p1TickInterval;
 
         if (p2Level > 1){
             p2TickInterval = (long) Math.max(
@@ -110,6 +126,7 @@ public class TetrisEngine {
                     INITIAL_TICK_INTERVAL_MS * Math.pow(0.85, p2Level - 1)
             );
         }
+        p2BaseTickInterval = p2TickInterval;
 
         this.p1Lost = false;
         this.p2Lost = false;
@@ -151,8 +168,50 @@ public class TetrisEngine {
         listeners.remove(listener);
     }
 
+    private long recomputeInterval(int player) {
+        long baseSpeed = (player == 1) ? p1BaseTickInterval : p2BaseTickInterval;
+        List<Integer> slows = (player == 1) ? p1SlowEffects : p2SlowEffects;
+        List<Integer> fasts = (player == 1) ? p1FastEffects : p2FastEffects;
+        int exponent = slows.size() - fasts.size();
+        if (exponent >= 0) {
+            return (long) (baseSpeed * (Math.pow(2,exponent)));
+        } else {
+            return (long) (baseSpeed / (Math.pow(2,(-exponent))));
+        }
+    }
+
+    private void processSpeedEffects(int player) {
+        List<Integer> slows = (player == 1) ? p1SlowEffects : p2SlowEffects;
+        List<Integer> fasts = (player == 1) ? p1FastEffects : p2FastEffects;
+
+        boolean changed = tickDown(slows) | tickDown(fasts);
+
+        if (changed) {
+            long newInterval = recomputeInterval(player);
+            if (player == 1) {
+                p1TickInterval = newInterval;
+            }
+            else {
+                p2TickInterval = newInterval;
+            }
+            listeners.forEach(l -> l.changeTickSpeed(player, newInterval));
+        }
+    }
+
+    private boolean tickDown(List<Integer> effects) {
+        boolean expired = effects.removeIf(t -> t <= 1);
+        effects.replaceAll(t -> t - 1);
+        return expired;
+    }
+
     public synchronized void tick(int player) {
         if (isGameOver || isStopped) return;
+
+        if (player == 1) {
+            processSpeedEffects(1);
+        } else {
+            processSpeedEffects(2);
+        }
 
         if (!p1Lost && player == 1) applyGravity(1, p1ActiveBlock, p1Board);
         if (!p2Lost && player == 2) applyGravity(2, p2ActiveBlock, p2Board);
@@ -246,8 +305,39 @@ public class TetrisEngine {
                 if (!board.isValidPosition(block)) block.moveLeft();
             }
             case "ROTATE" -> {
-                block.rotateClockwise();
-                if (!board.isValidPosition(block)) block.rotateCounterClockwise();
+                if (playerNum == 1) {
+                    if (p1RotationLocked && p1RotationDelayCheck){
+                        p1RotationLocked = false;
+                    }
+                    else {
+                        p1RotationLocked = true;
+                        if (p1RotationDelayCounter > 0){
+                            p1RotationDelayCounter--;
+                        }
+                        else {
+                            p1RotationDelayCheck = false;
+                        }
+                        block.rotateClockwise();
+                        if (!board.isValidPosition(block)) block.rotateCounterClockwise();
+                    }
+                }
+                else {
+                    if (p2RotationLocked && p2RotationDelayCheck){
+                        p2RotationLocked = false;
+                    }
+                    else {
+                        p2RotationLocked = true;
+                        if (p2RotationDelayCounter > 0){
+                            p2RotationDelayCounter--;
+                        }
+                        else {
+                            p2RotationDelayCheck = false;
+                        }
+                        block.rotateClockwise();
+                        if (!board.isValidPosition(block)) block.rotateCounterClockwise();
+                    }
+                }
+
             }
             case "DROP" -> applyGravity(playerNum, block, board);
         }
@@ -318,17 +408,73 @@ public class TetrisEngine {
                         break;
                         }
                     case SELFSPEEDDOWN:{
+                        if (playerNum == 1){
+                            p1SlowEffects.add(10);
+                            p1TickInterval = recomputeInterval(1);
+                            listeners.forEach(l -> l.changeTickSpeed(playerNum, p1TickInterval));
+                        }
+                        else {
+                            p2SlowEffects.add(10);
+                            p2TickInterval = recomputeInterval(2);
+                            listeners.forEach(l -> l.changeTickSpeed(playerNum, p2TickInterval));
+                        }
                         break;
                     }
-                    case OPPONENTSPEEDUP:break;
+                    case OPPONENTSPEEDUP: {
+                        if (playerNum == 1){
+                            p2FastEffects.add(10);
+                            p2TickInterval = recomputeInterval(2);
+                            listeners.forEach(l -> l.changeTickSpeed(2, p2TickInterval));;
+                        }
+                        else {
+                            p1FastEffects.add(10);
+                            p1TickInterval = recomputeInterval(1);
+                            listeners.forEach(l -> l.changeTickSpeed(1, p1TickInterval));
+                        }
+                        break;
+                    }
                     case SWAPACTIVEBLOCKS: {
                         swapActiveBlocks();
                         listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
                         break;
                     }
-                    case OPPONENTSPEEDDOWN:break;
-                    case SELFROTATIONDELAY: break;
-                    case OPPONENTROTATIONDELAY: break;
+                    case OPPONENTSPEEDDOWN: {
+                        if (playerNum == 1){
+                            p2SlowEffects.add(10);
+                            p2TickInterval = recomputeInterval(2);
+                            listeners.forEach(l -> l.changeTickSpeed(2, p2TickInterval));
+                        }
+                        else {
+                            p1SlowEffects.add(10);
+                            p1TickInterval = recomputeInterval(1);
+                            listeners.forEach(l -> l.changeTickSpeed(1, p1TickInterval));
+                        }
+                        break;
+                    }
+                    case SELFROTATIONDELAY: {
+                        if (playerNum == 1) {
+                            p1RotationDelayCounter += 10;
+                            p1RotationDelayCheck = true;
+                            p1RotationLocked = true;
+                        } else {
+                            p2RotationDelayCounter += 10;
+                            p2RotationDelayCheck = true;
+                            p2RotationLocked = true;
+                        }
+                        break;
+                    }
+                    case OPPONENTROTATIONDELAY: {
+                        if (playerNum == 1) {
+                            p2RotationDelayCounter += 10;
+                            p2RotationDelayCheck = true;
+                            p2RotationLocked = true;
+                        } else {
+                            p1RotationDelayCounter += 10;
+                            p1RotationDelayCheck = true;
+                            p1RotationLocked = true;
+                        }
+                        break;
+                    }
                     case SWAPBOARDS:{
                         executePlayerSwap();
                         break;
