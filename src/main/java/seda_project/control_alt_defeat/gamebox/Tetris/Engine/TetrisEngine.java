@@ -716,6 +716,14 @@ public class TetrisEngine {
         if (bomb){
             BombType selectedType = possibleBombs.get(RANDOM.nextInt(0, possibleBombs.size()));
             BombBlock newBombBlock = new BombBlock(selectedType);
+
+            // Prevent collision in two block mode
+            if (isTwoBlockMode) {
+                newBombBlock.setX(index == 0 ? 1 : 6);
+            } else {
+                newBombBlock.setX(3); // Middle spawn
+            }
+
             if (playerNum == 1){
                 p1ActiveBlocks[index] = newBombBlock;
                 checkValidPosition(playerNum, index);
@@ -739,9 +747,15 @@ public class TetrisEngine {
                 newBlock = queue.getFirst();
                 if (playerNum == 2) {
                     newBlock.setY(0);
-                    newBlock.setX(3);
                 }
                 queue.removeFirst();
+            }
+
+            // Adjust spawn X to prevent collision in Two Block Mode
+            if (isTwoBlockMode) {
+                newBlock.setX(index == 0 ? 1 : 6);
+            } else {
+                newBlock.setX(3);
             }
 
             if (playerNum == 1) {

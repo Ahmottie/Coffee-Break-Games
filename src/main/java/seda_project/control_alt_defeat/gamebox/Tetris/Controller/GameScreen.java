@@ -52,6 +52,9 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private List<PowerUp> currentPowerUps;
     private boolean currentTwoBlockMode = false;
 
+    private final java.util.Map<KeyCode, Integer> clientActiveKeys = new java.util.HashMap<>();
+    private Timeline clientRepeatTimer;
+
 
     private void loadPowerUpImages() {
         var stream = getClass().getResource("/Images/Tetris/Swap.png").toExternalForm();
@@ -500,9 +503,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     private int count = 0;
     public void attachClientNetworkBridge(NetworkLayer network) {
-        if (engine != null || network == null) return; // only valid in client mode
+        if (engine != null || network == null) return;
 
-        // network to UI
         network.addListener(new NetworkListener() {
             @Override
             public void onMessage(Message msg) {
@@ -512,27 +514,58 @@ public class GameScreen extends Controller implements TetrisEventListener {
                     Platform.runLater(() -> incrementLines(lc.playerNum(), lc.lineCount()));
                 }
             }
-
             @Override
             public void onDisconnected(String reason) {
                 Platform.runLater(() -> handleDisconnect(reason));
             }
         });
 
-        // keyboard to network
-        // the client is the only player on this machineso from the hosts perspective the
-        // client is always player 2, so thats what we send
         Scene scene = header.getScene();
         if (scene != null) {
             scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-                Object[] actionData = mapClientKey(event.getCode());
-                if (actionData != null) {
-                    TetrisMessage.InputAction action = (TetrisMessage.InputAction) actionData[0];
-                    int blockIndex = (int) actionData[1];
-                    network.send(new TetrisMessage.Input(2, blockIndex, action));
-                    event.consume();
+                KeyCode code = event.getCode();
+                if (!clientActiveKeys.containsKey(code)) {
+                    clientActiveKeys.put(code, 0);
+                    sendClientKey(code, network);
                 }
+                event.consume();
             });
+
+            scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+                clientActiveKeys.remove(event.getCode());
+            });
+
+            clientRepeatTimer = new Timeline(new KeyFrame(Duration.millis(20), e -> {
+                java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
+                java.util.ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
+
+                for (java.util.Map.Entry<KeyCode, Integer> entry : new java.util.ArrayList<>(clientActiveKeys.entrySet())) {
+                    KeyCode key = entry.getKey();
+                    int ticks = entry.getValue();
+                    ticks++;
+                    clientActiveKeys.put(key, ticks);
+
+                    boolean isLeftRight = (key == p1.get(0) || key == p1.get(1) || key == p2.get(0) || key == p2.get(1));
+                    boolean isDrop = (key == p1.get(2) || key == p2.get(2));
+
+                    if (isDrop) {
+                        if (ticks % 2 == 0) sendClientKey(key, network);
+                    } else if (isLeftRight) {
+                        if (ticks > 8 && (ticks - 8) % 3 == 0) sendClientKey(key, network);
+                    }
+                }
+            }));
+            clientRepeatTimer.setCycleCount(Animation.INDEFINITE);
+            clientRepeatTimer.play();
+        }
+    }
+
+    private void sendClientKey(KeyCode key, NetworkLayer network) {
+        Object[] actionData = mapClientKey(key);
+        if (actionData != null) {
+            TetrisMessage.InputAction action = (TetrisMessage.InputAction) actionData[0];
+            int blockIndex = (int) actionData[1];
+            network.send(new TetrisMessage.Input(2, blockIndex, action));
         }
     }
 
@@ -540,21 +573,29 @@ public class GameScreen extends Controller implements TetrisEventListener {
         java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
         java.util.ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
 
-        // Use the synchronized network state instead of the local machine settings
+        // Use the synchronized network state
         boolean twoBlocks = this.currentTwoBlockMode;
 
-        // Client P1 UI keys (WASD) -> Block 0
+        // LAN Client Primary Keys (WASD) -> Block 0
         if (key == p1.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 0};
         if (key == p1.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 0};
         if (key == p1.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 0};
         if (key == p1.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 0};
 
-        // Client P2 UI keys (Arrows) -> Block 1 (if twoBlocks is on) or Block 0 (if normal LAN)
-        int blockIndex = twoBlocks ? 1 : 0;
-        if (key == p2.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, blockIndex};
-        if (key == p2.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, blockIndex};
-        if (key == p2.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, blockIndex};
-        if (key == p2.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, blockIndex};
+        // LAN Client Secondary Keys (Arrows)
+        if (twoBlocks) {
+            // -> Block 1 (active if Two Blocks is ON)
+            if (key == p2.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 1};
+            if (key == p2.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 1};
+            if (key == p2.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 1};
+            if (key == p2.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 1};
+        } else {
+            // -> Block 0 (For single-PC LAN testing)
+            if (key == p2.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 0};
+            if (key == p2.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 0};
+            if (key == p2.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 0};
+            if (key == p2.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 0};
+        }
 
         return null;
     }
@@ -601,6 +642,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
             p2EngineTicker.stop();
         }
         if (engine != null) engine.stop();
+        if (handler != null) handler.stop();
+        if (clientRepeatTimer != null) clientRepeatTimer.stop();
 
         Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",

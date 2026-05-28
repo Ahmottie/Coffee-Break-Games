@@ -11,7 +11,6 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
