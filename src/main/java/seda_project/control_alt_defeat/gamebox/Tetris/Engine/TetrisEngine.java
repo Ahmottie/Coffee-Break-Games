@@ -810,7 +810,7 @@ public class TetrisEngine {
         return new GameState(
                 deepCopy(p1Board.getGrid()), deepCopy(p2Board.getGrid()),
                 p1Clones, p2Clones,
-                p1Score, p2Score, p1Level, p2Level, p1Name, p2Name, p1Lost, p2Lost, isGameOver, new ArrayList<>(activePowerUps)
+                p1Score, p2Score, p1Level, p2Level, p1Name, p2Name, p1Lost, p2Lost, isGameOver, new ArrayList<>(activePowerUps), isTwoBlockMode
         );
     }
 
@@ -836,7 +836,8 @@ public class TetrisEngine {
             boolean    p1Lost,
             boolean    p2Lost,
             boolean    gameOver,
-            List<PowerUp> powerUps
+            List<PowerUp> powerUps,
+            boolean    isTwoBlockMode
     ) implements Serializable {}
 
     public synchronized void reset() {

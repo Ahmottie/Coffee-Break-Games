@@ -17,8 +17,6 @@ public class KeyHandler {
         this(engine, tS, gameScreen, false);
     }
 
-    // p1Only = true in LAN host mode: this keyboard owns player 1 only, player 2
-    // input arrives from the client over the network.
     public KeyHandler(TetrisEngine engine, TetrisSettings tS, GameScreen gameScreen, boolean p1Only) {
         this.engine = engine;
         this.tS = tS;
@@ -28,32 +26,30 @@ public class KeyHandler {
 
     public void handle(KeyCode key) {
         ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
-        ArrayList<KeyCode> p1Sec = tS.getPlayer1SecondaryKeys();
+        ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
+        boolean twoBlocks = TetrisAdvancedSettings.getInstance().isTwoBlocks();
 
+        // Standard: P1 UI keys control Block 0
         if (key == p1.get(0)) engine.processInput(1, "LEFT", 0);
         else if (key == p1.get(1)) engine.processInput(1, "RIGHT", 0);
         else if (key == p1.get(2)) engine.processInput(1, "DROP", 0);
         else if (key == p1.get(3)) engine.processInput(1, "ROTATE", 0);
 
-        else if (key == p1Sec.get(0)) engine.processInput(1, "LEFT", 1);
-        else if (key == p1Sec.get(1)) engine.processInput(1, "RIGHT", 1);
-        else if (key == p1Sec.get(2)) engine.processInput(1, "DROP", 1);
-        else if (key == p1Sec.get(3)) engine.processInput(1, "ROTATE", 1);
+        if (p1Only) {
+            // LAN HOST MODE
+            int blockIndex = twoBlocks ? 1 : 0;
+            if (key == p2.get(0)) engine.processInput(1, "LEFT", blockIndex);
+            else if (key == p2.get(1)) engine.processInput(1, "RIGHT", blockIndex);
+            else if (key == p2.get(2)) engine.processInput(1, "DROP", blockIndex);
+            else if (key == p2.get(3)) engine.processInput(1, "ROTATE", blockIndex);
+            return;
+        }
 
-        if (p1Only) return;
-
-        ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
-        ArrayList<KeyCode> p2Sec = tS.getPlayer2SecondaryKeys();
-
+        // LOCAL MODE
         if (key == p2.get(0)) engine.processInput(2, "LEFT", 0);
         else if (key == p2.get(1)) engine.processInput(2, "RIGHT", 0);
         else if (key == p2.get(2)) engine.processInput(2, "DROP", 0);
         else if (key == p2.get(3)) engine.processInput(2, "ROTATE", 0);
-
-        else if (key == p2Sec.get(0)) engine.processInput(2, "LEFT", 1);
-        else if (key == p2Sec.get(1)) engine.processInput(2, "RIGHT", 1);
-        else if (key == p2Sec.get(2)) engine.processInput(2, "DROP", 1);
-        else if (key == p2Sec.get(3)) engine.processInput(2, "ROTATE", 1);
     }
 
     public void attach(Scene scene) {

@@ -50,6 +50,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private Image radialBombImage, columnBombImage;
 
     private List<PowerUp> currentPowerUps;
+    private boolean currentTwoBlockMode = false;
 
 
     private void loadPowerUpImages() {
@@ -535,22 +536,28 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
     }
 
-        private Object[] mapClientKey(KeyCode key) {
-            java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
-            java.util.ArrayList<KeyCode> p1Sec = tS.getPlayer1SecondaryKeys();
+    private Object[] mapClientKey(KeyCode key) {
+        java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
+        java.util.ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
 
-            if (key == p1.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 0};
-            if (key == p1.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 0};
-            if (key == p1.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 0};
-            if (key == p1.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 0};
+        // Use the synchronized network state instead of the local machine settings
+        boolean twoBlocks = this.currentTwoBlockMode;
 
-            if (key == p1Sec.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 1};
-            if (key == p1Sec.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 1};
-            if (key == p1Sec.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 1};
-            if (key == p1Sec.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 1};
+        // Client P1 UI keys (WASD) -> Block 0
+        if (key == p1.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 0};
+        if (key == p1.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 0};
+        if (key == p1.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 0};
+        if (key == p1.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 0};
 
-            return null;
-        }
+        // Client P2 UI keys (Arrows) -> Block 1 (if twoBlocks is on) or Block 0 (if normal LAN)
+        int blockIndex = twoBlocks ? 1 : 0;
+        if (key == p2.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, blockIndex};
+        if (key == p2.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, blockIndex};
+        if (key == p2.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, blockIndex};
+        if (key == p2.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, blockIndex};
+
+        return null;
+    }
 
     private void incrementLines(int playerNum, int lineCount) {
         Label target = playerNum == 1 ? player1LinesLabel : player2LinesLabel;
@@ -559,6 +566,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     private void applyRemoteState(TetrisEngine.GameState s) {
+        this.currentTwoBlockMode = s.isTwoBlockMode(); // Sync with Host
         render(s,2);
         render(s,1);
         player1PointsLabel.setText(String.valueOf(s.p1Score()));
