@@ -26,22 +26,36 @@ public class KeyHandler {
         this.p1Only = p1Only;
     }
 
-    public void handle (KeyCode key){
+    public void handle(KeyCode key) {
         ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
+        ArrayList<KeyCode> p1Sec = tS.getPlayer1SecondaryKeys();
 
-        if (key == p1.get(0)) {engine.processInput(1,"LEFT");}
-        else if (key == p1.get(1)) {engine.processInput(1,"RIGHT");}
-        else if (key == p1.get(2)) {engine.processInput(1,"DROP");}
-        else if (key == p1.get(3)) {engine.processInput(1,"ROTATE");}
+        if (key == p1.get(0)) engine.processInput(1, "LEFT", 0);
+        else if (key == p1.get(1)) engine.processInput(1, "RIGHT", 0);
+        else if (key == p1.get(2)) engine.processInput(1, "DROP", 0);
+        else if (key == p1.get(3)) engine.processInput(1, "ROTATE", 0);
+
+        else if (key == p1Sec.get(0)) engine.processInput(1, "LEFT", 1);
+        else if (key == p1Sec.get(1)) engine.processInput(1, "RIGHT", 1);
+        else if (key == p1Sec.get(2)) engine.processInput(1, "DROP", 1);
+        else if (key == p1Sec.get(3)) engine.processInput(1, "ROTATE", 1);
 
         if (p1Only) return;
 
         ArrayList<KeyCode> p2 = tS.getPlayer2Keys();
-        if (key == p2.get(0)) {engine.processInput(2,"LEFT");}
-        else if (key == p2.get(1)) {engine.processInput(2,"RIGHT");}
-        else if (key  == p2.get(2)) {engine.processInput(2,"DROP");}
-        else if (key  == p2.get(3)) {engine.processInput(2,"ROTATE");}
+        ArrayList<KeyCode> p2Sec = tS.getPlayer2SecondaryKeys();
+
+        if (key == p2.get(0)) engine.processInput(2, "LEFT", 0);
+        else if (key == p2.get(1)) engine.processInput(2, "RIGHT", 0);
+        else if (key == p2.get(2)) engine.processInput(2, "DROP", 0);
+        else if (key == p2.get(3)) engine.processInput(2, "ROTATE", 0);
+
+        else if (key == p2Sec.get(0)) engine.processInput(2, "LEFT", 1);
+        else if (key == p2Sec.get(1)) engine.processInput(2, "RIGHT", 1);
+        else if (key == p2Sec.get(2)) engine.processInput(2, "DROP", 1);
+        else if (key == p2Sec.get(3)) engine.processInput(2, "ROTATE", 1);
     }
+
     public void attach(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyEvent key = (KeyEvent) event;

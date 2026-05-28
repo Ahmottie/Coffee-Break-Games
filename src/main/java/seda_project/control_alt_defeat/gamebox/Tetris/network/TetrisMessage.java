@@ -14,7 +14,7 @@ public sealed interface TetrisMessage extends Message
 
     record StartCountdown(long delayMs) implements TetrisMessage {}
 
-    record Input(int playerNum, InputAction action) implements TetrisMessage {}
+    public record Input(int playerNum, int blockIndex, InputAction action) implements Message, TetrisMessage {}
 
     record StateUpdate(TetrisEngine.GameState state) implements TetrisMessage {}
 
@@ -23,6 +23,6 @@ public sealed interface TetrisMessage extends Message
     record Restart() implements TetrisMessage {}
 
     enum InputAction {
-        LEFT, RIGHT, ROTATE, DROP
+        LEFT, RIGHT, ROTATE, TOGGLE, DROP
     }
 }

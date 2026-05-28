@@ -14,10 +14,16 @@ public class Board implements Serializable {
         this.inverted = inverted;
     }
 
+    // Standard on block collision check.
     public boolean isValidPosition(Block block) {
-        boolean[][] shape = block.getShape();
-        int bx = block.getX();
-        int by = block.getY();
+        return isValidPosition(block, null);
+    }
+
+    // Advanced collision check for Two Active Blocks Mode.
+    public boolean isValidPosition(Block movingBlock, Block otherActiveBlock) {
+        boolean[][] shape = movingBlock.getShape();
+        int bx = movingBlock.getX();
+        int by = movingBlock.getY();
 
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[row].length; col++) {
@@ -25,16 +31,41 @@ public class Board implements Serializable {
                     int boardX = bx + col;
                     int boardY = by + row;
 
+                    // 1. Check Board Boundaries
                     if (boardX < 0 || boardX >= width || boardY < 0 || boardY >= height) {
                         return false;
                     }
+
+                    // 2. Check Locked Grid
                     if (grid[boardY][boardX] != null) {
                         return false;
+                    }
+
+                    // 3. Check Inter-Block Collision
+                    if (otherActiveBlock != null) {
+                        if (collidesWithOtherBlock(boardX, boardY, otherActiveBlock)) {
+                            return false;
+                        }
                     }
                 }
             }
         }
         return true;
+    }
+
+    // Map global board coordinates to the local space of the other block.
+    private boolean collidesWithOtherBlock(int boardX, int boardY, Block otherBlock) {
+        boolean[][] otherShape = otherBlock.getShape();
+        int localRow = boardY - otherBlock.getY();
+        int localCol = boardX - otherBlock.getX();
+
+        // If the coordinate falls within the other block's grid, check if that specific cell is solid
+        if (localRow >= 0 && localRow < otherShape.length &&
+                localCol >= 0 && localCol < otherShape[0].length) {
+            return otherShape[localRow][localCol];
+        }
+
+        return false;
     }
 
     public void lockBlock(Block block) {

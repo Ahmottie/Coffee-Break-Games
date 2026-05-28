@@ -128,10 +128,9 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     public void render(TetrisEngine.GameState state, int player ){
         if (player == 1) {
-            drawGrid(state.p1Grid(), state.p1ActiveBlock(), player1Field, state.p1Lost());
-        }
-        else {
-            drawGrid(state.p2Grid(), state.p2ActiveBlock(), player2Field, state.p2Lost());
+            drawGrid(state.p1Grid(), state.p1ActiveBlocks(), player1Field, state.p1Lost());
+        } else {
+            drawGrid(state.p2Grid(), state.p2ActiveBlocks(), player2Field, state.p2Lost());
         }
     }
 
@@ -195,43 +194,41 @@ public class GameScreen extends Controller implements TetrisEventListener {
         );
     }
 
-    private void drawGrid(String[][] colors, Block activeBlock, GridPane grid, boolean isLost) {
-        grid.getChildren().removeIf(node -> !(node instanceof Rectangle r
-                && r.getStyleClass().contains("PowerUp")));
-
+    private void drawGrid(String[][] colors, Block[] activeBlocks, GridPane grid, boolean isLost) {
+        grid.getChildren().removeIf(node -> !(node instanceof Rectangle r && r.getStyleClass().contains("PowerUp")));
         int maxRows = grid.getRowConstraints().size();
 
+        // 1. Draw locked board
         for (int i = 0; i < colors.length; i++) {
-            if (i>= maxRows) break;
+            if (i >= maxRows) break;
             for (int j = 0; j < colors[i].length; j++) {
                 if (colors[i][j] != null){
-                    Rectangle rect = new Rectangle(12,12);
-                    if (isLost){
-                        rect.setFill(Color.LIGHTGRAY);
-                    }
-                    else {
-                        rect.setFill(Color.web(colors[i][j]));
-                    }
+                    Rectangle rect = new Rectangle(12, 12);
+                    if (isLost) rect.setFill(Color.LIGHTGRAY);
+                    else rect.setFill(Color.web(colors[i][j]));
                     grid.add(rect, j, i);
                 }
             }
         }
-        boolean[][] block = activeBlock.getShape();
-        for (int i = 0; i < block.length; i++) {
-            for (int j = 0; j < block[0].length; j++) {
-                if (block[i][j]) {
-                    Rectangle rect = new Rectangle(12, 12);
-                    if (activeBlock instanceof BombBlock bb) {
-                        rect.setFill(new ImagePattern((bb.getType() == BombType.RADIUS) ? radialBombImage : columnBombImage));
-                    }
-                    else {
-                        if (isLost) {
-                            rect.setFill(Color.LIGHTGRAY);
-                        } else {
-                            rect.setFill(Color.web(activeBlock.getHexColor()));
+
+        // 2. Draw all active blocks
+        if (activeBlocks != null) {
+            for (Block activeBlock : activeBlocks) {
+                if (activeBlock == null) continue;
+                boolean[][] block = activeBlock.getShape();
+                for (int i = 0; i < block.length; i++) {
+                    for (int j = 0; j < block[0].length; j++) {
+                        if (block[i][j]) {
+                            Rectangle rect = new Rectangle(12, 12);
+                            if (activeBlock instanceof BombBlock bb) {
+                                rect.setFill(new ImagePattern((bb.getType() == BombType.RADIUS) ? radialBombImage : columnBombImage));
+                            } else {
+                                if (isLost) rect.setFill(Color.LIGHTGRAY);
+                                else rect.setFill(Color.web(activeBlock.getHexColor()));
+                            }
+                            grid.add(rect, j + activeBlock.getX(), i + activeBlock.getY());
                         }
                     }
-                    grid.add(rect, j + activeBlock.getX(), i + activeBlock.getY());
                 }
             }
         }
@@ -490,7 +487,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             @Override
             public void onMessage(Message msg) {
                 if (msg instanceof TetrisMessage.Input in) {
-                    engine.processInput(in.playerNum(), in.action().name());
+                    engine.processInput(in.playerNum(), in.action().name(), in.blockIndex());
                 }
             }
             @Override
@@ -514,6 +511,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
                     Platform.runLater(() -> incrementLines(lc.playerNum(), lc.lineCount()));
                 }
             }
+
             @Override
             public void onDisconnected(String reason) {
                 Platform.runLater(() -> handleDisconnect(reason));
@@ -526,24 +524,33 @@ public class GameScreen extends Controller implements TetrisEventListener {
         Scene scene = header.getScene();
         if (scene != null) {
             scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-                TetrisMessage.InputAction action = mapClientKey(event.getCode());
-                if (action != null) {
-                    network.send(new TetrisMessage.Input(2, action));
+                Object[] actionData = mapClientKey(event.getCode());
+                if (actionData != null) {
+                    TetrisMessage.InputAction action = (TetrisMessage.InputAction) actionData[0];
+                    int blockIndex = (int) actionData[1];
+                    network.send(new TetrisMessage.Input(2, blockIndex, action));
                     event.consume();
                 }
             });
         }
     }
 
-    private TetrisMessage.InputAction mapClientKey(KeyCode key) {
-        // Mirror KeyHandlers order
-        java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
-        if (key == p1.get(0)) return TetrisMessage.InputAction.LEFT;
-        if (key == p1.get(1)) return TetrisMessage.InputAction.RIGHT;
-        if (key == p1.get(2)) return TetrisMessage.InputAction.DROP;
-        if (key == p1.get(3)) return TetrisMessage.InputAction.ROTATE;
-        return null;
-    }
+        private Object[] mapClientKey(KeyCode key) {
+            java.util.ArrayList<KeyCode> p1 = tS.getPlayer1Keys();
+            java.util.ArrayList<KeyCode> p1Sec = tS.getPlayer1SecondaryKeys();
+
+            if (key == p1.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 0};
+            if (key == p1.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 0};
+            if (key == p1.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 0};
+            if (key == p1.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 0};
+
+            if (key == p1Sec.get(0)) return new Object[]{TetrisMessage.InputAction.LEFT, 1};
+            if (key == p1Sec.get(1)) return new Object[]{TetrisMessage.InputAction.RIGHT, 1};
+            if (key == p1Sec.get(2)) return new Object[]{TetrisMessage.InputAction.DROP, 1};
+            if (key == p1Sec.get(3)) return new Object[]{TetrisMessage.InputAction.ROTATE, 1};
+
+            return null;
+        }
 
     private void incrementLines(int playerNum, int lineCount) {
         Label target = playerNum == 1 ? player1LinesLabel : player2LinesLabel;
