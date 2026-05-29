@@ -52,8 +52,8 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @FXML
     protected void onAdvancedSettingsAction(){
-        String p1Name = c.checkNameInput(player1TF.getText(),1);
-        String p2Name = c.checkNameInput(player2TF.getText(),2);
+        String p1Name = player1TF.getText();
+        String p2Name = player2TF.getText();
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
         int p2Level =  player2Level.getSelectionModel().getSelectedItem();
         AdvancedSettings controller = (AdvancedSettings) c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);

@@ -62,7 +62,7 @@ public class HostLan extends Controller implements Initializable {
     private void onAdvancedSettingsAction(){
         AdvancedSettings controller = (AdvancedSettings) c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
 
-        String yourName = c.checkNameInput(hostNameTF.getText(),1);
+        String yourName = hostNameTF.getText();
         int hostLevel = yourLevel.getSelectionModel().getSelectedItem();
         advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
 

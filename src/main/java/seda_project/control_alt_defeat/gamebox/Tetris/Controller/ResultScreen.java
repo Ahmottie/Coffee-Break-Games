@@ -42,8 +42,11 @@ public class ResultScreen extends Controller {
         if (s.network == null) {
             TetrisEngine fresh = new TetrisEngine(
                     state.p1Name(), state.p2Name(),initP1Level,initP2Level, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
-            GameScreen controller = (GameScreen) c.changeScene(
-                    "/Views/Tetris/GameScreen.fxml", header, vS);
+            // keep the chosen layout on play again
+            String address = TetrisAdvancedSettings.getInstance().isVertical()
+                    ? "/Views/Tetris/GameScreen.fxml"
+                    : "/Views/Tetris/GameScreenHorizontal.fxml";
+            GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
             controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,false, fresh);
             controller.setInitialLevels(initP1Level,initP2Level);
             return;

@@ -60,8 +60,8 @@
                                              <Label styleClass="text" text="Move Right" GridPane.rowIndex="2" />
                                              <Label styleClass="text" text="Move Down" GridPane.rowIndex="4" />
                                              <Label styleClass="text" text="Rotate" GridPane.rowIndex="6" />
-                                              <StackPane styleClass="button-wrapper"  userData="0" GridPane.columnIndex="2">
-                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change">
+                                              <StackPane styleClass="button-wrapper" GridPane.columnIndex="2">
+                                              <Button mnemonicParsing="false" onAction="#changePlayer1" text="Change" userData="0">
                                                 <GridPane.margin>
                                                    <Insets />
                                                 </GridPane.margin></Button>
