@@ -45,18 +45,21 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 200, 80, 0.4), 12, 0.3, 0, 0);
 }
 
+.button-wrapper {
+    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.4), 8, 0, 0, 2);
+    -fx-padding: 8px;
+}
+
 .button {
     -fx-background-color: linear-gradient(to bottom, #1ecfcf, #0d8a8a);
     -fx-text-fill: white;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.4), 8, 0, 0, 2);
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #25e8e8, #14a3a3);
-    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.7), 14, 0, 0, 3);
 }
 
 .button:pressed {

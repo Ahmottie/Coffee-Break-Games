@@ -109,6 +109,7 @@ final class LanSession implements NetworkLayer {
 
     @Override public void addListener(NetworkListener l)    { listeners.add(l); }
     @Override public void removeListener(NetworkListener l) { listeners.remove(l); }
+    @Override public void clearListeners()                 { listeners.clear(); }
     @Override public boolean isConnected()                  { return !closed.get(); }
 
     @Override

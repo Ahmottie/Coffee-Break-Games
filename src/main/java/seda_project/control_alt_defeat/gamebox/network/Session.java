@@ -35,7 +35,11 @@ public final class Session {
     // identity / lobby state shared by both games
     public String       myName;
     public String       peerName;
+    public int          myLevel;
+    public int          peerLevel;
     public boolean      isHost;
-    public boolean      localReady; 
+    public boolean      localReady;
     public boolean      peerReady;
+
+    public boolean      lanVertical = true;
 }

@@ -22,11 +22,14 @@ public class TetrisSettings {
     }
 
     private TetrisSettings() {
+        // Player 1 Primary (WASD)
         player1Keys = new ArrayList<>();
         player1Keys.add(KeyCode.A);
         player1Keys.add(KeyCode.D);
         player1Keys.add(KeyCode.S);
         player1Keys.add(KeyCode.W);
+
+        // Player 2 Primary (Arrows)
         player2Keys = new ArrayList<>();
         player2Keys.add(KeyCode.LEFT);
         player2Keys.add(KeyCode.RIGHT);
@@ -45,15 +48,17 @@ public class TetrisSettings {
 
         scene.setOnKeyPressed(e -> {
             KeyCode key = e.getCode();
-            if (!player1Keys.contains(key)&& !player2Keys.contains(key)) {
+            if (!player1Keys.contains(key) && !player2Keys.contains(key)) {
                 result[0] = key;
-                switch (player) {
-                    case 0:
-                        player1Keys.set(position, key);
-                        break;
-                    case 1:
-                        player2Keys.set(position, key);
-                        break;
+                if (position < 4) {
+                    switch (player) {
+                        case 0:
+                            player1Keys.set(position, key);
+                            break;
+                        case 1:
+                            player2Keys.set(position, key);
+                            break;
+                    }
                 }
                 inputStage.close();
             }
@@ -63,11 +68,7 @@ public class TetrisSettings {
         inputStage.showAndWait();
         return result[0];
     }
-    public ArrayList<KeyCode> getPlayer1Keys() {
-        return player1Keys;
-    }
 
-    public ArrayList<KeyCode> getPlayer2Keys() {
-        return player2Keys;
-    }
+    public ArrayList<KeyCode> getPlayer1Keys() { return player1Keys; }
+    public ArrayList<KeyCode> getPlayer2Keys() { return player2Keys; }
 }

@@ -33,6 +33,7 @@ public final class Discovery {
 
     public record Advertisement(
             String name,
+            int level,
             String ipAddress,
             int    tcpPort,
             long   lastSeenMs
@@ -50,32 +51,32 @@ public final class Discovery {
         @Override void close();
     }
 
-    public static Announcer announce(String name, int tcpPort) {
-        return new AnnouncerImpl(name, tcpPort);
+    public static Announcer announce(String name, int tcpPort, int level) {
+        return new AnnouncerImpl(name, tcpPort, level);
     }
 
     public static Listener listen() throws IOException {
         return new ListenerImpl();
     }
 
-    private record AdPayload(String name, int tcpPort) implements Serializable {}
+    private record AdPayload(String name, int tcpPort, int level) implements Serializable {}
 
     private static final class AnnouncerImpl implements Announcer {
         private final Thread thread;
         private final AtomicBoolean closed = new AtomicBoolean(false);
 
-        AnnouncerImpl(String name, int tcpPort) {
-            this.thread = new Thread(() -> announceLoop(name, tcpPort), "discovery-announcer");
+        AnnouncerImpl(String name, int tcpPort, int level) {
+            this.thread = new Thread(() -> announceLoop(name, tcpPort,level), "discovery-announcer");
             this.thread.setDaemon(true);
             this.thread.start();
         }
 
-        private void announceLoop(String name, int tcpPort) {
+        private void announceLoop(String name, int tcpPort, int level) {
             byte[] payload;
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                    oos.writeObject(new AdPayload(name, tcpPort));
+                    oos.writeObject(new AdPayload(name, tcpPort,level));
                 }
                 payload = baos.toByteArray();
             } catch (IOException e) {
@@ -141,7 +142,7 @@ public final class Discovery {
                     Object obj = ois.readObject();
                     if (obj instanceof AdPayload p) {
                         String ip = src.getHostAddress();
-                        hosts.put(ip, new Advertisement(p.name(), ip, p.tcpPort(),
+                        hosts.put(ip, new Advertisement(p.name(), p.level(),ip, p.tcpPort(),
                                 System.currentTimeMillis()));
                     }
                 } catch (Exception ignored) {

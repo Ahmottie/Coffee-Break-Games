@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -41,6 +42,9 @@ public class JoinLan extends Controller implements Initializable {
     private Label joinStatus, selectedHost;
 
     @FXML
+    private ComboBox<Integer> yourLevel;
+
+    @FXML
     protected void onBackAction(){
         stopDiscovery();
         c.backScene(header,vS);
@@ -65,12 +69,15 @@ public class JoinLan extends Controller implements Initializable {
         stopDiscovery();
 
         try {
+            int joinLevel = yourLevel.getSelectionModel().getSelectedItem();
             NetworkLayer layer = LanClient.join(ad.ipAddress(), ad.tcpPort());
             Session s = Session.current();
             s.myName   = yourName;
             s.isHost   = false;
+            s.myLevel = joinLevel;
             s.network  = layer;
             s.peerName = ad.name();
+            s.peerLevel = ad.level();
 
             WaitForOpponent controller = (WaitForOpponent) c.changeScene(
                     "/Views/Tetris/WaitForOpponent.fxml", header, vS);
@@ -84,6 +91,14 @@ public class JoinLan extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         joinStatus.setVisible(false);
+
+        yourLevel.getItems().clear();
+
+        for (int i = 0; i < 20; i++) {
+            yourLevel.getItems().add(i+1);
+        }
+        yourLevel.getSelectionModel().select(0);
+
         startDiscovery();
     }
 
@@ -150,8 +165,7 @@ public class JoinLan extends Controller implements Initializable {
 
     private Label makeHostLabel(Discovery.Advertisement ad) {
         Label l = new Label(ad.name() + "   (" + ad.ipAddress() + ")");
-        l.setUserData(ad);                  
-        l.setMinWidth(570);
+        l.setUserData(ad);
         l.setAlignment(Pos.CENTER);
         l.setOnMouseClicked(mouseEvent -> {
             deselectAll();

@@ -4,24 +4,17 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 
 public sealed interface TetrisMessage extends Message
-        permits TetrisMessage.Hello,
-                TetrisMessage.LobbyInfo,
-                TetrisMessage.Ready,
-                TetrisMessage.StartCountdown,
-                TetrisMessage.Input,
-                TetrisMessage.StateUpdate,
-                TetrisMessage.LinesCleared,
-                TetrisMessage.Restart {
+        permits TetrisMessage.Hello, TetrisMessage.Input, TetrisMessage.LinesCleared, TetrisMessage.LobbyInfo, TetrisMessage.Ready, TetrisMessage.Restart, TetrisMessage.StartCountdown, TetrisMessage.StateUpdate {
 
-    record Hello(String playerName) implements TetrisMessage {}
+    record Hello(String playerName, int playerLevel) implements TetrisMessage {}
 
-    record LobbyInfo(String hostName, String clientName) implements TetrisMessage {}
+    record LobbyInfo(String hostName, String clientName, int hostLevel, int clientLevel, boolean vertical) implements TetrisMessage {}
 
     record Ready(boolean ready) implements TetrisMessage {}
 
     record StartCountdown(long delayMs) implements TetrisMessage {}
 
-    record Input(int playerNum, InputAction action) implements TetrisMessage {}
+    public record Input(int playerNum, int blockIndex, InputAction action) implements Message, TetrisMessage {}
 
     record StateUpdate(TetrisEngine.GameState state) implements TetrisMessage {}
 
@@ -30,6 +23,6 @@ public sealed interface TetrisMessage extends Message
     record Restart() implements TetrisMessage {}
 
     enum InputAction {
-        LEFT, RIGHT, ROTATE, DROP
+        LEFT, RIGHT, ROTATE, TOGGLE, DROP
     }
 }

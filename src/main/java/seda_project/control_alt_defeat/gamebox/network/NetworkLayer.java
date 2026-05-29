@@ -9,6 +9,8 @@ public interface NetworkLayer extends AutoCloseable {
 
     void removeListener(NetworkListener listener);
 
+    void clearListeners();
+
     boolean isConnected();
 
     @Override

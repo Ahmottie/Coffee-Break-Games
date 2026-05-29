@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
+import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.Discovery;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
@@ -58,7 +59,7 @@ public class WaitForOpponent extends Controller {
         maybeStartCountdown();
     }
 
-    public void passHostData(String hostName) {
+    public void passHostData(String hostName, int hostLevel) {
         yourNameLabel.setText(hostName);
         hostIpAddressLabel.setText(Lan.localIp());
         startButton.setText("Ready");
@@ -75,7 +76,7 @@ public class WaitForOpponent extends Controller {
         loadingDots.play();
 
         // Start UDP broadcast so joiners can discover us 
-        announcer = Discovery.announce(hostName, Lan.DEFAULT_PORT);
+        announcer = Discovery.announce(hostName, Lan.DEFAULT_PORT, hostLevel);
 
         // Open the server socket on the background
         LanHost.hostAsync(Lan.DEFAULT_PORT,
@@ -106,8 +107,12 @@ public class WaitForOpponent extends Controller {
 
     private void handleHostMessage(NetworkLayer layer, Message msg) {
         if (msg instanceof TetrisMessage.Hello h) {
-            Session.current().peerName = h.playerName();
-            layer.send(new TetrisMessage.LobbyInfo(Session.current().myName, h.playerName()));
+            Session s = Session.current();
+            s.peerName = h.playerName();
+            s.peerLevel = h.playerLevel();
+            boolean vertical = TetrisAdvancedSettings.getInstance().isVertical();
+            s.lanVertical = vertical;
+            layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel,vertical));
             playerJoin(h.playerName());
         } else if (msg instanceof TetrisMessage.Ready r) {
             Session.current().peerReady = r.ready();
@@ -144,12 +149,13 @@ public class WaitForOpponent extends Controller {
         });
 
         // Greet the host
-        layer.send(new TetrisMessage.Hello(playerName));
+        layer.send(new TetrisMessage.Hello(playerName,Session.current().myLevel));
     }
 
     private void handleJoinMessage(Message msg) {
         if (msg instanceof TetrisMessage.LobbyInfo info) {
             Session.current().peerName = info.hostName();
+            Session.current().lanVertical = info.vertical();
             opponentNameLabel.setText(info.hostName());
             statusLabel.setText("Press Ready to start!");
         } else if (msg instanceof TetrisMessage.Ready r) {
@@ -184,17 +190,22 @@ public class WaitForOpponent extends Controller {
         // Player 1 = host , Player 2 = client
         String p1 = s.isHost ? s.myName  : s.peerName;
         String p2 = s.isHost ? s.peerName : s.myName;
+        int p1L = s.isHost ? s.myLevel : s.peerLevel;
+        int p2L = s.isHost ? s.peerLevel : s.myLevel;
 
         // Build the engine on the host only
         TetrisEngine engine = null;
         if (s.isHost) {
-            engine = new TetrisEngine(p1, p2, BlockRegistry.getInstance());
+            engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             s.tetrisEngine = engine;
         }
 
-        GameScreen controller = (GameScreen) c.changeScene(
-                "/Views/Tetris/GameScreen.fxml", header, vS);
-        controller.create(p1, p2, true, engine);
+        String address = s.lanVertical
+                ? "/Views/Tetris/GameScreen.fxml"
+                : "/Views/Tetris/GameScreenHorizontal.fxml";
+
+        GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
+        controller.create(p1, p2, p1L,p2L, true, engine);
 
         if (s.isHost) {
             controller.attachHostNetworkBridge(s.network);

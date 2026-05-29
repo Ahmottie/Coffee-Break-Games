@@ -36,19 +36,6 @@ public class GameBox extends Application {
     @FXML
     VBox header;
 
-    @FXML
-    public void onExitAction(){
-        cleanExit();
-    }
-    @FXML
-    public void onMemoryAction(){
-        c.changeScene("/Views/Memory/MemoryMenu.fxml",header, vS);
-    }
-    @FXML
-    public void onTetrisAction(){
-        c.changeScene("/Views/Tetris/TetrisMenu.fxml",header, vS);
-    }
-
     public static void cleanExit() {
         logger.debug("Shutting down");
         Platform.exit();

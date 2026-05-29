@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class Board implements Serializable {
-    private final int width = 10;
-    private final int height = 20;
-    private final String[][] grid; // null means empty, String holds hex color
+    private int width = 10;
+    private int height = 20;
+    private String[][] grid; // null means empty, String holds hex color
     private final boolean inverted;
 
     public Board(boolean inverted) {
@@ -14,10 +14,16 @@ public class Board implements Serializable {
         this.inverted = inverted;
     }
 
+    // Standard on block collision check.
     public boolean isValidPosition(Block block) {
-        boolean[][] shape = block.getShape();
-        int bx = block.getX();
-        int by = block.getY();
+        return isValidPosition(block, null);
+    }
+
+    // Advanced collision check for Two Active Blocks Mode.
+    public boolean isValidPosition(Block movingBlock, Block otherActiveBlock) {
+        boolean[][] shape = movingBlock.getShape();
+        int bx = movingBlock.getX();
+        int by = movingBlock.getY();
 
         for (int row = 0; row < shape.length; row++) {
             for (int col = 0; col < shape[row].length; col++) {
@@ -25,16 +31,41 @@ public class Board implements Serializable {
                     int boardX = bx + col;
                     int boardY = by + row;
 
+                    // 1. Check Board Boundaries
                     if (boardX < 0 || boardX >= width || boardY < 0 || boardY >= height) {
                         return false;
                     }
+
+                    // 2. Check Locked Grid
                     if (grid[boardY][boardX] != null) {
                         return false;
+                    }
+
+                    // 3. Check Inter-Block Collision
+                    if (otherActiveBlock != null) {
+                        if (collidesWithOtherBlock(boardX, boardY, otherActiveBlock)) {
+                            return false;
+                        }
                     }
                 }
             }
         }
         return true;
+    }
+
+    // Map global board coordinates to the local space of the other block.
+    private boolean collidesWithOtherBlock(int boardX, int boardY, Block otherBlock) {
+        boolean[][] otherShape = otherBlock.getShape();
+        int localRow = boardY - otherBlock.getY();
+        int localCol = boardX - otherBlock.getX();
+
+        // If the coordinate falls within the other block's grid, check if that specific cell is solid
+        if (localRow >= 0 && localRow < otherShape.length &&
+                localCol >= 0 && localCol < otherShape[0].length) {
+            return otherShape[localRow][localCol];
+        }
+
+        return false;
     }
 
     public void lockBlock(Block block) {
@@ -52,7 +83,12 @@ public class Board implements Serializable {
     }
 
     public void overwriteGrid(String[][] newGrid) {
-        for (int i = 0; i < height; i++) {
+        int newHeight = newGrid.length;
+        int newWidth  = newGrid[0].length;
+        this.grid   = new String[newHeight][newWidth];
+        this.height = newHeight;
+        this.width  = newWidth;
+        for (int i = 0; i < newHeight; i++) {
             this.grid[i] = newGrid[i].clone();
         }
     }
@@ -98,6 +134,57 @@ public class Board implements Serializable {
         for (int row = 0; row < height; row++) {
             Arrays.fill(grid[row], null);
         }
+    }
+
+    public void expand(int rows) {
+        int newHeight = height + rows;
+        String[][] newGrid = new String[newHeight][width];
+
+        if (inverted) {
+            // blocks fall upward, active space is at the bottom — preserve existing rows at top
+            for (int i = 0; i < height; i++) {
+                newGrid[i] = grid[i].clone();
+            }
+            // fill new empty rows at the bottom
+            for (int i = height; i < newHeight; i++) {
+                newGrid[i] = new String[width];
+            }
+        } else {
+            // blocks fall downward, active space is at the top — preserve existing rows at bottom
+            int offset = newHeight - height;
+            for (int i = 0; i < height; i++) {
+                newGrid[i + offset] = grid[i].clone();
+            }
+            // fill new empty rows at the top
+            for (int i = 0; i < offset; i++) {
+                newGrid[i] = new String[width];
+            }
+        }
+        this.grid = newGrid;
+        this.height = newHeight;
+    }
+
+    public void shrink(int rows) {
+        if (rows >= height) throw new IllegalArgumentException("Cannot shrink below 1 row");
+        int newHeight = height - rows;
+        String[][] newGrid = new String[newHeight][width];
+
+        if (inverted) {
+            // drop rows from the bottom
+            for (int i = 0; i < newHeight; i++) {
+                newGrid[i] = grid[i].clone();
+            }
+        } else {
+            // drop rows from the top
+            int offset = height - newHeight;
+            for (int i = 0; i < newHeight; i++) {
+                newGrid[i] = grid[i + offset].clone();
+            }
+        }
+
+
+        this.grid = newGrid;
+        this.height = newHeight;
     }
 
     public String[][] getGrid() { return grid; }
