@@ -52,7 +52,12 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @FXML
     protected void onAdvancedSettingsAction(){
-        c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+        String p1Name = c.checkNameInput(player1TF.getText(),1);
+        String p2Name = c.checkNameInput(player2TF.getText(),2);
+        int p1Level =  player1Level.getSelectionModel().getSelectedItem();
+        int p2Level =  player2Level.getSelectionModel().getSelectedItem();
+        AdvancedSettings controller = (AdvancedSettings) c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+        controller.handLocalData(p1Name,p2Name,p1Level,p2Level);
     }
 
     @FXML
@@ -62,6 +67,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
         int p2Level =  player2Level.getSelectionModel().getSelectedItem();
         String address =  "";
+        advancedSettings.setTwoBlocks(false);
         if (advancedSettings.isVertical()){
             address = "/Views/Tetris/GameScreen.fxml";
         }
@@ -74,5 +80,12 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             controller.create(player1Name,player2Name,p1Level, p2Level,false, engine);
             controller.setInitialLevels(p1Level,p2Level);
         }
+    }
+
+    public void handLocalData(String p1Name, String p2Name, int p1Level, int p2Level) {
+        player1TF.setText(p1Name);
+        player2TF.setText(p2Name);
+        player1Level.getSelectionModel().select(p1Level-1);
+        player2Level.getSelectionModel().select(p2Level-1);
     }
 }

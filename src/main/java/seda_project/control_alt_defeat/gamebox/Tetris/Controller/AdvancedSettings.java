@@ -15,14 +15,13 @@ import seda_project.control_alt_defeat.gamebox.ui.IntField;
 import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 
 public class AdvancedSettings extends Controller implements Initializable {
     private final TetrisAdvancedSettings advancedSettings = TetrisAdvancedSettings.getInstance();
-
+    String p1Name, p2Name;
+    int p1Level, p2Level;
     @FXML
     private CheckBox swapBoards, swapBlocks,portals, opponentSlowDown, opponentSpeedUp, opponentDelayRotation,selfSlowDown,selfDelayRotation,radialBomb,columnBomb;
 
@@ -40,7 +39,12 @@ public class AdvancedSettings extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
-        c.backScene(header,vS);
+        var controller = c.backScene(header,vS);
+        if (controller instanceof HostLan hL){
+            hL.handPlayerData(p1Name,p1Level);
+        } else if (controller instanceof LocalGameConfiguration lGC){
+            lGC.handLocalData(p1Name,p2Name,p1Level,p2Level);
+        }
     }
     @FXML
     protected void onSaveAction(){
@@ -80,5 +84,17 @@ public class AdvancedSettings extends Controller implements Initializable {
 
         itemSpawnRate.setText((advancedSettings.getItemSpawnRate()/1000)+"");
         itemDespawnTime.setText((advancedSettings.getItemDespawnRate()/1000)+"");
+    }
+
+    public void handHostData(String yourName, int hostLevel) {
+        this.p1Name = yourName;
+        this.p1Level = hostLevel;
+    }
+
+    public void handLocalData(String p1Name, String p2Name, int p1Level, int p2Level) {
+        this.p1Name = p1Name;
+        this.p1Level = p1Level;
+        this.p2Name = p2Name;
+        this.p2Level = p2Level;
     }
 }

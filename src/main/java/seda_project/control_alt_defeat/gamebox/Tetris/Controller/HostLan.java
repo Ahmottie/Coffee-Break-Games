@@ -60,7 +60,13 @@ public class HostLan extends Controller implements Initializable {
 
     @FXML
     private void onAdvancedSettingsAction(){
-        c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+        AdvancedSettings controller = (AdvancedSettings) c.changeScene("/Views/Tetris/AdvancedSettings.fxml",header,vS);
+
+        String yourName = c.checkNameInput(hostNameTF.getText(),1);
+        int hostLevel = yourLevel.getSelectionModel().getSelectedItem();
+        advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
+
+        controller.handHostData(yourName,hostLevel);
         advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
     }
 
@@ -76,5 +82,10 @@ public class HostLan extends Controller implements Initializable {
         yourLevel.getSelectionModel().select(0);
 
         toggleSwitch.setSwitchedOn(advancedSettings.isTwoBlocks());
+    }
+
+    public void handPlayerData(String p1Name, int p1Level) {
+        hostNameTF.setText(p1Name);
+        yourLevel.getSelectionModel().select(p1Level-1);
     }
 }

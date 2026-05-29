@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 <?import seda_project.control_alt_defeat.gamebox.ui.IntField?>
 

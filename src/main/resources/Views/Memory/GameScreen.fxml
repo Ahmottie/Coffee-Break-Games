@@ -27,7 +27,7 @@
                     </VBox>
                     <AnchorPane prefHeight="100.0" prefWidth="800.0">
                         <children>
-                            <GridPane layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="25.0">
+                            <GridPane layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="25.0">
                                 <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
