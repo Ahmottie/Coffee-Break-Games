@@ -100,6 +100,9 @@ public class ResultScreen extends Controller {
         Session s = Session.current();
         if (s.network != null) {
             this.network = s.network;
+
+            this.network.clearListeners();
+            
             if (!s.isHost) {
                 playAgainButton.setText("Waiting for host...");
                 playAgainButton.setDisable(true);

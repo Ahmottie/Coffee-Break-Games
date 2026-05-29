@@ -395,6 +395,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             p1EngineTicker.stop();
             p2EngineTicker.stop();
         }
+        if (handler != null) handler.stop();
         ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml", header, vS);
         controller.setInitialLevels(initP1Level,initP2Level);
         controller.handGameState(snapshot, engine, player1LinesLabel,player2LinesLabel);
@@ -427,6 +428,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
             p1EngineTicker.stop();
             p2EngineTicker.stop();
         }
+        if (handler != null) handler.stop();
     }
 
     @Override
@@ -442,6 +444,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     public void attachHostNetworkBridge(NetworkLayer network) {
         if (engine == null || network == null) return;
+
+        network.clearListeners();
 
         engine.addListener(new TetrisEventListener() {
             @Override public void onTick(TetrisEngine.GameState s, int player) {
@@ -498,6 +502,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     public void attachClientNetworkBridge(NetworkLayer network) {
         if (engine != null || network == null) return;
+
+        network.clearListeners();
 
         network.addListener(new NetworkListener() {
             @Override
