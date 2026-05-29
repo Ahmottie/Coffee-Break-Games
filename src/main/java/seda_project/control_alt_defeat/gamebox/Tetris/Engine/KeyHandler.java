@@ -62,6 +62,11 @@ public class KeyHandler {
                 else if (key == p2.get(2)) engine.processInput(1, "DROP", 0);
                 else if (key == p2.get(3)) engine.processInput(1, "ROTATE", 0);
             }
+            /* in lan the host is only player 1 so we stop here.
+             if we dont, the code below runs too and moves player 2
+            and also rotates the block twice
+            */
+            return;
         }
 
         if (key == p1.get(0)) engine.processInput(1, "LEFT", p1LocalFocus);
