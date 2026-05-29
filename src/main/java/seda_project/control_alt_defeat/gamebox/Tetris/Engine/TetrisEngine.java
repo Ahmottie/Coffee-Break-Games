@@ -355,56 +355,64 @@ public class TetrisEngine {
         }
 
         if (!board.isValidPosition(activeBlock, otherBlock)) {
+            // FIX: Hard Lock to avoid collision at the top
+            boolean hardLock = !board.isValidPosition(activeBlock, null);
+
+            // Revert the movement to avoid overlap
             if (board.isInverted()) {
                 activeBlock.moveDown();
             } else {
                 activeBlock.moveUp();
             }
-            if (activeBlock instanceof BombBlock bb){
-                explode(playerNum, bb, board);
-                GameState snapExplode = getSnapshot();
-                listeners.forEach(l -> l.onBlockMovement(snapExplode,playerNum));
-            }
-            else {
-                board.lockBlock(activeBlock);
-                GameState snapLock = getSnapshot();
-                listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
-            }
 
-            int linesCleared = board.clearLines();
-            if (linesCleared > 0) {
-                if (playerNum == 1) {
-                    p1LinesCleared +=  linesCleared;
-                    p1Score += calculateScore(linesCleared);
-                    if (advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
-                        p1Board.expand(linesCleared);
-                        p2Board.shrink(linesCleared);
-                        for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
-                            if (p2ActiveBlocks[i] != null) p2ActiveBlocks[i].setY(p2ActiveBlocks[i].getY() + linesCleared);
-                        }
-                        listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
-                    }
+            // Lock the block when it hits the ground
+            if (hardLock) {
+                if (activeBlock instanceof BombBlock bb){
+                    explode(playerNum, bb, board);
+                    GameState snapExplode = getSnapshot();
+                    listeners.forEach(l -> l.onBlockMovement(snapExplode,playerNum));
                 }
                 else {
-                    p2LinesCleared +=  linesCleared;
-                    p2Score += calculateScore(linesCleared);
-                    if( advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
-                        p2Board.expand(linesCleared);
-                        p1Board.shrink(linesCleared);
-                        for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
-                            if (p1ActiveBlocks[i] != null) p1ActiveBlocks[i].setY(p1ActiveBlocks[i].getY() - linesCleared);
-                        }
-                        listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
-                    }
+                    board.lockBlock(activeBlock);
+                    GameState snapLock = getSnapshot();
+                    listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
                 }
 
-                GameState snapLines = getSnapshot();
-                final int finalLinesCleared = linesCleared;
-                listeners.forEach(l -> l.onLinesCleared(playerNum, finalLinesCleared, snapLines));
+                int linesCleared = board.clearLines();
+                if (linesCleared > 0) {
+                    if (playerNum == 1) {
+                        p1LinesCleared +=  linesCleared;
+                        p1Score += calculateScore(linesCleared);
+                        if (advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
+                            p1Board.expand(linesCleared);
+                            p2Board.shrink(linesCleared);
+                            for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
+                                if (p2ActiveBlocks[i] != null) p2ActiveBlocks[i].setY(p2ActiveBlocks[i].getY() + linesCleared);
+                            }
+                            listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
+                        }
+                    }
+                    else {
+                        p2LinesCleared +=  linesCleared;
+                        p2Score += calculateScore(linesCleared);
+                        if( advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
+                            p2Board.expand(linesCleared);
+                            p1Board.shrink(linesCleared);
+                            for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
+                                if (p1ActiveBlocks[i] != null) p1ActiveBlocks[i].setY(p1ActiveBlocks[i].getY() - linesCleared);
+                            }
+                            listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
+                        }
+                    }
 
-                handleLevelProgression(playerNum);
+                    GameState snapLines = getSnapshot();
+                    final int finalLinesCleared = linesCleared;
+                    listeners.forEach(l -> l.onLinesCleared(playerNum, finalLinesCleared, snapLines));
+
+                    handleLevelProgression(playerNum);
+                }
+                spawnNewBlock(playerNum, blockIndex);
             }
-            spawnNewBlock(playerNum, blockIndex);
         }
         else{
             PowerUp hit = checkPowerUpTrigger(playerNum, activeBlock);
