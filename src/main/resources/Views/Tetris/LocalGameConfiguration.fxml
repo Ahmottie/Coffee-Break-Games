@@ -62,23 +62,29 @@
                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                   </padding>
                               </GridPane>
+                         <StackPane styleClass="button-wrapper">
                         <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
+                         </StackPane>
                         <Label fx:id="statusLabel" maxHeight="60.0" maxWidth="360.0" minHeight="0.0" minWidth="0.0">
                            <VBox.margin>
                               <Insets bottom="10.0" top="10.0" />
                            </VBox.margin></Label>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
+                               <StackPane styleClass="button-wrapper">
                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackAction" text="Back">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
+                               </StackPane>
+                               <StackPane styleClass="button-wrapper">
                                       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onStartAction" text="Start Game">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
+                               </StackPane>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" />

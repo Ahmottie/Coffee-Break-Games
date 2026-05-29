@@ -3,13 +3,14 @@
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 <?import seda_project.control_alt_defeat.gamebox.ui.IntField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
+
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.AdvancedSettings">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
@@ -66,21 +67,21 @@
                                         <Label text="Item Despawntime" GridPane.rowIndex="5" />
 
                                         <IntField fx:id="itemSpawnRate" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                            <tooltip><Tooltip text="Input the time in seconds. Lower value increases item frequency." showDelay="0ms"/></tooltip>
+                                            <tooltip><Tooltip showDelay="0ms" text="Input the time in seconds. Lower value increases item frequency." /></tooltip>
                                         </IntField>
                                         <IntField fx:id="itemDespawnTime" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                            <tooltip><Tooltip text="Input the time in seconds. Influences the time an item remains active on the screen." showDelay="0ms"/></tooltip>
+                                            <tooltip><Tooltip showDelay="0ms" text="Input the time in seconds. Influences the time an item remains active on the screen." /></tooltip>
                                         </IntField>
                                         <Label alignment="CENTER" prefHeight="28.0" prefWidth="614.0" styleClass="normalText" text="Items" GridPane.columnSpan="4" GridPane.rowIndex="3" />
                                         <Label GridPane.rowIndex="6" />
                                         <Label text="Affect Both" GridPane.rowIndex="6" />
                                         <CheckBox fx:id="swapBoards" mnemonicParsing="false" text="Swap Boards" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                             <tooltip>
-                                                <Tooltip text="Swap the Boards of both players." showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Swap the Boards of both players.">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/Swap.png"/>
+                                                                <Image url="@../../Images/Tetris/Swap.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -89,11 +90,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="swapBlocks" mnemonicParsing="false" text="Swap Blocks" GridPane.columnIndex="2" GridPane.rowIndex="6">
                                             <tooltip>
-                                                <Tooltip text="Swap the active Blocks of both players." showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Swap the active Blocks of both players.">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/SwapBlocks.png"/>
+                                                                <Image url="@../../Images/Tetris/SwapBlocks.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -102,11 +103,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="portals" mnemonicParsing="false" text="Portals" GridPane.columnIndex="3" GridPane.rowIndex="6">
                                             <tooltip>
-                                                <Tooltip text="Forwards your active Block to the opponent as their next active Block." showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Forwards your active Block to the opponent as their next active Block.">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/Portal.png"/>
+                                                                <Image url="@../../Images/Tetris/Portal.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -117,11 +118,11 @@
                                         <Label text="Affect Self" GridPane.rowIndex="8" />
                                         <CheckBox fx:id="opponentSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                             <tooltip>
-                                                <Tooltip text="Slows down the tickrate of the opponent for 10 ticks" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Slows down the tickrate of the opponent for 10 ticks">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/DecreaseTickOpponent.png"/>
+                                                                <Image url="@../../Images/Tetris/DecreaseTickOpponent.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -130,11 +131,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="opponentSpeedUp" mnemonicParsing="false" text="Speed Up" GridPane.columnIndex="2" GridPane.rowIndex="7">
                                             <tooltip>
-                                                <Tooltip text="Increase the tickrate of the opponent for 10 ticks" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Increase the tickrate of the opponent for 10 ticks">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/IncreaseTickOpponent.png"/>
+                                                                <Image url="@../../Images/Tetris/IncreaseTickOpponent.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -143,11 +144,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="opponentDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="3" GridPane.rowIndex="7">
                                             <tooltip>
-                                                <Tooltip text="Slows down the Rotation speed of the opponent for 10 rotations (two moves are needed for oen rotation)" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Slows down the Rotation speed of the opponent for 10 rotations (two moves are needed for oen rotation)">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/DecreaseRotationOpponent.png"/>
+                                                                <Image url="@../../Images/Tetris/DecreaseRotationOpponent.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -156,11 +157,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="selfSlowDown" mnemonicParsing="false" text="Slow Down" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                             <tooltip>
-                                                <Tooltip text="Slows down the tickrate for you for 10 ticks" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Slows down the tickrate for you for 10 ticks">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/DecreaseTickSelf.png"/>
+                                                                <Image url="@../../Images/Tetris/DecreaseTickSelf.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -169,11 +170,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="selfDelayRotation" mnemonicParsing="false" text="Delay Rotation" GridPane.columnIndex="2" GridPane.rowIndex="8">
                                             <tooltip>
-                                                <Tooltip text="Slows down the Rotation speed for you for 10 rotations (two moves are needed for oen rotation)" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="Slows down the Rotation speed for you for 10 rotations (two moves are needed for oen rotation)">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/DecreaseRotationSelf.png"/>
+                                                                <Image url="@../../Images/Tetris/DecreaseRotationSelf.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -185,11 +186,11 @@
                                         <Label text="Activate" GridPane.rowIndex="10" />
                                         <CheckBox fx:id="radialBomb" mnemonicParsing="false" text="Radial" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                             <tooltip>
-                                                <Tooltip text="When reaching its final destination this block destroys all blocks within a radius of 3" showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="When reaching its final destination this block destroys all blocks within a radius of 3">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/RadialBomb.png"/>
+                                                                <Image url="@../../Images/Tetris/RadialBomb.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -198,11 +199,11 @@
                                         </CheckBox>
                                         <CheckBox fx:id="columnBomb" mnemonicParsing="false" text="Column" GridPane.columnIndex="2" GridPane.rowIndex="10">
                                             <tooltip>
-                                                <Tooltip text="When reaching its final destination this block destroys all blocks in this column that are below this one." showDelay="0ms">
+                                                <Tooltip showDelay="0ms" text="When reaching its final destination this block destroys all blocks in this column that are below this one.">
                                                     <graphic>
-                                                        <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                                                        <ImageView fitHeight="32" fitWidth="32" preserveRatio="true">
                                                             <image>
-                                                                <Image url="@../../Images/Tetris/DecreaseRotationSelf.png"/>
+                                                                <Image url="@../../Images/Tetris/ColumnBomb.png" />
                                                             </image>
                                                         </ImageView>
                                                     </graphic>
@@ -218,16 +219,22 @@
                                 </GridPane>
                                 <HBox alignment="CENTER" prefHeight="61.0" prefWidth="623.0">
                                     <children>
-                                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackAction" text="Back">
-                                            <HBox.margin>
-                                                <Insets right="10.0" />
-                                            </HBox.margin>
-                                        </Button>
-                                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSaveAction" text="Save">
-                                            <HBox.margin>
-                                                <Insets left="10.0" />
-                                            </HBox.margin>
-                                        </Button>
+                              <StackPane styleClass="button-wrapper">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                                 <children>
+                                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackAction" text="Back" />
+                                 </children>
+                              </StackPane>
+                              <StackPane styleClass="button-wrapper">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <children>
+                                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
+                                 </children>
+                              </StackPane>
                                     </children></HBox>
                             </children>
                         </VBox>

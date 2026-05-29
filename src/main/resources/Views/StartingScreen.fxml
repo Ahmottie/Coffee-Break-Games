@@ -24,9 +24,9 @@
                         </Label>
                     </children>
                 </VBox>
-                <AnchorPane prefHeight="552.0" prefWidth="800.0">
-                    <children>
-                        <GridPane layoutX="267.5" layoutY="100.0" prefHeight="242.0" prefWidth="265.0" styleClass="box">
+            <StackPane prefHeight="544.0" prefWidth="790.0">
+               <children>
+                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="68.8" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="298.40001525878904" minWidth="10.0" prefWidth="167.2" />
@@ -52,16 +52,22 @@
                                         <Font size="18.0" />
                                     </font>
                                 </Label>
-                                <Button mnemonicParsing="false" onAction="#onMemoryAction" styleClass="label" text="Play Memory" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <Button mnemonicParsing="false" onAction="#onTetrisAction" text="Play Tetris" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                <Button mnemonicParsing="false" onAction="#onExitAction" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Button mnemonicParsing="false" onAction="#onMemoryAction" styleClass="label" text="Play Memory" />
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <Button mnemonicParsing="false" onAction="#onTetrisAction" text="Play Tetris" />
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                    <Button mnemonicParsing="false" onAction="#onExitAction" text="Exit" />
+                                </StackPane>
                             </children>
                             <padding>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
                         </GridPane>
-                    </children>
-                </AnchorPane>
+               </children>
+            </StackPane>
             </children>
         </VBox>
     </children>

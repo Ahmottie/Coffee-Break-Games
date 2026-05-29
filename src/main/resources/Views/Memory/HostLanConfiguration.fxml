@@ -11,82 +11,90 @@
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
             <children>
-            <VBox fx:id="header" fillWidth="false" prefHeight="111.0" prefWidth="622.0" styleClass="box">
-               <children>
-                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                          <font>
-                              <Font name="Arial Bold" size="24.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
-                          <font>
-                              <Font size="18.0" />
-                          </font>
-                  </Label>
-                      <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Host Game Setup" />
-               </children>
-            </VBox>
+                <VBox fx:id="header" fillWidth="false" prefHeight="111.0" prefWidth="622.0" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Host Game Setup" />
+                    </children>
+                </VBox>
                 <AnchorPane prefHeight="520.0" prefWidth="800.0">
                     <children>
-                  <GridPane layoutX="225.0" layoutY="100.0" prefHeight="168.0" prefWidth="350.0" styleClass="box">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.599999999999994" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="9.20000762939452" prefWidth="63.80000000000001" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="71.80000000000001" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                              <Label alignment="CENTER" text="Your Name:" />
-                              <TextField fx:id="hostNameTF" prefHeight="26.0" prefWidth="220.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
-                           <GridPane.margin>
-                              <Insets right="5.0" />
-                           </GridPane.margin></TextField>
-                              <Label text="Deck Size:" GridPane.rowIndex="2" />
-                              <RadioButton fx:id="smallGame" mnemonicParsing="false" text="15" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="DeckSizeGroup" />
-                           </toggleGroup></RadioButton>
-                              <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                              <RadioButton fx:id="largeGame" mnemonicParsing="false" styleClass=".label" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <Label text="Match Size" GridPane.rowIndex="1" />
-                              <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets right="15.0" />
-                           </GridPane.margin></Button>
-                              <Button mnemonicParsing="false" onAction="#onSearchAction" text="Search for opponent" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Button>
-                        <ComboBox fx:id="matchSize" onAction="#calcDeckSize" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                        <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="367.0" textAlignment="CENTER" GridPane.columnSpan="4" GridPane.rowIndex="3">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <styleClass>
-                              <String fx:value="box" />
-                              <String fx:value="error" />
-                           </styleClass>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </GridPane>
+                        <GridPane layoutX="225.0" layoutY="100.0" prefHeight="168.0" prefWidth="350.0" styleClass="box">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.599999999999994" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="9.20000762939452" prefWidth="63.80000000000001" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="71.80000000000001" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                            <Label alignment="CENTER" text="Your Name:" />
+                            <TextField fx:id="hostNameTF" prefHeight="26.0" prefWidth="220.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                <GridPane.margin>
+                                    <Insets right="5.0" />
+                                </GridPane.margin>
+                            </TextField>
+                            <Label text="Deck Size:" GridPane.rowIndex="2" />
+                                <RadioButton fx:id="smallGame" mnemonicParsing="false" text="15" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="DeckSizeGroup" />
+                                    </toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <RadioButton fx:id="largeGame" mnemonicParsing="false" styleClass=".label" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                <Label text="Match Size" GridPane.rowIndex="1" />
+                                <StackPane alignment="CENTER_RIGHT" styleClass="button-wrapper" GridPane.rowIndex="4">
+                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back" GridPane.halignment="RIGHT">
+                                        <GridPane.margin>
+                                            <Insets right="15.0" />
+                                        </GridPane.margin>
+                                    </Button>
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
+                                    <Button mnemonicParsing="false" onAction="#onSearchAction" text="Search for opponent">
+                                        <GridPane.margin>
+                                            <Insets left="10.0" />
+                                        </GridPane.margin>
+                                    </Button>
+                                </StackPane>
+                                <ComboBox fx:id="matchSize" onAction="#calcDeckSize" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                                <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="367.0" textAlignment="CENTER" GridPane.columnSpan="4" GridPane.rowIndex="3">
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
+                                    <styleClass>
+                                        <String fx:value="box" />
+                                        <String fx:value="error" />
+                                    </styleClass>
+                                </Label>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </GridPane>
                     </children>
                 </AnchorPane>
             </children>
         </VBox>
     </children>
-   <stylesheets>
-      <URL value="@../../css/stylesheets/fontstyle.css" />
-      <URL value="@../../css/stylesheets/MemoryMenu.css" />
-       <URL value="@../../css/stylesheets/MenuStyle.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MemoryMenu.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+    </stylesheets>
 </AnchorPane>

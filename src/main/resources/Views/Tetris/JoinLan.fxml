@@ -74,14 +74,20 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="40.0">
                            <children>
+                               <StackPane styleClass="button-wrapper">
                                       <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
                                  <HBox.margin>
                                     <Insets right="10.0" />
-                                 </HBox.margin></Button>
+                                 </HBox.margin>
+                                      </Button>
+                               </StackPane>
+                               <StackPane styleClass="button-wrapper">
                                       <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect">
                                  <HBox.margin>
                                     <Insets left="10.0" />
-                                 </HBox.margin></Button>
+                                 </HBox.margin>
+                                      </Button>
+                               </StackPane>
                            </children>
                         </HBox>
                      </children>

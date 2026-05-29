@@ -179,7 +179,9 @@
             </HBox>
             </children>
         </VBox>
-          <Button alignment="CENTER" mnemonicParsing="false" onAction="#onExitGameAction" prefHeight="28.0" prefWidth="120.0" text="Exit Game" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="130.0" />
+        <StackPane styleClass="button-wrapper" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="130.0" >
+          <Button alignment="CENTER" mnemonicParsing="false" onAction="#onExitGameAction" prefHeight="28.0" prefWidth="120.0" text="Exit Game"/>
+        </StackPane>
     </children>
    <stylesheets>
       <URL value="@../../css/stylesheets/fontstyle.css" />

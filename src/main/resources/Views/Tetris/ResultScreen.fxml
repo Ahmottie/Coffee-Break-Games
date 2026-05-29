@@ -66,8 +66,12 @@
                         </GridPane>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="80.0">
                             <children>
+                                <StackPane styleClass="button-wrapper">
                                 <Button fx:id="ExitButton" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit" />
+                                </StackPane>
+                                <StackPane styleClass="button-wrapper">
                                 <Button fx:id="playAgainButton" mnemonicParsing="false" onAction="#onPlayAgainAction" text="Play Again" />
+                                </StackPane>
                             </children>
                         </HBox>
                     </children>

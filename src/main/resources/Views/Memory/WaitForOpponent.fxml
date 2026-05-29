@@ -26,58 +26,69 @@
                       <Label alignment="CENTER" prefHeight="26.0" prefWidth="615.0" text="Waiting for opponent" />
                </children>
             </VBox>
-            <Pane prefHeight="516.0" prefWidth="800.0">
+            <StackPane prefHeight="496.0" prefWidth="800.0">
                <children>
-                  <VBox layoutX="209.0" layoutY="71.0" prefHeight="321.0" prefWidth="382.0" styleClass="box">
+                  <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                      <children>
-                        <GridPane prefHeight="272.0" prefWidth="382.0">
+                        <GridPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="10.0" prefWidth="149.4" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.19999999999996" minWidth="10.0" prefWidth="212.19999999999996" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="34.400000000000006" minHeight="10.0" prefHeight="27.400000000000006" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="51.400000000000006" minHeight="10.0" prefHeight="51.400000000000006" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                                    <Label alignment="CENTER" text="Your Name:" />
-                              <Label fx:id="yourNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="234.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" />
-                                    <Label text="Deck Size:" GridPane.rowIndex="3" />
-                              <Label fx:id="deckSizeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="258.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Match Size" GridPane.rowIndex="4" />
-                              <Label fx:id="matchSizeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="211.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label text="Stauts" GridPane.rowIndex="5" />
-                              <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="75.0" prefWidth="213.0" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Your Name:" />
+                              <Label fx:id="yourNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" />
+                                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Deck Size:" GridPane.rowIndex="3" />
+                              <Label fx:id="deckSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Match Size" GridPane.rowIndex="4" />
+                              <Label fx:id="matchSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Stauts" GridPane.rowIndex="5" />
+                              <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <styleClass>
                                     <String fx:value="box" />
                                     <String fx:value="information" />
                                  </styleClass>
                                  <padding>
                                     <Insets left="5.0" right="5.0" />
-                                 </padding></Label>
-                              <Label text="Opponent Name" GridPane.rowIndex="2" />
-                              <Label fx:id="opponentNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="295.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="Host IP-Address:" GridPane.rowIndex="1" />
-                              <Label fx:id="hostIpAddressLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="248.0" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </padding>
+                              </Label>
+                              <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Opponent Name" GridPane.rowIndex="2" />
+                              <Label fx:id="opponentNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Host IP-Address:" GridPane.rowIndex="1" />
+                              <Label fx:id="hostIpAddressLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                            <padding>
                               <Insets left="15.0" right="5.0" />
                            </padding>
                         </GridPane>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="80.0">
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="80.0">
                            <children>
-                                    <Button mnemonicParsing="false" onAction="#onBackAction" text="Cancel" />
-                              <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" />
+                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onBackAction" text="Cancel" />
+                               </StackPane>
+                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                               <Button fx:id="startGameButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" />
+                               </StackPane>
                            </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
                   </VBox>
                </children>
-            </Pane>
+            </StackPane>
             </children>
         </VBox>
     </children>

@@ -65,8 +65,12 @@
                                 </GridPane>
                                 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="80.0">
                                     <children>
+                                        <StackPane styleClass="button-wrapper">
                                         <Button mnemonicParsing="false" onAction="#onBackAction" text="Cancel" />
+                                        </StackPane>
+                                        <StackPane styleClass="button-wrapper">
                                         <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" />
+                                        </StackPane>
                                     </children>
                            <opaqueInsets>
                               <Insets />

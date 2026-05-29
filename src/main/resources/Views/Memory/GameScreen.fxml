@@ -8,73 +8,81 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen">
     <children>
-      <Text fx:id="notificationText" fill="WHITE" layoutX="147.0" layoutY="197.87890625" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="notification" textAlignment="CENTER" wrappingWidth="410.9999771118164" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="97.0" />
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
-            <children>
-            <VBox fx:id="header" prefHeight="87.0" prefWidth="568.0" styleClass="box">
-               <children>
-                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="552.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                          <font>
-                              <Font name="Arial Bold" size="24.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
-                          <font>
-                              <Font size="18.0" />
-                          </font>
-                  </Label>
-               </children>
-            </VBox>
-                <AnchorPane prefHeight="100.0" prefWidth="800.0">
-               <children>
-                  <GridPane layoutX="220.0" layoutY="25.0" prefHeight="50.0" prefWidth="285.0" styleClass="box" AnchorPane.bottomAnchor="25.0" AnchorPane.topAnchor="25.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="10.0" prefWidth="105.00000000000001" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="171.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label prefHeight="50.0" prefWidth="122.0" text="Current Turn: " />
-                        <Label fx:id="activePlayerLabel" GridPane.columnIndex="1" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </GridPane>
-                  <GridPane layoutX="556.0" layoutY="5.0" prefHeight="71.0" prefWidth="218.0" styleClass="box" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.8" minWidth="10.0" prefWidth="171.8" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="37.80000000000001" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label fx:id="sboardP1" text="Player 1: " />
-                        <Label fx:id="sboardP2" text="Player 2: " GridPane.rowIndex="1" />
-                        <Label fx:id="sboardScoreP1" text="0" GridPane.columnIndex="1" />
-                        <Label fx:id="sboardScoreP2" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </GridPane>
-                  <Button layoutX="44.0" layoutY="26.0" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit Game" AnchorPane.bottomAnchor="36.0" AnchorPane.topAnchor="36.0" />
-               </children>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
+        <Text fx:id="notificationText" fill="WHITE" layoutX="147.0" layoutY="197.87890625" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="notification" textAlignment="CENTER" wrappingWidth="410.9999771118164" AnchorPane.leftAnchor="147.0" AnchorPane.topAnchor="97.0" />
+            <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+                <children>
+                    <VBox fx:id="header" prefHeight="87.0" prefWidth="568.0" styleClass="box">
+                        <children>
+                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="552.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                                <font>
+                                    <Font name="Arial Bold" size="24.0" />
+                                </font>
+                            </Label>
+                            <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
+                                <font>
+                                    <Font size="18.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </VBox>
+                    <AnchorPane prefHeight="100.0" prefWidth="800.0">
+                        <children>
+                            <GridPane layoutX="220.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" AnchorPane.leftAnchor="220.0" AnchorPane.topAnchor="25.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <Label prefHeight="50.0" prefWidth="122.0" text="Current Turn: " />
+                                    <Label fx:id="activePlayerLabel" GridPane.columnIndex="1" />
+                                </children>
+                                <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </padding>
+                            </GridPane>
+                            <GridPane layoutX="556.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <Label fx:id="sboardP1" text="Player 1: " />
+                                    <Label fx:id="sboardP2" text="Player 2: " GridPane.rowIndex="1" />
+                                    <Label fx:id="sboardScoreP1" text="0" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin></Label>
+                                    <Label fx:id="sboardScoreP2" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </GridPane.margin></Label>
+                                </children>
+                                <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                </padding>
+                            </GridPane>
+                            <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="36.0">
+                            <Button layoutX="44.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit Game" />
+                        </StackPane>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
                 </AnchorPane>
-            <StackPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="800.0" />
+                <StackPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="800.0" />
             </children>
         </VBox>
     </children>
-   <stylesheets>
-      <URL value="@../../css/stylesheets/fontstyle.css" />
-      <URL value="@../../css/stylesheets/MemoryMenu.css" />
-       <URL value="@../../css/stylesheets/MenuStyle.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MemoryMenu.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+    </stylesheets>
 </AnchorPane>
