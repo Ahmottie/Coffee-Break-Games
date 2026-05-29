@@ -55,6 +55,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private final java.util.Map<KeyCode, Integer> clientActiveKeys = new java.util.HashMap<>();
     private Timeline clientRepeatTimer;
 
+    // AI-generated optimization: keep only the latest pending snapshot so the
+    // JavaFX thread renders once per batch instead of one runLater per message.
+    private final java.util.concurrent.atomic.AtomicReference<TetrisEngine.GameState> pendingState =
+            new java.util.concurrent.atomic.AtomicReference<>();
+
 
     private void loadPowerUpImages() {
         var stream = getClass().getResource("/Images/Tetris/Swap.png").toExternalForm();
@@ -275,7 +280,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         );
         p1EngineTicker.setCycleCount(Animation.INDEFINITE);
         p1EngineTicker.play();
-        System.out.println("P1 Ticks " +  engine.getTickIntervalMs(1));
         p2EngineTicker = new Timeline(
                 new KeyFrame(
                         Duration.millis(engine.getTickIntervalMs(2)),
@@ -284,8 +288,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         );
         p2EngineTicker.setCycleCount(Animation.INDEFINITE);
         p2EngineTicker.play();
-        System.out.println("P2 Ticks " + engine.getTickIntervalMs(2));
-
     }
 
     private void loadImages() {
@@ -329,7 +331,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
                 player2Field.getRowConstraints().removeLast();
             }
             else {
-                System.out.println("REMOVED IN FIELD 1");
                 player1Field.getRowConstraints().removeFirst();
                 player2Field.getRowConstraints().add(row);
             }
@@ -356,7 +357,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onLevelChanged(long newTickIntervalMs, TetrisEngine.GameState snapshot, int player) {
-        System.out.println("Level UP in GameScreeen" + snapshot.p1Level() + " " + snapshot.p2Level());
         // engineTicker only exists in modes that own an engine like lan host or local
         Timeline timeline = player == 1 ? p1EngineTicker : p2EngineTicker;
         if (timeline != null) {
@@ -381,7 +381,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
                     new KeyFrame(Duration.millis(newTickSpeed), e -> engine.tick(playerNum))
             );
             timeline.play();
-            System.out.println("newTickSpeedSet to " + newTickSpeed + " For Player "+ playerNum);
         }
     }
 
@@ -441,10 +440,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         render(snapshot,2);
     }
 
-    public void test(){
-        System.out.println("MOVEMENT");
-    }
-
     public void attachHostNetworkBridge(NetworkLayer network) {
         if (engine == null || network == null) return;
 
@@ -478,8 +473,8 @@ public class GameScreen extends Controller implements TetrisEventListener {
                 network.send(new TetrisMessage.StateUpdate(s));
             }
             @Override public void onBlockMovement(TetrisEngine.GameState s, int player){
-                test();
-                network.send(new TetrisMessage.StateUpdate(s)); }
+                network.send(new TetrisMessage.StateUpdate(s));
+            }
 
             @Override public void onStopped(TetrisEngine.GameState s){
                 network.send(new TetrisMessage.StateUpdate(s));
@@ -501,7 +496,6 @@ public class GameScreen extends Controller implements TetrisEventListener {
         });
     }
 
-    private int count = 0;
     public void attachClientNetworkBridge(NetworkLayer network) {
         if (engine != null || network == null) return;
 
@@ -509,7 +503,14 @@ public class GameScreen extends Controller implements TetrisEventListener {
             @Override
             public void onMessage(Message msg) {
                 if (msg instanceof TetrisMessage.StateUpdate update) {
-                    Platform.runLater(() -> applyRemoteState(update.state()));
+                    // AI-generated optimization: store latest snapshot; only schedule a
+                    // render if one isn't already pending (last-write-wins).
+                    if (pendingState.getAndSet(update.state()) == null) {
+                        Platform.runLater(() -> {
+                            TetrisEngine.GameState latest = pendingState.getAndSet(null);
+                            if (latest != null) applyRemoteState(latest);
+                        });
+                    }
                 } else if (msg instanceof TetrisMessage.LinesCleared lc) {
                     Platform.runLater(() -> incrementLines(lc.playerNum(), lc.lineCount()));
                 }
@@ -606,8 +607,25 @@ public class GameScreen extends Controller implements TetrisEventListener {
         target.setText(String.valueOf(current + lineCount));
     }
 
+    private void syncBoardRows(GridPane field, int target, boolean front) {
+        var rows = field.getRowConstraints();
+        while (rows.size() < target) {
+            RowConstraints rc = new RowConstraints();
+            rc.setPrefHeight(12);
+            rc.setMinHeight(12);
+            rc.setMaxHeight(12);
+            rc.setVgrow(Priority.NEVER);
+            if (front) rows.addFirst(rc); else rows.add(rc);
+        }
+        while (rows.size() > target && rows.size() > 1) {
+            if (front) rows.removeFirst(); else rows.removeLast();
+        }
+    }
+
     private void applyRemoteState(TetrisEngine.GameState s) {
         this.currentTwoBlockMode = s.isTwoBlockMode(); // Sync with Host
+        syncBoardRows(player1Field, s.p1Grid().length, true);
+        syncBoardRows(player2Field, s.p2Grid().length, false);
         render(s,2);
         render(s,1);
         player1PointsLabel.setText(String.valueOf(s.p1Score()));

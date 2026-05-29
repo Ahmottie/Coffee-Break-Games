@@ -8,7 +8,7 @@ public sealed interface TetrisMessage extends Message
 
     record Hello(String playerName, int playerLevel) implements TetrisMessage {}
 
-    record LobbyInfo(String hostName, String clientName, int hostLevel, int clientLevel) implements TetrisMessage {}
+    record LobbyInfo(String hostName, String clientName, int hostLevel, int clientLevel, boolean vertical) implements TetrisMessage {}
 
     record Ready(boolean ready) implements TetrisMessage {}
 

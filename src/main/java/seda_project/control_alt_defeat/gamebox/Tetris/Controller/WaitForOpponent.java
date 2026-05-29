@@ -110,7 +110,9 @@ public class WaitForOpponent extends Controller {
             Session s = Session.current();
             s.peerName = h.playerName();
             s.peerLevel = h.playerLevel();
-            layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel));
+            boolean vertical = TetrisAdvancedSettings.getInstance().isVertical();
+            s.lanVertical = vertical;
+            layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel,vertical));
             playerJoin(h.playerName());
         } else if (msg instanceof TetrisMessage.Ready r) {
             Session.current().peerReady = r.ready();
@@ -153,6 +155,7 @@ public class WaitForOpponent extends Controller {
     private void handleJoinMessage(Message msg) {
         if (msg instanceof TetrisMessage.LobbyInfo info) {
             Session.current().peerName = info.hostName();
+            Session.current().lanVertical = info.vertical();
             opponentNameLabel.setText(info.hostName());
             statusLabel.setText("Press Ready to start!");
         } else if (msg instanceof TetrisMessage.Ready r) {
@@ -189,19 +192,19 @@ public class WaitForOpponent extends Controller {
         String p2 = s.isHost ? s.peerName : s.myName;
         int p1L = s.isHost ? s.myLevel : s.peerLevel;
         int p2L = s.isHost ? s.peerLevel : s.myLevel;
-        System.out.println("P1Level " + p1L);
-        System.out.println("P2Level " + p2L);
 
         // Build the engine on the host only
-        System.out.println(p1L+"    "+p2L);
         TetrisEngine engine = null;
         if (s.isHost) {
             engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             s.tetrisEngine = engine;
         }
 
-        GameScreen controller = (GameScreen) c.changeScene(
-                "/Views/Tetris/GameScreen.fxml", header, vS);
+        String address = s.lanVertical
+                ? "/Views/Tetris/GameScreen.fxml"
+                : "/Views/Tetris/GameScreenHorizontal.fxml";
+
+        GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
         controller.create(p1, p2, p1L,p2L, true, engine);
 
         if (s.isHost) {

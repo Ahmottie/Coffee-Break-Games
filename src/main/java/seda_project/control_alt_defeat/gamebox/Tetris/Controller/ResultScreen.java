@@ -40,8 +40,6 @@ public class ResultScreen extends Controller {
 
         // Local mode so original behaviour fresh engine and game
         if (s.network == null) {
-            System.out.println(initP1Level);
-            System.out.println(initP2Level);
             TetrisEngine fresh = new TetrisEngine(
                     state.p1Name(), state.p2Name(),initP1Level,initP2Level, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             GameScreen controller = (GameScreen) c.changeScene(
@@ -126,14 +124,15 @@ public class ResultScreen extends Controller {
 
     private void navigateToLanGame(TetrisEngine engineForHost) {
         Session s = Session.current();
-        GameScreen controller = (GameScreen) c.changeScene(
-                "/Views/Tetris/GameScreen.fxml", header, vS);
+        String address = s.lanVertical
+                ? "/Views/Tetris/GameScreen.fxml"
+                : "/Views/Tetris/GameScreenHorizontal.fxml";
+        GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
 
         if (s.isHost) {
             controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,true, engineForHost);
             controller.attachHostNetworkBridge(s.network);
         } else {
-            System.out.println(s.network);
             controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel,true, engineForHost);
             controller.attachClientNetworkBridge(s.network);
         }

@@ -77,7 +77,7 @@ public class AdvancedSettings extends Controller implements Initializable {
         opponentSlowDown.setSelected(advancedSettings.isOpponentSlowDown());
         opponentSpeedUp.setSelected(advancedSettings.isOpponentSpeedUp());
         opponentDelayRotation.setSelected(advancedSettings.isOpponentDelayRotation());
-        selfSlowDown.setSelected(advancedSettings.isSelfDelayRotation());
+        selfSlowDown.setSelected(advancedSettings.isSelfSpeedDown());
         selfDelayRotation.setSelected(advancedSettings.isSelfDelayRotation());
         radialBomb.setSelected(advancedSettings.isRadialBomb());
         columnBomb.setSelected(advancedSettings.isColumnBomb());
