@@ -1,8 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.ViewStack;
 

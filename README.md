@@ -199,3 +199,8 @@ look at the console on the host for exceptions.
 peer closes the socket cleanly, the OS sends a TCP FIN immediately and the
 remaining side detects it right away. The 5-second timeout is the fallback
 for ungraceful disconnects (cable pulled, process force-killed).
+
+## Chess
+Pieces from: https://greenchess.net/info.php?item=downloads
+Mug from: https://www.cgtrader.com/items/3536740/download-page
+3d pieces from: https://free3d.com/3d-model/chess-19650.html

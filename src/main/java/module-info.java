@@ -30,6 +30,9 @@ module seda_project.control_alt_defeat.gamebox {
     exports  seda_project.control_alt_defeat.gamebox.Tetris.Controller;
     opens seda_project.control_alt_defeat.gamebox.Tetris.Controller to javafx.fxml;
 
+    exports  seda_project.control_alt_defeat.gamebox.HexChess.Controller;
+    opens seda_project.control_alt_defeat.gamebox.HexChess.Controller to javafx.fxml;
+
     // UI
     exports seda_project.control_alt_defeat.gamebox.ui;
     opens seda_project.control_alt_defeat.gamebox.ui to javafx.fxml;

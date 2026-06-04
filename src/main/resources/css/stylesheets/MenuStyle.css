@@ -19,49 +19,132 @@
 }
 
 .error {
-    -fx-background-color: rgba(180, 20, 20, 0.45);
+    -fx-background-color: rgba(160, 30, 50, 0.45);
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(220, 60, 60, 0.75);
+    -fx-border-color: rgba(210, 70, 90, 0.75);
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(200, 0, 0, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(180, 40, 70, 0.4), 12, 0.3, 0, 0);
 }
 
 .information {
-    -fx-background-color: rgba(180, 130, 0, 0.45);
+    -fx-background-color: rgba(160, 185, 10, 0.45);
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 200, 30, 0.75);
+    -fx-border-color: rgba(212, 232, 74, 0.75);
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(220, 170, 0, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(190, 215, 40, 0.4), 12, 0.3, 0, 0);
+}
+
+.secondary {
+    -fx-background-color: rgba(20, 120, 160, 0.45);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(80, 180, 255, 0.75);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(60, 160, 230, 0.4), 12, 0.3, 0, 0);
 }
 
 .ready {
-    -fx-background-color: rgba(10, 160, 60, 0.45);
+    -fx-background-color: rgba(30, 180, 140, 0.45);
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(40, 220, 100, 0.75);
+    -fx-border-color: rgba(77, 235, 184, 0.75);
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 200, 80, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.4), 12, 0.3, 0, 0);
 }
 
 .button-wrapper {
-    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
     -fx-padding: 8px;
 }
 
 .button {
-    -fx-background-color: linear-gradient(to bottom, #1ecfcf, #0d8a8a);
-    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #71bdff, #3d7db8);
+    -fx-text-fill: rgba(210, 235, 255, 0.9);
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #25e8e8, #14a3a3);
+    -fx-background-color: linear-gradient(to bottom, #90ccff, #5599d4);
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #0d8a8a, #066060);
+    -fx-background-color: linear-gradient(to bottom, #3d7db8, #1e4e7a);
+}
+
+.color-picker {
+    -fx-background-color: linear-gradient(to bottom, #71bdff, #3d7db8);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
+}
+
+.color-picker:hover {
+    -fx-background-color: linear-gradient(to bottom, #90ccff, #5599d4);
+}
+
+.color-picker:pressed {
+    -fx-background-color: linear-gradient(to bottom, #3d7db8, #1e4e7a);
+}
+
+.color-picker .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+.color-picker .arrow-button {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 0 6px 6px 0;
+}
+
+.color-picker .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.color-picker-palette {
+    -fx-background-color: rgba(10, 20, 40, 0.95);
+    -fx-border-color: rgba(113, 189, 255, 0.6);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.35), 14, 0.3, 0, 4);
+}
+
+.color-palette .color-square {
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+}
+
+.color-palette .color-square:hover {
+    -fx-border-color: #71bdff;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.7), 6, 0.5, 0, 0);
+}
+
+.custom-color-dialog .dialog-pane {
+    -fx-background-color: rgba(10, 20, 40, 0.97);
+    -fx-border-color: rgba(113, 189, 255, 0.5);
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+}
+
+.custom-color-dialog .label {
+    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-font-size: 13px;
+}
+
+.custom-color-dialog .text-field {
+    -fx-background-color: rgba(10, 20, 40, 0.8);
+    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-border-color: rgba(113, 189, 255, 0.4);
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
 }

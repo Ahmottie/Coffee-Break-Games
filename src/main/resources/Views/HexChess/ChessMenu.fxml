@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.ChessMenu">
+    <children>
+        <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Hex Chess Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0" />
+                    </padding>
+                </VBox>
+                <StackPane prefHeight="550.0" prefWidth="817.0">
+                    <children>
+                        <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="box">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                <RowConstraints />
+                                <RowConstraints maxHeight="-Infinity" />
+                            </rowConstraints>
+                            <children>
+                                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="Local Game" GridPane.columnSpan="2">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <Button fx:id="JoinGameButton" maxHeight="28.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onJoinAction" text="Join Game" />
+                                </StackPane>
+                                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="LAN Game" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Button fx:id="startLocalGameButton" maxHeight="28.0" maxWidth="-Infinity" onAction="#onLocalAction" text="Start Local Game" />
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Button fx:id="HostGameButton" maxHeight="28.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onHostAction" text="Host Game" />
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExitAction" text="Back" />
+                                </StackPane>
+                                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="Others" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                    <Button maxHeight="28.0" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSettingsAction" text="Settings" />
+                                </StackPane>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </GridPane>
+                    </children>
+                </StackPane>
+            </children>
+        </VBox>
+    </children>
+
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/HexChessMenu.css" />
+    </stylesheets>
+</AnchorPane>

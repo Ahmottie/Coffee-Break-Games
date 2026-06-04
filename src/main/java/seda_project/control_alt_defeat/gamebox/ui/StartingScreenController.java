@@ -21,4 +21,9 @@ public class StartingScreenController extends Controller {
     public void onTetrisAction() {
         c.changeScene("/Views/Tetris/TetrisMenu.fxml", header, vS);
     }
+
+    @FXML
+    protected void onHexChessAction(){
+        c.changeScene("/Views/HexChess/ChessMenu.fxml", header, vS);
+    }
 }

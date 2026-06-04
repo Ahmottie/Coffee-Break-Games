@@ -1,0 +1,21 @@
+.background{
+    -fx-background-image: url('../../Images/HexChess/Background.jpeg');
+    -fx-background-size: auto 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.gameField {
+    -fx-border-color: #1ecfcf;
+    -fx-background-color: #000000;
+    -fx-border-width: 2px;
+    -fx-effect: innershadow(gaussian, rgba(30,207,207,0.3), 10, 0.5, 0, 0);
+}
+
+.gameField Line{
+    -fx-stroke: #4a4a4a;
+}
+
+.playground {
+    -fx-background-color: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 80.0%, #0080ff 0.0%, #1a3a5a 50.7895%, #0a1a2e 100.0%);
+}
