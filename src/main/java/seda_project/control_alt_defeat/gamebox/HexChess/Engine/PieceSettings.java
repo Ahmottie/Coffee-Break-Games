@@ -8,7 +8,7 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisSettings;
 import java.util.List;
 
 public class PieceSettings {
-    private Color p1Color, p2Color;
+    private Color p1Color, p2Color, darkTiles, normalTiles, lightTiles;
     private List<ImageView> p1Pieces, p2Pieces;
 
     private static PieceSettings instance;
@@ -50,6 +50,30 @@ public class PieceSettings {
 
     public void setP2Pieces(List<ImageView> p2Pieces) {
         this.p2Pieces = p2Pieces;
+    }
+
+    public Color getDarkTiles() {
+        return darkTiles;
+    }
+
+    public void setDarkTiles(Color darkTiles) {
+        this.darkTiles = darkTiles;
+    }
+
+    public Color getNormalTiles() {
+        return normalTiles;
+    }
+
+    public void setNormalTiles(Color normalTiles) {
+        this.normalTiles = normalTiles;
+    }
+
+    public Color getLightTiles() {
+        return lightTiles;
+    }
+
+    public void setLightTiles(Color lightTiles) {
+        this.lightTiles = lightTiles;
     }
 }
 

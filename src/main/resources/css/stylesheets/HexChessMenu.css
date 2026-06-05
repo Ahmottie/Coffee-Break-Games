@@ -1,3 +1,9 @@
+.root {
+    -light-poly-color: #C19A6B;
+    -normal-poly-color: #8B5A2B;
+    -dark-poly-color: #5C4033;
+}
+
 .background{
     -fx-background-image: url('../../Images/HexChess/Background.jpeg');
     -fx-background-size: auto 100%;
@@ -18,4 +24,22 @@
 
 .playground {
     -fx-background-color: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 80.0%, #0080ff 0.0%, #1a3a5a 50.7895%, #0a1a2e 100.0%);
+}
+
+.lightPoly {
+    -fx-fill: -light-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
+}
+
+.normalPoly {
+    -fx-fill:-normal-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
+}
+
+.darkPoly {
+    -fx-fill: -dark-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
 }

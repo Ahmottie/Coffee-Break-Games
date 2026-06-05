@@ -1,14 +1,14 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.scene.shape.Polygon;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
@@ -34,16 +34,23 @@ public class ChessSettings extends Controller implements Initializable {
     private ImageView p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King;
 
     @FXML
-    private ColorPicker p1ColorPicker, p2ColorPicker;
+    private ColorPicker p1ColorPicker, p2ColorPicker, darkTilesColorPicker, normalTilesColorPicker, lightTilesColorPicker;
 
     @FXML
+    private Polygon darkPolygon, normalPolygon, lightPolygon;
+
     private Color p1Color = Color.WHITE;
     private Color p2Color = Color.BLACK;
+    private Color darkTileColor = Color.web("#5C4033");
+    private Color normalTileColor = Color.web("#8B5A2B");
+    private Color lightTileColor = Color.web("#C19A6B");
 
-    @FXML
     private final Color p1DefaultColor = Color.WHITE;
-    @FXML
     private final Color p2DefaultColor = Color.BLACK;
+    private final Color darkTileDefaultColor = Color.web("#5C4033");
+    private final Color normalTileDefaultColor = Color.web("#8B5A2B");
+    private final Color lightTileDefaultColor = Color.web("#C19A6B");
+
 
     private List<ImageView> p1Pieces;
     private List<ImageView> p2Pieces;
@@ -51,7 +58,7 @@ public class ChessSettings extends Controller implements Initializable {
     private List<Image> p2OriginalImages;
 
     @FXML
-    protected void onBackAction(ActionEvent actionEvent) {
+    protected void onBackAction() {
         c.backScene(header,vS);
     }
 
@@ -61,6 +68,10 @@ public class ChessSettings extends Controller implements Initializable {
         settings.setP2Color(p2Color);
         settings.setP1Pieces(p1Pieces);
         settings.setP2Pieces(p2Pieces);
+        settings.setDarkTiles(darkTileColor);
+        settings.setNormalTiles(normalTileColor);
+        settings.setLightTiles(lightTileColor);
+
         String toastMsg = "Saved Settings";
         Toast.makeText(stackPane, toastMsg);
     }
@@ -75,6 +86,21 @@ public class ChessSettings extends Controller implements Initializable {
         }
         p1Color = p1DefaultColor;
         p2Color = p2DefaultColor;
+
+        p1ColorPicker.setValue(p1Color);
+        p2ColorPicker.setValue(p2Color);
+
+        darkTileColor = darkTileDefaultColor;
+        normalTileColor = normalTileDefaultColor;
+        lightTileColor = lightTileDefaultColor;
+
+        darkTilesColorPicker.setValue(darkTileColor);
+        normalTilesColorPicker.setValue(normalTileColor);
+        lightTilesColorPicker.setValue(lightTileColor);
+
+        darkPolygon.setFill(darkTileColor);
+        normalPolygon.setFill(normalTileColor);
+        lightPolygon.setFill(lightTileColor);
     }
 
     @FXML
@@ -128,5 +154,51 @@ public class ChessSettings extends Controller implements Initializable {
             redraw(p2Color,p2Pieces,p2OriginalImages,p2DefaultColor);
         }
 
+        if (settings.getDarkTiles() != null){
+            darkTileColor = settings.getDarkTiles();
+            darkTilesColorPicker.setValue(darkTileColor);
+        }
+        else {
+            darkTilesColorPicker.setValue(darkTileColor);
+        }
+        if (settings.getNormalTiles() != null) {
+            normalTileColor = settings.getNormalTiles();
+            normalTilesColorPicker.setValue(normalTileColor);
+        }
+        else {
+            normalTilesColorPicker.setValue(normalTileColor);
+        }
+
+        if (settings.getLightTiles() != null){
+            lightTileColor = settings.getLightTiles();
+            lightTilesColorPicker.setValue(lightTileColor);
+        }
+        else {
+            lightTilesColorPicker.setValue(lightTileColor);
+        }
+        darkPolygon.setFill(darkTileColor);
+        normalPolygon.setFill(normalTileColor);
+        lightPolygon.setFill(lightTileColor);
+
+    }
+    @FXML
+    protected void onDarkTileAction() {
+        darkTileColor = changeTileColor(darkTilesColorPicker,darkPolygon);
+    }
+
+    @FXML
+    protected void onLightTileaAction() {
+        lightTileColor = changeTileColor(lightTilesColorPicker,lightPolygon);
+    }
+
+    @FXML
+    protected void onNormalTileAction() {
+        normalTileColor = changeTileColor(normalTilesColorPicker,normalPolygon);
+    }
+
+    private Color changeTileColor(ColorPicker colorPicker, Polygon polygon){
+        Color newColor = colorPicker.getValue();
+        polygon.setFill(newColor);
+        return newColor;
     }
 }

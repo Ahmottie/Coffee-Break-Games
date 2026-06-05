@@ -7,6 +7,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.ChessSettings">
@@ -33,7 +34,7 @@
                 </VBox>
                 <StackPane fx:id="stackPane" prefHeight="550.0" prefWidth="817.0">
                <children>
-                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="box">
                      <children>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                            <children>
@@ -144,9 +145,74 @@
                                  </styleClass>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
+                        </HBox>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Dark Tiles" />
+                                 <ColorPicker fx:id="darkTilesColorPicker" onAction="#onDarkTileAction" />
+                                  <Polygon fx:id="darkPolygon">
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Normal Tiles" />
+                                 <ColorPicker fx:id="normalTilesColorPicker" onAction="#onNormalTileAction" />
+                                  <Polygon fx:id="normalPolygon" >
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Light Tiles" />
+                                 <ColorPicker fx:id="lightTilesColorPicker" onAction="#onLightTileaAction" />
+                                  <Polygon fx:id="lightPolygon">
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
                         </HBox>
                         <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
                            <children>
@@ -168,6 +234,9 @@
                            </children>
                         </HBox>
                      </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
                   </VBox>
                </children>
                 </StackPane>
