@@ -17,5 +17,11 @@ public class LocalGameConfiguration extends Controller {
     @FXML
     public void onStartAction() {
         //TODO Initialize Engine and change to GameScreen
+        c.changeScene("/Views/HexChess/GameScreen.fxml",header,vS);
+    }
+
+    @FXML
+    public void onCustomBoardAction() {
+        c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
     }
 }

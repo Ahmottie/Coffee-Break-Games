@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
+package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -22,21 +21,18 @@ import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 public class JoinLan extends Controller implements Initializable {
+
     private final ArrayList<Label> availableHosts = new ArrayList<>();
 
     private Listener discoveryListener;
-    private Timeline            refreshTimeline;
-    private Set<String>         shownHostIps = new HashSet<>();
+    private Timeline refreshTimeline;
+    private Set<String> shownHostIps = new HashSet<>();
 
     @FXML
-    VBox header, scrollElements;
+    private VBox header, scrollElements;
 
     @FXML
     private TextField joinPlayerNameTF;
@@ -45,16 +41,11 @@ public class JoinLan extends Controller implements Initializable {
     private Label joinStatus, selectedHost;
 
     @FXML
-    private ComboBox<Integer> yourLevel;
-
-    @FXML
-    protected void onBackAction(){
-        stopDiscovery();
+    protected void onBackAction() {
         c.backScene(header,vS);
     }
-
     @FXML
-    private void onConnectAction(){
+    protected void onConnectAction() {
         if (selectedHost == null){
             joinStatus.setVisible(true);
             joinStatus.setText("Select a Game to join!");
@@ -72,18 +63,14 @@ public class JoinLan extends Controller implements Initializable {
         stopDiscovery();
 
         try {
-            int joinLevel = yourLevel.getSelectionModel().getSelectedItem();
             NetworkLayer layer = LanClient.join(ad.ipAddress(), ad.tcpPort());
             Session s = Session.current();
             s.myName   = yourName;
             s.isHost   = false;
-            s.myLevel = joinLevel;
             s.network  = layer;
             s.peerName = ad.name();
-            s.peerLevel = ad.level();
 
-            WaitForOpponent controller = (WaitForOpponent) c.changeScene(
-                    "/Views/Tetris/WaitForOpponent.fxml", header, vS);
+            WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/HexChess/WaitForOpponent.fxml", header, vS);
             controller.passJoinData(yourName, ad.ipAddress());
         } catch (Exception e) {
             joinStatus.setVisible(true);
@@ -91,20 +78,9 @@ public class JoinLan extends Controller implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        joinStatus.setVisible(false);
-
-        yourLevel.getItems().clear();
-
-        for (int i = 0; i < 20; i++) {
-            yourLevel.getItems().add(i+1);
-        }
-        yourLevel.getSelectionModel().select(0);
-
-        startDiscovery();
+    public void handData(String name){
+        joinPlayerNameTF.setText(name);
     }
-
 
     private void startDiscovery() {
         try {
@@ -154,7 +130,7 @@ public class JoinLan extends Controller implements Initializable {
         selectedHost = null;
 
         for (Advertisement ad : ads) {
-            if (ad.gameMode() != GameMode.TETRIS) continue;
+            if (ad.gameMode() != GameMode.HEXCHESS) continue;
             Label l = makeHostLabel(ad);
             availableHosts.add(l);
             scrollElements.getChildren().add(l);
@@ -166,6 +142,7 @@ public class JoinLan extends Controller implements Initializable {
         }
         shownHostIps = newIps;
     }
+
 
     private Label makeHostLabel(Advertisement ad) {
         Label l = new Label(ad.name() + "   (" + ad.ipAddress() + ")");
@@ -183,4 +160,12 @@ public class JoinLan extends Controller implements Initializable {
     private void deselectAll() {
         for (Label l : availableHosts) l.getStyleClass().clear();
     }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        joinStatus.setVisible(false);
+
+        startDiscovery();
+    }
+
 }

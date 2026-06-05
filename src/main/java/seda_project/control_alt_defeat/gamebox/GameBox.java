@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

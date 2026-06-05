@@ -81,7 +81,7 @@ public class Configuration {
 
             vS.addFxmlLoaders(address);
             var controller = loader.getController();
-            Scene newScene = new Scene(root, 800, 600);
+            Scene newScene = new Scene(root);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);
             stage.show();

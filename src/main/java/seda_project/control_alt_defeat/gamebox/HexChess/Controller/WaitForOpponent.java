@@ -1,4 +1,4 @@
-package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
+package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -10,22 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
-import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
-import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
-import seda_project.control_alt_defeat.gamebox.network.Announcer;
-import seda_project.control_alt_defeat.gamebox.network.Discovery;
-import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
-import seda_project.control_alt_defeat.gamebox.network.Lan;
-import seda_project.control_alt_defeat.gamebox.network.LanHost;
-import seda_project.control_alt_defeat.gamebox.network.Message;
-import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
-import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
-import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
+import seda_project.control_alt_defeat.gamebox.network.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class WaitForOpponent extends Controller {
-
+    private String myname;
     private Timeline loadingDots;
     private Announcer announcer;
 
@@ -37,92 +27,35 @@ public class WaitForOpponent extends Controller {
 
     @FXML
     private Button startButton;
-
     @FXML
-    public void onBackAction() {
-        stopAnnouncer();
+    protected void onBackAction() {
+        Object controller = c.backScene(header,vS);
         if (loadingDots != null) loadingDots.stop();
-        Session.clear(); 
-        c.backScene(header, vS);
+        Session.clear();
+        if (controller instanceof HostLanConfiguration host) {
+            host.handData(myname);
+        }
+        if (controller instanceof JoinLan join){
+            join.handData(myname);
+        }
     }
 
     @FXML
-    public void onStartGameAction() {
+    protected void onStartGameAction() {
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
         Session s = Session.current();
         s.localReady = !s.localReady;
-        layer.send(new TetrisMessage.Ready(s.localReady));
+        layer.send(new ChessMessage.Ready(s.localReady));
 
         startButton.setText(s.localReady ? "Not Ready" : "Ready");
         updatePeerStatus();
         maybeStartCountdown();
     }
 
-    public void passHostData(String hostName, int hostLevel) {
-        yourNameLabel.setText(hostName);
-        hostIpAddressLabel.setText(Lan.localIp());
-        startButton.setText("Ready");
-        statusLabel.setText("Waiting for an opponent to join!");
-
-        loadingDots = new Timeline(
-                new KeyFrame(Duration.seconds(0),   e -> opponentNameLabel.setText("")),
-                new KeyFrame(Duration.seconds(0.5), e -> opponentNameLabel.setText("o")),
-                new KeyFrame(Duration.seconds(1),   e -> opponentNameLabel.setText("oo")),
-                new KeyFrame(Duration.seconds(1.5), e -> opponentNameLabel.setText("ooo")),
-                new KeyFrame(Duration.seconds(2),   e -> opponentNameLabel.setText("ooo"))
-        );
-        loadingDots.setCycleCount(Animation.INDEFINITE);
-        loadingDots.play();
-
-        // Start UDP broadcast so joiners can discover us 
-        announcer = Discovery.announceTetris(hostName, Lan.DEFAULT_PORT, hostLevel);
-
-        // Open the server socket on the background
-        LanHost.hostAsync(Lan.DEFAULT_PORT,
-                layer -> Platform.runLater(() -> {
-                    stopAnnouncer();
-                    Session.current().network = layer;
-                    attachHostListener(layer);
-                }),
-                err -> Platform.runLater(() -> {
-                    statusLabel.setText("Hosting failed: " + err.getMessage());
-                    err.printStackTrace();
-                })
-        );
-    }
-
-    private void attachHostListener(NetworkLayer layer) {
-        layer.addListener(new NetworkListener() {
-            @Override
-            public void onMessage(Message msg) {
-                Platform.runLater(() -> handleHostMessage(layer, msg));
-            }
-            @Override
-            public void onDisconnected(String reason) {
-                Platform.runLater(() -> statusLabel.setText("Opponent disconnected: " + reason));
-            }
-        });
-    }
-
-    private void handleHostMessage(NetworkLayer layer, Message msg) {
-        if (msg instanceof TetrisMessage.Hello h) {
-            Session s = Session.current();
-            s.peerName = h.playerName();
-            s.peerLevel = h.playerLevel();
-            boolean vertical = TetrisAdvancedSettings.getInstance().isVertical();
-            s.lanVertical = vertical;
-            layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel,vertical));
-            playerJoin(h.playerName());
-        } else if (msg instanceof TetrisMessage.Ready r) {
-            Session.current().peerReady = r.ready();
-            updatePeerStatus();
-            maybeStartCountdown();
-        }
-    }
-
     public void passJoinData(String playerName, String ipAddress) {
+        myname = playerName;
         Session s = Session.current();
         s.localReady = false;
         s.peerReady  = false;
@@ -150,31 +83,88 @@ public class WaitForOpponent extends Controller {
         });
 
         // Greet the host
-        layer.send(new TetrisMessage.Hello(playerName,Session.current().myLevel));
+        layer.send(new ChessMessage.Hello(playerName));
     }
 
-    private void handleJoinMessage(Message msg) {
-        if (msg instanceof TetrisMessage.LobbyInfo info) {
-            Session.current().peerName = info.hostName();
-            Session.current().lanVertical = info.vertical();
-            opponentNameLabel.setText(info.hostName());
-            statusLabel.setText("Press Ready to start!");
-        } else if (msg instanceof TetrisMessage.Ready r) {
+    public void passHostData(String hostName){
+        myname = hostName;
+        yourNameLabel.setText(hostName);
+        hostIpAddressLabel.setText(Lan.localIp());
+        startButton.setText("Ready");
+        statusLabel.setText("Waiting for an opponent to join!");
+
+        loadingDots = new Timeline(
+                new KeyFrame(Duration.seconds(0),   e -> opponentNameLabel.setText("")),
+                new KeyFrame(Duration.seconds(0.5), e -> opponentNameLabel.setText("o")),
+                new KeyFrame(Duration.seconds(1),   e -> opponentNameLabel.setText("oo")),
+                new KeyFrame(Duration.seconds(1.5), e -> opponentNameLabel.setText("ooo")),
+                new KeyFrame(Duration.seconds(2),   e -> opponentNameLabel.setText("ooo"))
+        );
+        loadingDots.setCycleCount(Animation.INDEFINITE);
+        loadingDots.play();
+
+        // Start UDP broadcast so joiners can discover us
+        announcer = Discovery.announceChess(hostName, Lan.DEFAULT_PORT);
+
+        // Open the server socket on the background
+        LanHost.hostAsync(Lan.DEFAULT_PORT,
+                layer -> Platform.runLater(() -> {
+                    stopAnnouncer();
+                    Session.current().network = layer;
+                    attachHostListener(layer);
+                }),
+                err -> Platform.runLater(() -> {
+                    statusLabel.setText("Hosting failed: " + err.getMessage());
+                    err.printStackTrace();
+                })
+        );
+    }
+    private void attachHostListener(NetworkLayer layer) {
+        layer.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                Platform.runLater(() -> handleHostMessage(layer, msg));
+            }
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> statusLabel.setText("Opponent disconnected: " + reason));
+            }
+        });
+    }
+
+    private void handleHostMessage(NetworkLayer layer, Message msg) {
+        if (msg instanceof ChessMessage.Hello h) {
+            Session s = Session.current();
+            s.peerName = h.playerName();
+            layer.send(new ChessMessage.LobbyInfo(s.myName,h.playerName()));
+            playerJoin(h.playerName());
+        } else if (msg instanceof ChessMessage.Ready r) {
             Session.current().peerReady = r.ready();
             updatePeerStatus();
-        } else if (msg instanceof TetrisMessage.StartCountdown sc) {
+            maybeStartCountdown();
+        }
+    }
+    private void handleJoinMessage(Message msg) {
+        if (msg instanceof ChessMessage.LobbyInfo info) {
+            Session.current().peerName = info.hostName();
+            opponentNameLabel.setText(info.hostName());
+            statusLabel.setText("Press Ready to start!");
+        } else if (msg instanceof ChessMessage.Ready r) {
+            Session.current().peerReady = r.ready();
+            updatePeerStatus();
+        } else if (msg instanceof ChessMessage.StartCountdown sc) {
             scheduleStartGame(sc.delayMs());
         }
     }
 
-    
+
     private void maybeStartCountdown() {
         Session s = Session.current();
         if (!s.isHost) return;
         if (!(s.localReady && s.peerReady)) return;
 
         long delayMs = 3000;
-        s.network.send(new TetrisMessage.StartCountdown(delayMs));
+        s.network.send(new ChessMessage.StartCountdown(delayMs));
         scheduleStartGame(delayMs);
     }
 
@@ -194,24 +184,17 @@ public class WaitForOpponent extends Controller {
         int p1L = s.isHost ? s.myLevel : s.peerLevel;
         int p2L = s.isHost ? s.peerLevel : s.myLevel;
 
-        // Build the engine on the host only
-        TetrisEngine engine = null;
-        if (s.isHost) {
-            engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
-            s.tetrisEngine = engine;
-        }
+        //TODO Start Engine Here
 
-        String address = s.lanVertical
-                ? "/Views/Tetris/GameScreen.fxml"
-                : "/Views/Tetris/GameScreenHorizontal.fxml";
-
+        String address = "/Views/HexChess/GameScreen.fxml";
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-        controller.create(p1, p2, p1L,p2L, true, engine);
+        //TODO pass Controller Data Here
 
         if (s.isHost) {
-            controller.attachHostNetworkBridge(s.network);
+            //TODO Do We Need Those?
+            //controller.attachHostNetworkBridge(s.network);
         } else {
-            controller.attachClientNetworkBridge(s.network);
+            //controller.attachClientNetworkBridge(s.network);
         }
     }
 

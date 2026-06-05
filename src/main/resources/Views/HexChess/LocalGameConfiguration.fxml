@@ -57,6 +57,7 @@
                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                              </GridPane>
+                        <Button mnemonicParsing="false" onAction="#onCustomBoardAction" text="Use Custom Board" />
                              <Label fx:id="statusLabel" maxHeight="-Infinity" maxWidth="-Infinity">
                                  <VBox.margin>
                                      <Insets bottom="10.0" top="10.0" />

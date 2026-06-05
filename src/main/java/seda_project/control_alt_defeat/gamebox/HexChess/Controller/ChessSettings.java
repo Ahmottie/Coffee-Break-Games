@@ -12,7 +12,6 @@ import javafx.scene.shape.Polygon;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
