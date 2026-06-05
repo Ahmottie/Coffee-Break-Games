@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.HostLanConfiguration">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.HostLanConfiguration">
     <children>
         <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="800.0">
             <children>
@@ -22,6 +22,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
+                  <Label text="Hex Chess Host Game" />
                     </children>
                     <padding>
                         <Insets left="5.0" right="5.0" />

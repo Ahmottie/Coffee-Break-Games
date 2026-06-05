@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.ChessSettings">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.ChessSettings">
     <children>
         <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="800.0">
             <children>
@@ -32,7 +32,7 @@
                         <Insets left="5.0" right="5.0" />
                     </padding>
                 </VBox>
-                <StackPane fx:id="stackPane" prefHeight="550.0" prefWidth="817.0">
+                <StackPane fx:id="stackPane" prefHeight="493.0" prefWidth="800.0">
                <children>
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="box">
                      <children>
@@ -173,7 +173,7 @@
                               <children>
                                  <Label styleClass="normalText" text="Normal Tiles" />
                                  <ColorPicker fx:id="normalTilesColorPicker" onAction="#onNormalTileAction" />
-                                  <Polygon fx:id="normalPolygon" >
+                                  <Polygon fx:id="normalPolygon">
                                     <points>
                                        <Double fx:value="-27.0" />
                                        <Double fx:value="0.0" />

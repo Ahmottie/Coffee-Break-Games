@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.JoinLan">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.JoinLan">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
             <children>
@@ -71,8 +71,8 @@
                                         <Insets right="5.0" />
                                     </GridPane.margin>
                                 </TextField>
-                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="3" GridPane.rowIndex="4" >
-                                    <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect"/>
+                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                    <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect" />
                                 </StackPane>
                             </children>
                             <padding>
