@@ -31,7 +31,7 @@
                      <items>
                         <VBox alignment="CENTER" maxWidth="200.0" minWidth="200.0">
                            <children>
-                              <ScrollPane fx:id="scrollPane" prefHeight="447.0" prefWidth="200.0" />
+                              <ScrollPane fx:id="scrollPane" prefHeight="447.0" prefWidth="200.0" styleClass="scroller" />
                               <HBox alignment="CENTER">
                                  <children>
                                      <StackPane styleClass="button-wrapper">

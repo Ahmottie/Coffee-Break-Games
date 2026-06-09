@@ -34,17 +34,17 @@
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                      <children>
-                            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Exit" />
+                            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onBackAction" text="Back" />
                      </children>
                   </StackPane>
                   <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                      <children>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Export" />
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExportAction" text="Export" />
                      </children>
                   </StackPane>
                   <StackPane layoutX="60.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                      <children>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Import" />
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onImportAction" text="Import" />
                      </children>
                   </StackPane>
                </children>
@@ -57,7 +57,7 @@
                                 <Label styleClass="normalText" text="Placable Piecse" />
                                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1PawnImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1PawnImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-pawn.png" />
                                             </image></ImageView>
@@ -66,7 +66,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1RookImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1RookImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-rook.png" />
                                             </image></ImageView>
@@ -75,7 +75,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="160.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1KnightImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1KnightImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-knight.png" />
                                             </image></ImageView>
@@ -84,16 +84,16 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="211.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1BishopImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1BishopImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-bishop.png" />
                                             </image></ImageView>
-                                        <Label fx:id="p1BishopAmountLabel" styleClass="normalText" text="x11" />
+                                        <Label fx:id="p1BishopAmountLabel" styleClass="normalText" text="x12" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="261.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1QueenImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1QueenImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-queen.png" />
                                             </image></ImageView>
@@ -102,7 +102,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <ImageView fx:id="p1KingImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p1KingImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/White/white-king.png" />
                                             </image></ImageView>
@@ -115,7 +115,7 @@
                                 <String fx:value="error" />
                             </styleClass>
                         </VBox>
-                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                        <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity">
                             <children>
                                 <Pane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
@@ -1596,7 +1596,7 @@
                                 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
                                         <Label fx:id="p2PawnAmountLabel" styleClass="normalText" text="9x" />
-                                        <ImageView fx:id="p2PawnImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p2PawnImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-pawn.png" />
                                             </image></ImageView>
@@ -1605,7 +1605,7 @@
                                 <HBox alignment="CENTER" layoutX="53.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
                                         <Label fx:id="p2RookAmountLabel" styleClass="normalText" text="11x" />
-                                        <ImageView fx:id="p2RookImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p2RookImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-rook.png" />
                                             </image></ImageView>
@@ -1614,7 +1614,7 @@
                                 <HBox alignment="CENTER" layoutX="53.0" layoutY="160.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
                                         <Label fx:id="p2KnightAmountLabel" styleClass="normalText" text="11x" />
-                                        <ImageView fx:id="p2KnightImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p2KnightImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-knight.png" />
                                             </image></ImageView>
@@ -1622,8 +1622,8 @@
                                 </HBox>
                                 <HBox alignment="CENTER" layoutX="53.0" layoutY="211.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
-                                        <Label fx:id="p2BishopAmountLabel" styleClass="normalText" text="11x" />
-                                        <ImageView fx:id="p2BishopImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <Label fx:id="p2BishopAmountLabel" styleClass="normalText" text="12x" />
+                                        <ImageView fx:id="p2BishopImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-bishop.png" />
                                             </image></ImageView>
@@ -1632,7 +1632,7 @@
                                 <HBox alignment="CENTER" layoutX="53.0" layoutY="261.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
                                         <Label fx:id="p2QueenAmountLabel" styleClass="normalText" text="10x" />
-                                        <ImageView fx:id="p2QueenImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p2QueenImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-queen.png" />
                                             </image></ImageView>
@@ -1641,7 +1641,7 @@
                                 <HBox alignment="CENTER" layoutX="53.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity">
                                     <children>
                                         <Label fx:id="p2KingAmountLabel" styleClass="normalText" text="1x" />
-                                        <ImageView fx:id="p2KingImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fx:id="p2KingImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#dragStart" onDragDone="#dragDone" pickOnBounds="true" preserveRatio="true">
                                             <image>
                                                 <Image url="@../../Images/HexChess/Black/black-king.png" />
                                             </image></ImageView>
@@ -1657,7 +1657,6 @@
                 </HBox>
             </children>
         </VBox>
-        <StackPane layoutX="-8.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" />
     </children>
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />

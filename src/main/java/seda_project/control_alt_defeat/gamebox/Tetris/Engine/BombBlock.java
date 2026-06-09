@@ -1,8 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 
 import java.io.Serializable;
 

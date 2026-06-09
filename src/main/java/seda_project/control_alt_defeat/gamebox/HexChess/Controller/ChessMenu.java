@@ -32,4 +32,9 @@ public class ChessMenu extends Controller {
     protected void onSettingsAction() {
         c.changeScene("/Views/HexChess/ChessSettings.fxml",header,vS);
     }
+
+    @FXML
+    public void onCustomBoardAction() {
+        c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
+    }
 }

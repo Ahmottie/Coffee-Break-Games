@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class TetrisAdvancedSettings implements Serializable {
 

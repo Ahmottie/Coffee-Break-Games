@@ -148,3 +148,74 @@
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
 }
+
+.scrollItem {
+    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-background-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 7px;
+    -fx-border-width: 1px;
+    -fx-padding: 9 14 9 14;
+    -fx-cursor: hand;
+    -fx-max-width: Infinity;
+}
+.scrollItem:hover {
+    -fx-background-color: rgba(30, 207, 207, 0.10);
+    -fx-border-color: rgba(30, 207, 207, 0.20);
+    -fx-text-fill: rgba(200, 255, 255, 0.95);
+}
+
+.scrollItem.selectedItem {
+    -fx-background-color: rgba(30, 180, 140, 0.22);
+    -fx-border-color: rgba(77, 235, 184, 0.70);
+    -fx-text-fill: rgba(160, 255, 220, 1.0);
+    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
+}
+
+.scroller .track {
+    -fx-background-color: rgba(30, 207, 207, 0.1);
+    -fx-background-radius: 4px;
+}
+
+.scroller .thumb {
+    -fx-background-color: rgba(30, 207, 207, 0.3);
+    -fx-background-radius: 4px;
+}
+
+.scroller .thumb:hover {
+    -fx-background-color: rgba(30, 207, 207, 0.55);
+}
+
+.scroller .scroll-bar:vertical .increment-button,
+.scroller .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+
+.scroller .scroll-bar:vertical .increment-arrow,
+.scroller .scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: rgba(30, 207, 207, 0.40);
+}
+
+.scroller {
+    -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-width: 2px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-background-color: transparent;
+}
+
+.scroller > .viewport {
+    -fx-background-color: transparent;
+}
+
+
+.scroller .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroller .scroll-bar:vertical .track-background {
+    -fx-background-color: transparent;
+}

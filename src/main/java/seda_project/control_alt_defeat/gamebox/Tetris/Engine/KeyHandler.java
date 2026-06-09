@@ -7,7 +7,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Controller.GameScreen;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
