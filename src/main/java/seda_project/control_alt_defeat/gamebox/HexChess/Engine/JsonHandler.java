@@ -41,9 +41,10 @@ public class JsonHandler {
         return listofBoards;
     }
 
-    public BoardDesignState createNewState(String notation, Map<String, Integer> pieceAmounts){
+    public BoardDesignState createNewState(String notation, Map<String, Integer> pieceAmounts, int starting){
         ObjectNode newBoard = jsonMapper.createObjectNode();
         newBoard.put("FENState", notation);
+        newBoard.put("startingPlayer",starting);
         newBoard.put("p1Pawn", pieceAmounts.get("p1PawnImg"));
         newBoard.put("p1Rook", pieceAmounts.get("p1RookImg"));
         newBoard.put("p1Knight", pieceAmounts.get("p1KnightImg"));

@@ -76,6 +76,15 @@
     -fx-background-color: linear-gradient(to bottom, #3d7db8, #1e4e7a);
 }
 
+.button.ready {
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, #59dc94 0.0%, #1eb48c72 100.0%);
+    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
+}
+
 .color-picker {
     -fx-background-color: linear-gradient(to bottom, #71bdff, #3d7db8);
     -fx-background-radius: 6px;

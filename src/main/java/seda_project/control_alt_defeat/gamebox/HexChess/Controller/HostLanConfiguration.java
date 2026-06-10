@@ -1,5 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,6 +9,8 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class HostLanConfiguration  extends Controller {
+    private String boardState;
+
     @FXML
     private VBox header;
 
@@ -39,5 +42,18 @@ public class HostLanConfiguration  extends Controller {
 
     public void handData(String name){
         hostNameTF.setText(name);
+    }
+
+    public void boardSelection(String notation, String p1Name) {
+        this.boardState = notation;
+        if (p1Name != null){
+            hostNameTF.setText(p1Name);
+        }
+    }
+
+    public void onCustomBoardAction() {
+        BoardDesigner controller = (BoardDesigner) c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
+
+        controller.handNames(hostNameTF.getText(),null);
     }
 }

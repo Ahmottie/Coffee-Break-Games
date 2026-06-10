@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class BoardDesignerEngine {
     private static final Logger log = LoggerFactory.getLogger(BoardDesignerEngine.class);
     private Map<String, Integer> pieceAmounts;
+    private int startingPlayer = 1;
 
     public static Map<String, Integer> defaultPieceAmounts() {
         return new HashMap<>(Map.ofEntries(
@@ -113,9 +114,13 @@ public class BoardDesignerEngine {
     }
 
     public String createNotation(List<List<Polygon>> rows) {
-        return rows.stream()
+        StringBuilder sb = new StringBuilder();
+        sb.append(rows.stream()
                 .map(this::encodeRow)
-                .collect(Collectors.joining("/"));
+                .collect(Collectors.joining("/")));
+        sb.append(" ");
+        sb.append(startingPlayer);
+        return sb.toString();
     }
 
     private String encodeRow(List<Polygon> polygons) {
@@ -169,5 +174,12 @@ public class BoardDesignerEngine {
                 Map.entry("p2KingImg",   state.getP2King())
         ));
         pieceAmounts.entrySet().forEach(System.out::println);
+    }
+
+    public void activePlayer(int x){
+        this.startingPlayer = x;
+    }
+    public int getActivePlayer(){
+        return this.startingPlayer;
     }
 }

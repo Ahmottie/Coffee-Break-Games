@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,8 +46,14 @@ public class BoardDesigner extends Controller implements Initializable {
     private List<BoardDesignState> listofBoards;
     private BoardDesignState selectedBoard;
 
+    private String p1Name, p2Name;
+
+
     @FXML
     private VBox header;
+
+    @FXML
+    private HBox buttonBox;
 
     @FXML
     private Parent root;
@@ -66,6 +73,9 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     private Pane boardPane;
+
+    @FXML
+    private Button p1GoFirst, p2GoFirst, useButton;
 
     @FXML
     private Polygon a6, a5, a4, a3, a2, a1,
@@ -190,7 +200,13 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
-        c.backScene(header, vS);
+        Object controller = c.backScene(header,vS);
+        if (controller instanceof LocalGameConfiguration lGC){
+            lGC.boardSelection(null, p1Name, p2Name);
+        }
+        if (controller instanceof HostLanConfiguration hLC){
+            hLC.boardSelection(null, p1Name);
+        }
     }
 
     @FXML
@@ -202,7 +218,7 @@ public class BoardDesigner extends Controller implements Initializable {
             }
         }
         if (!exist) {
-            listofBoards.add(jsonHandler.createNewState(engine.createNotation(rows), engine.getPieceAmounts()));
+            listofBoards.add(jsonHandler.createNewState(engine.createNotation(rows), engine.getPieceAmounts(),engine.getActivePlayer()));
             jsonHandler.writeBoardStates(listofBoards);
         }
         else {
@@ -227,6 +243,35 @@ public class BoardDesigner extends Controller implements Initializable {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    protected void onP1FirstAcion(){
+        p1GoFirst.getStyleClass().add("ready");
+        p2GoFirst.getStyleClass().remove("ready");
+        engine.activePlayer(1);
+    }
+
+    @FXML
+    protected void onP2FirstAction(){
+        p2GoFirst.getStyleClass().add("ready");
+        p1GoFirst.getStyleClass().remove("ready");
+        engine.activePlayer(2);
+    }
+
+    @FXML
+    protected void onUseAction(){
+        Object controller = c.backScene(header,vS);
+        if (controller instanceof LocalGameConfiguration lGC){
+            lGC.boardSelection(engine.createNotation(rows), p1Name, p2Name);
+        }
+        if (controller instanceof HostLanConfiguration hLC){
+            hLC.boardSelection(engine.createNotation(rows), p1Name);
+        }
+    }
+
+    public void disableUse() {
+        useButton.setDisable(true);
     }
 
     private void handlePiecePlaced(String pieceId, String fieldId) {
@@ -277,9 +322,6 @@ public class BoardDesigner extends Controller implements Initializable {
         piece.setLayoutY(field.getLayoutY() - 20);
 
         boardPane.getChildren().add(piece);
-
-        String fen = engine.createNotation(rows);
-        System.out.println(fen);
     }
 
     private void applyLabelValues(Map<String, String> values) {
@@ -364,11 +406,18 @@ public class BoardDesigner extends Controller implements Initializable {
         engine.loadExport(state);
         applyLabelValues(engine.buildLabelValues("p1"));
         applyLabelValues(engine.buildLabelValues("p2"));
-        drawFen(state.getFENState());
+        drawFen(state.getFENState().replace("\"",""));
     }
 
     private void drawFen(String fenState) {
-        String[] fenrows = fenState.split("/");
+        String[] starting = fenState.split(" ");
+        if (Integer.parseInt(starting[1]) == 1) {
+            onP1FirstAcion();
+        }
+        else {
+            onP2FirstAction();
+        }
+        String[] fenrows = starting[0].split("/");
         Pattern p = Pattern.compile("[PRNBQKprnbqk]|\\d+");
         for (int i = 0; i < fenrows.length; i++) {
             String row = fenrows[i];
@@ -406,5 +455,10 @@ public class BoardDesigner extends Controller implements Initializable {
             case "k" -> "p2KingImg";
             default -> "?";
         };
+    }
+
+    public void handNames(String text, String text1) {
+        p1Name = text;
+        p2Name = text1;
     }
 }

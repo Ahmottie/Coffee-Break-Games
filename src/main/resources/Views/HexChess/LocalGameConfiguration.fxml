@@ -57,7 +57,11 @@
                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                              </GridPane>
-                        <Button mnemonicParsing="false" onAction="#onCustomBoardAction" text="Use Custom Board" />
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onCustomBoardAction" text="Use Custom Board" />
+                           </children>
+                        </StackPane>
                              <Label fx:id="statusLabel" maxHeight="-Infinity" maxWidth="-Infinity">
                                  <VBox.margin>
                                      <Insets bottom="10.0" top="10.0" />

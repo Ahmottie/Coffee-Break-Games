@@ -30,11 +30,16 @@
                         <Insets left="5.0" right="5.0" />
                     </padding>
                 </VBox>
-            <HBox alignment="CENTER" spacing="10.0">
+            <HBox fx:id="buttonBox" alignment="CENTER" spacing="10.0">
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                      <children>
                             <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onBackAction" text="Back" />
+                     </children>
+                  </StackPane>
+                  <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                     <children>
+                        <Button fx:id="useButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onUseAction" text="Use" />
                      </children>
                   </StackPane>
                   <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
@@ -109,6 +114,11 @@
                                         <Label fx:id="p1KingAmountLabel" styleClass="normalText" text="x1" />
                                     </children>
                                 </HBox>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                           <children>
+                              <Button fx:id="p1GoFirst" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onP1FirstAcion" styleClass="ready" text="Go First" />
+                           </children>
+                        </StackPane>
                             </children>
                             <styleClass>
                                 <String fx:value="box" />
@@ -1647,6 +1657,11 @@
                                             </image></ImageView>
                                     </children>
                                 </HBox>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                           <children>
+                              <Button fx:id="p2GoFirst" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onP2FirstAction" text="Go First" />
+                           </children>
+                        </StackPane>
                             </children>
                             <styleClass>
                                 <String fx:value="box" />

@@ -35,6 +35,7 @@ public class ChessMenu extends Controller {
 
     @FXML
     public void onCustomBoardAction() {
-        c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
+        BoardDesigner controller = (BoardDesigner)c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
+        controller.disableUse();
     }
 }

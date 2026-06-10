@@ -26,6 +26,8 @@ public class BoardDesignState {
         this.p2Bishop = board.get("p2Bishop").asInt();
         this.p2Queen = board.get("p2Queen").asInt();
         this.p2King = board.get("p2King").asInt();
+
+        int starting = board.get("startingPlayer").asInt();
     }
 
     public String getFENState() {
