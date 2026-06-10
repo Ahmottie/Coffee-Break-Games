@@ -41,7 +41,7 @@ public class JsonHandler {
         return listofBoards;
     }
 
-    public void writeBoardStates(List<BoardDesignState> listofBoards, String notation, Map<String, Integer> pieceAmounts) {
+    public BoardDesignState createNewState(String notation, Map<String, Integer> pieceAmounts){
         ObjectNode newBoard = jsonMapper.createObjectNode();
         newBoard.put("FENState", notation);
         newBoard.put("p1Pawn", pieceAmounts.get("p1PawnImg"));
@@ -56,9 +56,10 @@ public class JsonHandler {
         newBoard.put("p2Bishop", pieceAmounts.get("p2BishopImg"));
         newBoard.put("p2Queen", pieceAmounts.get("p2QueenImg"));
         newBoard.put("p2King", pieceAmounts.get("p2KingImg"));
+        return new BoardDesignState(newBoard);
+    }
 
-        listofBoards.add(new BoardDesignState(newBoard));
-
+    public void writeBoardStates(List<BoardDesignState> listofBoards) {
         ArrayNode arrayNode = jsonMapper.createArrayNode();
         listofBoards.forEach(board -> arrayNode.add(board.getBoard()));
 
@@ -75,9 +76,5 @@ public class JsonHandler {
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void delete(List<BoardDesignState> selectedboard) {
-
     }
 }

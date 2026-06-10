@@ -69,7 +69,7 @@ public class BoardSelection extends Controller{
         scrollContent.getChildren().remove(position);
         boards.remove(position);
         JsonHandler handler = new  JsonHandler();
-        handler.delete(boards);
+        handler.writeBoardStates(boards);
         selectedboard = null;
     }
 

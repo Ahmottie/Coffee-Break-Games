@@ -1,6 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Engine;
 
 import javafx.scene.shape.Polygon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BoardDesignerEngine {
+    private static final Logger log = LoggerFactory.getLogger(BoardDesignerEngine.class);
     private Map<String, Integer> pieceAmounts;
 
     public static Map<String, Integer> defaultPieceAmounts() {
@@ -39,24 +42,31 @@ public class BoardDesignerEngine {
         String playerPrefix = pieceId.contains("1") ? "p1" : "p2";
         int amount = pieceAmounts.get(pieceId);
         pieceAmounts.put(pieceId, amount + 1);
-
         for (String key : pieceAmounts.keySet()) {
-            if (key.startsWith(playerPrefix)) {
-                if (!key.contains("King") && !key.contains("Pawn")) {
-                    if ((key.contains("Rook") || key.contains("Knight")) && amount >= 3) {
-                        pieceAmounts.put(pieceId, amount);
-                        pieceAmounts.put(playerPrefix + "PawnImg",
-                                pieceAmounts.get(playerPrefix + "PawnImg") + 1);
-                    }
-                    if (key.contains("Bishop") && amount >= 4) {
-                        pieceAmounts.put(pieceId, amount);
-                        pieceAmounts.put(playerPrefix + "PawnImg",
-                                pieceAmounts.get(playerPrefix + "PawnImg") + 1);
-                    }
-                    if (key.contains("Queen") && amount >= 2) {
-                        pieceAmounts.put(pieceId, amount);
-                        pieceAmounts.put(playerPrefix + "PawnImg",
-                                pieceAmounts.get(playerPrefix + "PawnImg") + 1);
+            if (key.equals(pieceId)) {
+                if (key.startsWith(playerPrefix)) {
+                    System.err.println(key);
+                    if (!key.contains("King") && !key.contains("Pawn")) {
+                        System.out.println("NO KING or PAWN");
+                        if ((key.contains("Rook") || key.contains("Knight")) && amount >= 2) {
+                            System.err.println("Decrement ROOK|KNIGHT");
+                            pieceAmounts.put(pieceId, amount);
+                            pieceAmounts.put(playerPrefix + "PawnImg",
+                                    pieceAmounts.get(playerPrefix + "PawnImg") + 1);
+                        }
+                        if (key.contains("Bishop") && amount >= 3) {
+                            System.err.println("Decrement BISHOP");
+                            pieceAmounts.put(pieceId, amount);
+                            pieceAmounts.put(playerPrefix + "PawnImg",
+                                    pieceAmounts.get(playerPrefix + "PawnImg") + 1);
+                        }
+                        if (key.contains("Queen") && amount >= 1) {
+                            System.err.println("Decrement QUEEN");
+                            System.err.println("second Queen Detected");
+                            pieceAmounts.put(pieceId, amount);
+                            pieceAmounts.put(playerPrefix + "PawnImg",
+                                    pieceAmounts.get(playerPrefix + "PawnImg") + 1);
+                        }
                     }
                 }
             }
@@ -92,8 +102,11 @@ public class BoardDesignerEngine {
                 int totalAvailable = pieceAmounts.get(key)
                         + pieceAmounts.get(playerPrefix + "PawnImg");
                 result.put(key, String.valueOf(totalAvailable));
+                System.out.println(key + " Piece Count " + pieceAmounts.get(key));
+                System.out.println(key + " Total Available " +  totalAvailable);
             } else if (key.contains("Pawn") || key.contains("King")) {
                 result.put(key, String.valueOf(pieceAmounts.get(key)));
+                System.out.println(key + " Total Available " + pieceAmounts.get(key));
             }
         }
         return result;
@@ -155,5 +168,6 @@ public class BoardDesignerEngine {
                 Map.entry("p2QueenImg",  state.getP2Queen()),
                 Map.entry("p2KingImg",   state.getP2King())
         ));
+        pieceAmounts.entrySet().forEach(System.out::println);
     }
 }

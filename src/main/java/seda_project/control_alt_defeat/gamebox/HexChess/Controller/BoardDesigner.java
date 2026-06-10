@@ -202,7 +202,8 @@ public class BoardDesigner extends Controller implements Initializable {
             }
         }
         if (!exist) {
-            jsonHandler.writeBoardStates(listofBoards,engine.createNotation(rows), engine.getPieceAmounts());
+            listofBoards.add(jsonHandler.createNewState(engine.createNotation(rows), engine.getPieceAmounts()));
+            jsonHandler.writeBoardStates(listofBoards);
         }
         else {
             Toast.makeText(stackPane,"This State does already exist");
@@ -381,6 +382,7 @@ public class BoardDesigner extends Controller implements Initializable {
                     pos += gap;
                 } else {
                     String piece = getPiece(token);
+                    System.err.println("TOKEN " + token + "Gets transformed into "+ piece);
                     handlePiecePlaced(piece,rows.get(i).get(pos).getId());
                     pos ++;
                 }
