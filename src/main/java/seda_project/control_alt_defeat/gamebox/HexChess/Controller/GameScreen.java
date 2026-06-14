@@ -166,10 +166,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             polygon.setStroke(Color.RED);
             polygon.setStrokeWidth(3.0);
             Piece p = gameEngine.getBoard().getCellById(id).getPiece();
-            System.err.println("-------------------------");
-            System.out.println(p.getType());
+            System.out.println("PIECE " +p.getType());
             List<HexCell> x = gameEngine.getLegalMoves(p);
-            for (HexCell cell :x ){
+            System.out.println(x.size());
+            for (HexCell cell :x ){;
                 String orthogonalid = cell.getCoords().transformHextoId();
                 for (Node node : boardPane.getChildren()) {
                     if (node instanceof Polygon innerpolygon && node.getId().equals(orthogonalid)) {
@@ -322,7 +322,6 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
 
     private ImageView getPieceAtPolygon(String tileId) {
-        System.out.println(tileId);
         for (Node node : boardPane.getChildren()) {
             if (node instanceof ImageView && tileId.equals(node.getUserData())) {
                 return (ImageView) node;

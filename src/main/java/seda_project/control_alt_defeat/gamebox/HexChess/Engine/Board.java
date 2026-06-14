@@ -92,6 +92,14 @@ public class Board {
         Piece fromPiece = fromCell.getPiece();
         Piece toPiece = toCell.getPiece();
 
+        if (toPiece != null) {
+            if (toPiece.getPlayer() == PlayerColor.WHITE) {
+                white.remove(toPiece);
+            } else {
+                black.remove(toPiece);
+            }
+        }
+
         toCell.setPiece(fromPiece);
         fromCell.setPiece(null);
         fromPiece.setPosition(toCell.getCoords());

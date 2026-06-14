@@ -47,6 +47,9 @@ public class GameEngine {
         }
 
         Piece pieceToMove = fromCell.getPiece();
+        if( pieceToMove.getType() == PieceType.KING){
+            System.out.println("King was moved");
+        }
 
         // 2. Validate turn: Ensure player is only moving their own color
         if (pieceToMove.getPlayer() != currentTurn) {
@@ -75,6 +78,7 @@ public class GameEngine {
         // 5. Execute the move using your Board class methods
         Piece capturedPiece = board.movePiece(fromCoord, toCoord);
         pieceToMove.setMoved(true);
+
         if (pieceToMove.getType() == PAWN
                 && enpassent
                 && toCoord.col == enpassentCoordGhost.col
@@ -119,10 +123,12 @@ public class GameEngine {
             listeners.forEach(l ->l.remis());
         }
 
+
         if (checkStaleMate()){
             isGameOver = true;
             listeners.forEach(l -> l.stalemate(currentTurn));
         }
+
         checkEndangered();
         switchTurn(e);
         return true;
@@ -319,11 +325,14 @@ public class GameEngine {
     public List<HexCell> getLegalMoves(Piece piece){
         HexCoord currentPos = piece.getPosition();
         List<HexCell> candidates  = getRawMoves(piece);
+        if (piece.getType()== PieceType.KING){
+            candidates.forEach(System.out::println);
+        }
         candidates.removeIf(cell -> wouldLeaveKingInCheck(piece, currentPos, cell.getCoords()));
         return candidates;
     }
+
     public List<HexCell> getRawMoves(Piece piece) {
-        System.out.println("getRawMoves: " + piece.getType() + " player=" + piece.getPlayer() + " pos=" + piece.getPosition().transformHextoId());
 
         HexCoord coord = piece.getPosition();
         List<HexCell> candidates = new ArrayList<>();
@@ -351,6 +360,9 @@ public class GameEngine {
     }
 
     private boolean wouldLeaveKingInCheck(Piece piece, HexCoord from, HexCoord to) {
+        if (piece.getType() == PieceType.KING) {
+            System.out.println("LOLOLOLOL");
+        }
         HexCell fromCell = board.getCellByCoord(from.col,from.row);
         HexCell toCell = board.getCellByCoord(to.col,to.row);
 
@@ -365,7 +377,7 @@ public class GameEngine {
         List<Piece> ownPieces = (ownColor == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
         List<Piece> enemyPieces = (ownColor == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
 
-        Piece king = ownPieces.stream().filter(p -> p.getType() == PieceType.KING).findFirst().orElse(null);
+        Piece king = (piece.getType() == PieceType.KING) ? piece : ownPieces.stream().filter(p -> p.getType() == PieceType.KING).findFirst().orElse(null);
 
         boolean inCheck = false;
 
@@ -381,13 +393,10 @@ public class GameEngine {
         }
 
         // Undo the move
-        System.out.println("UNDO: restoring " + piece.getType() + " to from=" + from.transformHextoId());
-
         fromCell.setPiece(piece);
         toCell.setPiece(originalAtTo);
         piece.setPosition(from);
 
-        System.out.println("AFTER UNDO: piece.getPosition()=" + piece.getPosition().transformHextoId());
 
         return inCheck;
     }
