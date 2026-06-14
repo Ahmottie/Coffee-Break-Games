@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BoardDesignerEngine {
-    private static final Logger log = LoggerFactory.getLogger(BoardDesignerEngine.class);
     private Map<String, Integer> pieceAmounts;
     private int startingPlayer = 1;
 

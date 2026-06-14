@@ -1,69 +1,146 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceSettings;
+import javafx.scene.shape.Polygon;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import seda_project.control_alt_defeat.gamebox.Configuration;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
+import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class GameScreen extends Controller implements Initializable {
+public class GameScreen extends Controller implements Initializable, ChessEventListener {
     PieceSettings settings = PieceSettings.getInstance();
-
+    private GameEngine gameEngine;
+    private ImageView endangeredKingView = null;
+    
     @FXML
     private Parent root;
+
+    @FXML
+    private VBox header, p1, p2;
+
+    @FXML
+    private Pane boardPane;
 
     @FXML
     private ImageView p1PawnImg, p1RookImg, p1KnightImg, p1BishopImg, p1QueenImg, p1KingImg;
     @FXML
     private ImageView p2PawnImg, p2RookImg, p2KnightImg, p2BishopImg, p2QueenImg, p2KingImg;
 
+    @FXML
+    private Label p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King;
+    @FXML
+    private Label p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King;
+
+    @FXML
+    private Label p1Score, p2Score, p1NameLabel, p2NameLabel;
+
+    @FXML
+    private Polygon a6, a5, a4, a3, a2, a1,
+            b7, b6, b5, b4, b3, b2, b1,
+            c8, c7, c6, c5, c4, c3, c2, c1,
+            d9, d8, d7, d6, d5, d4, d3, d2, d1,
+            e10, e9, e8, e7, e6, e5, e4, e3, e2, e1,
+            f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1,
+            g10, g9, g8, g7, g6, g5, g4, g3, g2, g1,
+            h9, h8, h7, h6, h5, h4, h3, h2, h1,
+            i8, i7, i6, i5, i4, i3, i2, i1,
+            j7, j6, j5, j4, j3, j2, j1,
+            k6, k5, k4, k3, k2, k1;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<ImageView> p1Pieces = settings.getP1Pieces();
-        if  (p1Pieces != null) {
-            p1PawnImg.setImage(p1Pieces.get(0).getImage());
-            p1RookImg.setImage(p1Pieces.get(1).getImage());
-            p1KnightImg.setImage(p1Pieces.get(2).getImage());
-            p1BishopImg.setImage(p1Pieces.get(3).getImage());
-            p1QueenImg.setImage(p1Pieces.get(4).getImage());
-            p1KingImg.setImage(p1Pieces.get(5).getImage());
-        }
-        List<ImageView> p2Pieces = settings.getP2Pieces();
-        if (p2Pieces != null) {
-            p2PawnImg.setImage(p2Pieces.get(0).getImage());
-            p2RookImg.setImage(p2Pieces.get(1).getImage());
-            p2KnightImg.setImage(p2Pieces.get(2).getImage());
-            p2BishopImg.setImage(p2Pieces.get(3).getImage());
-            p2QueenImg.setImage(p2Pieces.get(4).getImage());
-            p2KingImg.setImage(p2Pieces.get(5).getImage());
-        }
+        this.gameEngine = new GameEngine();
+        this.gameEngine.addListener(this);
+        applyTileColor();
+        applyPiecePreviewImages();
+    }
 
+    public void setNames(String p1Name, String p2Name){
+        p1NameLabel.setText(p1Name);
+        p2NameLabel.setText(p2Name);
+
+    }
+
+    public void setPoints (double p1Points, double p2Points){
+        p1Score.setText(String.valueOf(p1Points));
+        p2Score.setText(String.valueOf(p2Points));
+    }
+
+    public void init(){
+        this.gameEngine.setupInitialState();
+    }
+    @Override
+    public void onPlaced(String id, Piece piece){
+        String pieceId = piecetoString(piece);
+        Polygon field = (Polygon) boardPane.lookup("#" + id);
+
+        ImageView sourceView = (ImageView) boardPane.getScene().lookup("#" + pieceId);
+        Image img = sourceView.getImage();
+
+        ImageView newPiece = new ImageView(img);
+        newPiece.setFitWidth(40);
+        newPiece.setFitHeight(40);
+        newPiece.setPreserveRatio(true);
+        newPiece.setUserData(id);
+        newPiece.setId(pieceId);
+
+        newPiece.setLayoutX(field.getLayoutX() - 20);
+        newPiece.setLayoutY(field.getLayoutY() - 20);
+        newPiece.setMouseTransparent(true);
+        boardPane.getChildren().add(newPiece);
+    }
+
+    private void applyTileColor() {
         StringBuilder style = new StringBuilder();
-        if (settings.getDarkTiles() != null){
-            style.append("-dark-poly-color: ")
-                    .append(toCssColor(settings.getDarkTiles()))
-                    .append(";");
+        if (settings.getDarkTiles() != null)
+            style.append("-dark-poly-color: ").append(toCssColor(settings.getDarkTiles())).append("; ");
+        if (settings.getNormalTiles() != null)
+            style.append("-normal-poly-color: ").append(toCssColor(settings.getNormalTiles())).append("; ");
+        if (settings.getLightTiles() != null)
+            style.append("-light-poly-color: ").append(toCssColor(settings.getLightTiles())).append("; ");
+        if (!style.isEmpty())
             root.setStyle(style.toString());
+    }
+
+    private void applyPiecePreviewImages() {
+        List<ImageView> p1 = settings.getP1Pieces();
+        if (p1 != null && p1.size() >= 6) {
+            p1PawnImg.setImage(p1.get(0).getImage());
+            p1RookImg.setImage(p1.get(1).getImage());
+            p1KnightImg.setImage(p1.get(2).getImage());
+            p1BishopImg.setImage(p1.get(3).getImage());
+            p1QueenImg.setImage(p1.get(4).getImage());
+            p1KingImg.setImage(p1.get(5).getImage());
         }
-        if (settings.getNormalTiles() != null){
-            style.append("-normal-poly-color: ")
-                    .append(toCssColor(settings.getNormalTiles()))
-                    .append(";");
-            root.setStyle(style.toString());
-        }
-        if (settings.getLightTiles() != null){
-            style.append("-light-poly-color: ")
-                    .append(toCssColor(settings.getLightTiles()))
-                    .append(";");
-            root.setStyle(style.toString());
+        List<ImageView> p2 = settings.getP2Pieces();
+        if (p2 != null && p2.size() >= 6) {
+            p2PawnImg.setImage(p2.get(0).getImage());
+            p2RookImg.setImage(p2.get(1).getImage());
+            p2KnightImg.setImage(p2.get(2).getImage());
+            p2BishopImg.setImage(p2.get(3).getImage());
+            p2QueenImg.setImage(p2.get(4).getImage());
+            p2KingImg.setImage(p2.get(5).getImage());
         }
     }
+
     private static String toCssColor(Color color) {
         return String.format(
                 "#%02X%02X%02X",
@@ -71,5 +148,204 @@ public class GameScreen extends Controller implements Initializable {
                 (int)(color.getGreen() * 255),
                 (int)(color.getBlue() * 255)
         );
+    }
+    @FXML
+    public void handleTileClick(MouseEvent mouseEvent) {
+        for (Node node : boardPane.getChildren()) {
+            if (node instanceof Polygon p) {
+                p.setStroke(Color.BLACK);
+                p.setStrokeWidth(1.0);
+                p.setOnMouseClicked(this::handleTileClick);
+            }
+        }
+        Polygon polygon = (Polygon) mouseEvent.getSource();
+        String id = polygon.getId();
+
+        ImageView pieceOnTile = getPieceAtPolygon(id);
+
+        if (pieceOnTile != null) {
+            polygon.setStroke(Color.RED);
+            polygon.setStrokeWidth(3.0);
+            System.out.println("Piece Legal Moves");
+            Piece p = gameEngine.getBoard().getCellById(id).getPiece();
+            List<HexCell> x = gameEngine.getLegalMoves(p);
+            for (HexCell cell :x ){
+                String orthogonalid = cell.getCoords().transformHextoId();
+                for (Node node : boardPane.getChildren()) {
+                    if (node instanceof Polygon innerpolygon && node.getId().equals(orthogonalid)) {
+                        innerpolygon.setStroke(Color.PURPLE);
+                        innerpolygon.setStrokeWidth(3.0);
+                        innerpolygon.setOnMouseClicked(event -> {
+                            System.out.println("Handle Move");
+                            gameEngine.handleMove(polygon.getId(),innerpolygon.getId());
+                            for (Node n : boardPane.getChildren()) {
+                                if (n instanceof  Polygon){
+                                    ((Polygon) n).setStroke(Color.BLACK);
+                                    ((Polygon)n).setStrokeWidth(1.0);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void move(String fromId, String toId) {
+        ImageView piece = null;
+        Polygon old = null;
+        Polygon poly= null;
+        for (Node n : boardPane.getChildren()) {
+            if (n.getId().equals(fromId)) {
+                piece = getPieceAtPolygon(fromId);
+                old = (Polygon) n;
+            }
+            if (n.getId().equals(toId)) {
+                poly = (Polygon) n;
+            }
+        }
+        old.setUserData(null);
+        piece.setUserData(toId);
+        piece.setLayoutX(poly.getLayoutX() - 20);
+        piece.setLayoutY(poly.getLayoutY() - 20);
+
+    }
+
+    @Override
+    public void capture(String fromId, String toId, Piece capturedPiece) {
+        System.out.println("Captured " + capturedPiece.getType().toString());
+        ImageView captured = getPieceAtPolygon(toId);
+        boardPane.getChildren().remove(captured);
+        move(fromId,toId);
+        System.out.println(piecetoString(capturedPiece));
+        // Reuse the same naming logic as piecetoString, but without "Img"
+        adaptLabels(capturedPiece);
+    }
+
+    private void adaptLabels(Piece capturedPiece) {
+        String labelId = piecetoString(capturedPiece).replace("Img", "");
+
+        VBox helper = (labelId.contains("1")) ? p1 : p2;
+        Label capturedLabel = (Label) helper.getScene().lookup("#" + labelId);
+        if (capturedLabel != null) {
+            int current = Integer.parseInt(capturedLabel.getText().replace("x",""));
+            String newValue = (labelId.contains("1")) ? "x"+(current + 1):(current + 1)+"x";
+            capturedLabel.setText(newValue);
+        }
+    }
+
+    @Override 
+    public void enpassent(String enpassentId, Piece enpassentPiece){
+        ImageView img = getPieceAtPolygon(enpassentId);
+        boardPane.getChildren().remove(img);
+        adaptLabels(enpassentPiece);
+    }
+
+    @Override
+    public void gameEnd(PlayerColor player) {
+        int winner = (player == PlayerColor.WHITE) ? 2:1;
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
+        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
+        controller.winner(winner);
+    }
+
+    @Override
+    public void remis(){
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
+        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
+        controller.remis();
+    }
+
+    @Override
+    public void stalemate(PlayerColor currentTurn) {
+        int winner = (currentTurn == PlayerColor.WHITE) ? 1:2;
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
+        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
+        controller.stalemate(winner);
+
+    }
+
+    @Override
+    public void promotion(PlayerColor currentTurn) {
+        try {
+            Stage promotionStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/PromotionStage.fxml"));
+            Parent root = loader.load();
+            promotionStage.setScene(new Scene(root));
+            promotionStage.setTitle("Promotion Stage");
+            promotionStage.initModality(Modality.APPLICATION_MODAL);
+            promotionStage.show();
+
+            Promotion controller = loader.getController();
+            List<ImageView> views = (currentTurn == PlayerColor.WHITE) ? settings.getP1Pieces() : settings.getP2Pieces();
+            controller.sendPieces(views,gameEngine);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onPromoted(String coordId, Piece piece){
+        ImageView pawnView = getPieceAtPolygon(coordId);
+        if (pawnView == null) return;
+        String newPieceId = piecetoString(piece);
+        ImageView sourceView = (ImageView) boardPane.getScene().lookup("#" + newPieceId);
+
+        if (sourceView != null) {
+            pawnView.setImage(sourceView.getImage());
+        }
+
+        pawnView.setId(newPieceId);
+    }
+
+    @Override
+    public void endangered(Piece king, boolean isEndangered) {
+        if (endangeredKingView != null) {
+            endangeredKingView.getStyleClass().remove("endangered");
+            endangeredKingView = null;
+        }
+
+        if (!isEndangered) return;
+
+        String kingId = king.getPosition().transformHextoId();
+        ImageView kingView = getPieceAtPolygon(kingId);
+        if (kingView == null) return;
+
+        kingView.getStyleClass().add("endangered");
+        endangeredKingView = kingView;
+    }
+
+    @FXML
+    protected void onExitAction(){
+        c.backScene(header, vS);
+    }
+
+    private ImageView getPieceAtPolygon(String tileId) {
+        System.out.println(tileId);
+        for (Node node : boardPane.getChildren()) {
+            if (node instanceof ImageView && tileId.equals(node.getUserData())) {
+                return (ImageView) node;
+            }
+        }
+        return null; // No piece found on this tile
+    }
+
+    private String piecetoString(Piece piece){
+        StringBuilder sb = new StringBuilder();
+        switch(piece.getPlayer()){
+            case BLACK -> sb.append("p2");
+            case WHITE -> sb.append("p1");
+        }
+        switch(piece.getType()){
+            case PAWN -> sb.append("PawnImg");
+            case KING -> sb.append("KingImg");
+            case ROOK -> sb.append("RookImg");
+            case QUEEN -> sb.append("QueenImg");
+            case BISHOP -> sb.append("BishopImg");
+            case KNIGHT -> sb.append("KnightImg");
+        }
+        return sb.toString();
     }
 }

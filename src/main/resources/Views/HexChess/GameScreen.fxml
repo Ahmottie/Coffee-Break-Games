@@ -32,9 +32,15 @@
                 </VBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
                <children>
-                  <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                  <VBox fx:id="p1" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
                         <Label fx:id="p1NameLabel" styleClass="normalText" text="P1Name" />
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Label styleClass="normalText" text="Score: " />
+                              <Label fx:id="p1Score" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" />
+                           </children>
+                        </HBox>
                         <HBox>
                            <children>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
@@ -52,11 +58,11 @@
                         <Label styleClass="normalText" text="Lost Pieces" />
                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
-                              <ImageView fx:id="p1PawnImg" fitHeight="50.0" fitWidth="50.0" onDragDetected="#startDrag" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="p1PawnImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-pawn.png" />
                                  </image></ImageView>
-                              <Label fx:id="p1LostPawn" styleClass="normalText" text="x0" />
+                              <Label fx:id="p1Pawn" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -74,7 +80,7 @@
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-knight.png" />
                                  </image></ImageView>
-                              <Label styleClass="normalText" text="x0" />
+                              <Label fx:id="p1Knight" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="53.0" layoutY="211.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -112,9 +118,9 @@
                   </VBox>
                       <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                           <children>
-                              <Pane maxHeight="-Infinity" maxWidth="-Infinity">
+                              <Pane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity">
                                   <children>
-                                      <Polygon fx:id="a6" layoutX="25" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="a6" layoutX="25" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -130,7 +136,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="a5" layoutX="25" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="a5" layoutX="25" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -146,7 +152,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="a4" layoutX="25" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="a4" layoutX="25" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -162,7 +168,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="a3" layoutX="25" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="a3" layoutX="25" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -178,7 +184,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="a2" layoutX="25" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="a2" layoutX="25" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -194,120 +200,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="a1" layoutX="25" layoutY="376.0" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-      
-                                      <Polygon fx:id="b7" layoutX="65.5" layoutY="118.6" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b6" layoutX="65.5" layoutY="165.4" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b5" layoutX="65.5" layoutY="212.2" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b4" layoutX="65.5" layoutY="259.0" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b3" layoutX="65.5" layoutY="305.8" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b2" layoutX="65.5" layoutY="352.6" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="b1" layoutX="65.5" layoutY="399.4" styleClass="normalPoly">
+                                      <Polygon fx:id="a1" layoutX="25" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -324,7 +217,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="c8" layoutX="106" layoutY="95.2" styleClass="lightPoly">
+                                      <Polygon fx:id="b7" layoutX="65.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -340,7 +233,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c7" layoutX="106" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="b6" layoutX="65.5" layoutY="165.4" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -356,7 +249,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c6" layoutX="106" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="b5" layoutX="65.5" layoutY="212.2" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -372,7 +265,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c5" layoutX="106" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="b4" layoutX="65.5" layoutY="259.0" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -388,7 +281,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c4" layoutX="106" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="b3" layoutX="65.5" layoutY="305.8" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -404,7 +297,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c3" layoutX="106" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="b2" layoutX="65.5" layoutY="352.6" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -420,23 +313,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="c2" layoutX="106" layoutY="376.0" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="c1" layoutX="106" layoutY="422.8" styleClass="darkPoly">
+                                      <Polygon fx:id="b1" layoutX="65.5" layoutY="399.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -453,7 +330,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="d9" layoutX="146.5" layoutY="71.8" styleClass="darkPoly">
+                                      <Polygon fx:id="c8" layoutX="106" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -469,7 +346,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d8" layoutX="146.5" layoutY="118.6" styleClass="normalPoly">
+                                      <Polygon fx:id="c7" layoutX="106" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -485,7 +362,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d7" layoutX="146.5" layoutY="165.4" styleClass="lightPoly">
+                                      <Polygon fx:id="c6" layoutX="106" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -501,7 +378,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d6" layoutX="146.5" layoutY="212.2" styleClass="darkPoly">
+                                      <Polygon fx:id="c5" layoutX="106" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -517,7 +394,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d5" layoutX="146.5" layoutY="259.0" styleClass="normalPoly">
+                                      <Polygon fx:id="c4" layoutX="106" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -533,7 +410,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d4" layoutX="146.5" layoutY="305.8" styleClass="lightPoly">
+                                      <Polygon fx:id="c3" layoutX="106" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -549,7 +426,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d3" layoutX="146.5" layoutY="352.6" styleClass="darkPoly">
+                                      <Polygon fx:id="c2" layoutX="106" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -565,23 +442,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="d2" layoutX="146.5" layoutY="399.4" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="d1" layoutX="146.5" layoutY="446.2" styleClass="lightPoly">
+                                      <Polygon fx:id="c1" layoutX="106" layoutY="422.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -598,7 +459,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="e10" layoutX="187" layoutY="48.4" styleClass="normalPoly">
+                                      <Polygon fx:id="d9" layoutX="146.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -614,7 +475,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e9" layoutX="187" layoutY="95.2" styleClass="lightPoly">
+                                      <Polygon fx:id="d8" layoutX="146.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -630,7 +491,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e8" layoutX="187" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="d7" layoutX="146.5" layoutY="165.4" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -646,7 +507,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e7" layoutX="187" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="d6" layoutX="146.5" layoutY="212.2" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -662,7 +523,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e6" layoutX="187" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="d5" layoutX="146.5" layoutY="259.0" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -678,7 +539,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e5" layoutX="187" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="d4" layoutX="146.5" layoutY="305.8" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -694,7 +555,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e4" layoutX="187" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="d3" layoutX="146.5" layoutY="352.6" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -710,7 +571,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e3" layoutX="187" layoutY="376.0" styleClass="lightPoly">
+                                      <Polygon fx:id="d2" layoutX="146.5" layoutY="399.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -726,23 +587,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="e2" layoutX="187" layoutY="422.8" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="e1" layoutX="187" layoutY="469.6" styleClass="normalPoly">
+                                      <Polygon fx:id="d1" layoutX="146.5" layoutY="446.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -759,7 +604,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="f11" layoutX="227.5" layoutY="25.0" styleClass="lightPoly">
+                                      <Polygon fx:id="e10" layoutX="187" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -775,7 +620,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f10" layoutX="227.5" layoutY="71.8" styleClass="darkPoly">
+                                      <Polygon fx:id="e9" layoutX="187" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -791,7 +636,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f9" layoutX="227.5" layoutY="118.6" styleClass="normalPoly">
+                                      <Polygon fx:id="e8" layoutX="187" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -807,7 +652,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f8" layoutX="227.5" layoutY="165.4" styleClass="lightPoly">
+                                      <Polygon fx:id="e7" layoutX="187" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -823,7 +668,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f7" layoutX="227.5" layoutY="212.2" styleClass="darkPoly">
+                                      <Polygon fx:id="e6" layoutX="187" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -839,7 +684,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f6" layoutX="227.5" layoutY="259.0" styleClass="normalPoly">
+                                      <Polygon fx:id="e5" layoutX="187" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -855,7 +700,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f5" layoutX="227.5" layoutY="305.8" styleClass="lightPoly">
+                                      <Polygon fx:id="e4" layoutX="187" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -871,7 +716,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f4" layoutX="227.5" layoutY="352.6" styleClass="darkPoly">
+                                      <Polygon fx:id="e3" layoutX="187" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -887,7 +732,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f3" layoutX="227.5" layoutY="399.4" styleClass="normalPoly">
+                                      <Polygon fx:id="e2" layoutX="187" layoutY="422.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -903,23 +748,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="f2" layoutX="227.5" layoutY="446.2" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="f1" layoutX="227.5" layoutY="492" styleClass="darkPoly">
+                                      <Polygon fx:id="e1" layoutX="187" layoutY="469.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -936,7 +765,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="g10" layoutX="268" layoutY="48.4" styleClass="normalPoly">
+                                      <Polygon fx:id="f11" layoutX="227.5" layoutY="25.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -952,7 +781,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g9" layoutX="268" layoutY="95.2" styleClass="lightPoly">
+                                      <Polygon fx:id="f10" layoutX="227.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -968,7 +797,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g8" layoutX="268" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="f9" layoutX="227.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -984,7 +813,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g7" layoutX="268" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="f8" layoutX="227.5" layoutY="165.4" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1000,7 +829,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g6" layoutX="268" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="f7" layoutX="227.5" layoutY="212.2" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1016,7 +845,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g5" layoutX="268" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="f6" layoutX="227.5" layoutY="259.0" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1032,7 +861,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g4" layoutX="268" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="f5" layoutX="227.5" layoutY="305.8" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1048,7 +877,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g3" layoutX="268" layoutY="376.0" styleClass="lightPoly">
+                                      <Polygon fx:id="f4" layoutX="227.5" layoutY="352.6" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1064,7 +893,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g2" layoutX="268" layoutY="422.8" styleClass="darkPoly">
+                                      <Polygon fx:id="f3" layoutX="227.5" layoutY="399.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1080,7 +909,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="g1" layoutX="268" layoutY="469.6" styleClass="normalPoly">
+                                      <Polygon fx:id="f2" layoutX="227.5" layoutY="446.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1096,136 +925,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="h9" layoutX="308.5" layoutY="71.8" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h8" layoutX="308.5" layoutY="118.6" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h7" layoutX="308.5" layoutY="165.4" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h6" layoutX="308.5" layoutY="212.2" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h5" layoutX="308.5" layoutY="259.0" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h4" layoutX="308.5" layoutY="305.8" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h3" layoutX="308.5" layoutY="352.6" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h2" layoutX="308.5" layoutY="399.4" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="h1" layoutX="308.5" layoutY="446.2" styleClass="lightPoly">
+                                      <Polygon fx:id="f1" layoutX="227.5" layoutY="492" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1242,7 +942,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="i8" layoutX="349" layoutY="95.2" styleClass="lightPoly">
+                                      <Polygon fx:id="g10" layoutX="268" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1258,7 +958,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i7" layoutX="349" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="g9" layoutX="268" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1274,7 +974,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i6" layoutX="349" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="g8" layoutX="268" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1290,7 +990,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i5" layoutX="349" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="g7" layoutX="268" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1306,7 +1006,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i4" layoutX="349" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="g6" layoutX="268" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1322,7 +1022,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i3" layoutX="349" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="g5" layoutX="268" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1338,7 +1038,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i2" layoutX="349" layoutY="376.0" styleClass="lightPoly">
+                                      <Polygon fx:id="g4" layoutX="268" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1354,7 +1054,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="i1" layoutX="349" layoutY="422.8" styleClass="darkPoly">
+                                      <Polygon fx:id="g3" layoutX="268" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1370,8 +1070,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="j7" layoutX="389.5" layoutY="118.6" styleClass="normalPoly">
+                                      <Polygon fx:id="g2" layoutX="268" layoutY="422.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1387,87 +1086,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="j6" layoutX="389.5" layoutY="165.4" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="j5" layoutX="389.5" layoutY="212.2" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="j4" layoutX="389.5" layoutY="259.0" styleClass="normalPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="j3" layoutX="389.5" layoutY="305.8" styleClass="lightPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="j2" layoutX="389.5" layoutY="352.6" styleClass="darkPoly">
-                                 <points>
-                                    <Double fx:value="-27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="23.38" />
-                                    <Double fx:value="27.0" />
-                                    <Double fx:value="0.0" />
-                                    <Double fx:value="13.5" />
-                                    <Double fx:value="-23.38" />
-                                    <Double fx:value="-13.5" />
-                                    <Double fx:value="-23.38" />
-                                 </points>
-                              </Polygon>
-                                      <Polygon fx:id="j1" layoutX="389.5" layoutY="399.4" styleClass="normalPoly">
+                                      <Polygon fx:id="g1" layoutX="268" layoutY="469.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1484,7 +1103,7 @@
                                  </points>
                               </Polygon>
       
-                                      <Polygon fx:id="k6" layoutX="430" layoutY="142.0" styleClass="darkPoly">
+                                      <Polygon fx:id="h9" layoutX="308.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1500,7 +1119,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="k5" layoutX="430" layoutY="188.8" styleClass="normalPoly">
+                                      <Polygon fx:id="h8" layoutX="308.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1516,7 +1135,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="k4" layoutX="430" layoutY="235.6" styleClass="lightPoly">
+                                      <Polygon fx:id="h7" layoutX="308.5" layoutY="165.4" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1532,7 +1151,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="k3" layoutX="430" layoutY="282.4" styleClass="darkPoly">
+                                      <Polygon fx:id="h6" layoutX="308.5" layoutY="212.2" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1548,7 +1167,7 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="k2" layoutX="430" layoutY="329.2" styleClass="normalPoly">
+                                      <Polygon fx:id="h5" layoutX="308.5" layoutY="259.0" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1564,7 +1183,394 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-                                      <Polygon fx:id="k1" layoutX="430" layoutY="376.0" styleClass="lightPoly">
+                                      <Polygon fx:id="h4" layoutX="308.5" layoutY="305.8" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="h3" layoutX="308.5" layoutY="352.6" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="h2" layoutX="308.5" layoutY="399.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="h1" layoutX="308.5" layoutY="446.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+      
+                                      <Polygon fx:id="i8" layoutX="349" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i7" layoutX="349" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i6" layoutX="349" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i5" layoutX="349" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i4" layoutX="349" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i3" layoutX="349" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i2" layoutX="349" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="i1" layoutX="349" layoutY="422.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+      
+                                      <Polygon fx:id="j7" layoutX="389.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j6" layoutX="389.5" layoutY="165.4" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j5" layoutX="389.5" layoutY="212.2" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j4" layoutX="389.5" layoutY="259.0" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j3" layoutX="389.5" layoutY="305.8" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j2" layoutX="389.5" layoutY="352.6" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="j1" layoutX="389.5" layoutY="399.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+      
+                                      <Polygon fx:id="k6" layoutX="430" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="k5" layoutX="430" layoutY="188.8" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="k4" layoutX="430" layoutY="235.6" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="k3" layoutX="430" layoutY="282.4" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="k2" layoutX="430" layoutY="329.2" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+                                 <points>
+                                    <Double fx:value="-27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="23.38" />
+                                    <Double fx:value="27.0" />
+                                    <Double fx:value="0.0" />
+                                    <Double fx:value="13.5" />
+                                    <Double fx:value="-23.38" />
+                                    <Double fx:value="-13.5" />
+                                    <Double fx:value="-23.38" />
+                                 </points>
+                              </Polygon>
+                                      <Polygon fx:id="k1" layoutX="430" layoutY="376.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1584,9 +1590,15 @@
                               </Pane>
                           </children>
                       </StackPane>
-                  <VBox alignment="TOP_CENTER" layoutX="108.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity">
+                  <VBox fx:id="p2" alignment="TOP_CENTER" layoutX="108.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <Label fx:id="p2NameLabel1" styleClass="normalText" text="P2Name" />
+                        <Label fx:id="p2NameLabel" styleClass="normalText" text="P2Name" />
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Label styleClass="normalText" text="Score: " />
+                              <Label fx:id="p2Score" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" />
+                           </children>
+                        </HBox>
                         <HBox>
                            <children>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
@@ -1668,7 +1680,7 @@
         </VBox>
       <StackPane layoutX="-8.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
          <children>
-            <Button maxHeight="-Infinity" mnemonicParsing="false" text="Exit" />
+            <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#onExitAction" text="Exit" />
          </children>
       </StackPane>
     </children>

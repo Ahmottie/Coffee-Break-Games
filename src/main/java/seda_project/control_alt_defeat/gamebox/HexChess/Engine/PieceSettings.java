@@ -5,11 +5,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisSettings;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class PieceSettings {
     private Color p1Color, p2Color, darkTiles, normalTiles, lightTiles;
     private List<ImageView> p1Pieces, p2Pieces;
+    private static final String[] PIECE_NAMES = {"pawn","rook","knight","bishop", "queen", "king"};
 
     private static PieceSettings instance;
 
@@ -18,6 +20,25 @@ public class PieceSettings {
             instance = new PieceSettings();
         }
         return instance;
+    }
+
+    private PieceSettings(){
+        initDefaultPieces();
+    }
+
+    private void initDefaultPieces() {
+        p1Pieces = loadPieces("White");
+        p2Pieces = loadPieces("Black");
+    }
+
+    private List<ImageView> loadPieces(String color) {
+        ImageView[] views = new ImageView[PIECE_NAMES.length];
+        for (int i = 0; i < PIECE_NAMES.length; i++) {
+            String path = "/Images/HexChess/" + color + "/" + color.toLowerCase() + "-" + PIECE_NAMES[i] + ".png";
+            Image image = new Image(getClass().getResourceAsStream(path));
+            views[i] = new ImageView(image);
+        }
+        return Arrays.asList(views);
     }
 
     public Color getP1Color() {

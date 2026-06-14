@@ -9,7 +9,6 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -161,7 +160,6 @@ public class GameScreen extends Controller {
         }
 
         gamePane.getChildren().add(playingGrid);
-        //StackPane.setAlignment(playingGrid, Pos.CENTER);
     }
 
     public void setStatusLabel(boolean match) {

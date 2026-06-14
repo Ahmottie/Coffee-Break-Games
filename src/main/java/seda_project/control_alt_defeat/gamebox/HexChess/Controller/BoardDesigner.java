@@ -166,7 +166,6 @@ public class BoardDesigner extends Controller implements Initializable {
             event.setDropCompleted(true);
             initial = false;
         } else {
-            System.out.println("DRAG DROP ELSE");
             String piece = event.getDragboard().getString();
             handlePiecePlaced(piece, "");
             applyLabelValues(engine.computeIncrement(piece));
@@ -178,9 +177,6 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     private void dragExited(DragEvent event) {
-        if (!(event.getSource() instanceof Polygon)) {
-            System.out.println("NOT IN THE FIELD LOL");
-        }
         Polygon target = (Polygon) event.getSource();
         target.setStroke(Color.BLACK);
         target.setStrokeWidth(1);
@@ -431,7 +427,6 @@ public class BoardDesigner extends Controller implements Initializable {
                     pos += gap;
                 } else {
                     String piece = getPiece(token);
-                    System.err.println("TOKEN " + token + "Gets transformed into "+ piece);
                     handlePiecePlaced(piece,rows.get(i).get(pos).getId());
                     pos ++;
                 }

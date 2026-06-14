@@ -1,7 +1,7 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -16,6 +16,9 @@ public class LocalGameConfiguration extends Controller {
     private VBox header;
 
     @FXML
+    private Label statusLabel;
+
+    @FXML
     public void onBackAction() {
         c.backScene(header, vS);
     }
@@ -23,13 +26,20 @@ public class LocalGameConfiguration extends Controller {
     @FXML
     public void onStartAction() {
         //TODO Initialize Engine and change to GameScreen
-        c.changeScene("/Views/HexChess/GameScreen.fxml",header,vS);
+
+        String player1Name = c.checkNameInput(player1TF.getText(),1);
+        String player2Name = c.checkNameInput(player2TF.getText(),2);
+        if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
+            GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
+            controller.init();
+            controller.setNames(player1Name, player2Name);
+            controller.setPoints(0, 0);
+        }
     }
 
     @FXML
     public void onCustomBoardAction() {
         BoardDesigner controller = (BoardDesigner) c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
-
         controller.handNames(player1TF.getText(),player2TF.getText());
     }
 

@@ -44,3 +44,12 @@
     -fx-stroke-type: inside;
 }
 
+.selectedPiece {
+    -fx-effect: dropshadow(gaussian, rgba(77, 235, 184, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0;
+}
+
+.endangered {
+    -fx-effect: dropshadow(gaussian, rgba(243, 43, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
