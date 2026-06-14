@@ -72,10 +72,9 @@ public class GameEngine {
                 enpassentMovedTo = toCoord;
             }
         }
-        pieceToMove.setMoved(true);
-
         // 5. Execute the move using your Board class methods
         Piece capturedPiece = board.movePiece(fromCoord, toCoord);
+        pieceToMove.setMoved(true);
         if (pieceToMove.getType() == PAWN
                 && enpassent
                 && toCoord.col == enpassentCoordGhost.col
@@ -206,10 +205,10 @@ public class GameEngine {
                 : board.blackPieces();
 
         List<Piece> enemyPieces = (currentTurn == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
-        List<HexCell> allactiveMoves = (List<HexCell>) activePieces.stream().flatMap(p -> getLegalMoves(p).stream()).toList();
+        List<HexCell> allactiveMoves = (List<HexCell>) activePieces.stream().flatMap(p -> getRawMoves(p).stream()).toList();
 
         Piece enemyKing = enemyPieces.stream().filter(p -> p.getType() == PieceType.KING).toList().getFirst();
-        List<HexCell> possibleKingmoves = getLegalMoves(enemyKing);
+        List<HexCell> possibleKingmoves = getRawMoves(enemyKing);
 
         for (HexCell move : allactiveMoves) {
             if(possibleKingmoves.isEmpty()){
@@ -294,7 +293,7 @@ public class GameEngine {
     }
 
     private boolean isValidMove(HexCoord from, HexCoord to, Piece piece) {
-        List<HexCell> legal = getLegalMoves(piece);
+        List<HexCell> legal = getRawMoves(piece);
         return legal.stream().anyMatch(cell ->
                 cell.getCoords().col == to.col && cell.getCoords().row == to.row
         );
@@ -317,8 +316,15 @@ public class GameEngine {
     public boolean isGameOver() {
         return this.isGameOver;
     }
+    public List<HexCell> getLegalMoves(Piece piece){
+        HexCoord currentPos = piece.getPosition();
+        List<HexCell> candidates  = getRawMoves(piece);
+        candidates.removeIf(cell -> wouldLeaveKingInCheck(piece, currentPos, cell.getCoords()));
+        return candidates;
+    }
+    public List<HexCell> getRawMoves(Piece piece) {
+        System.out.println("getRawMoves: " + piece.getType() + " player=" + piece.getPlayer() + " pos=" + piece.getPosition().transformHextoId());
 
-    public List<HexCell> getLegalMoves(Piece piece) {
         HexCoord coord = piece.getPosition();
         List<HexCell> candidates = new ArrayList<>();
 
@@ -344,25 +350,62 @@ public class GameEngine {
         return candidates;
     }
 
+    private boolean wouldLeaveKingInCheck(Piece piece, HexCoord from, HexCoord to) {
+        HexCell fromCell = board.getCellByCoord(from.col,from.row);
+        HexCell toCell = board.getCellByCoord(to.col,to.row);
+
+        Piece originalAtTo = toCell.getPiece();
+
+        //Simulate move
+        toCell.setPiece(piece);
+        fromCell.setPiece(null);
+        piece.setPosition(to);
+
+        PlayerColor ownColor = piece.getPlayer();
+        List<Piece> ownPieces = (ownColor == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
+        List<Piece> enemyPieces = (ownColor == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
+
+        Piece king = ownPieces.stream().filter(p -> p.getType() == PieceType.KING).findFirst().orElse(null);
+
+        boolean inCheck = false;
+
+        if (king != null) {
+            HexCoord kingPos = king.getPosition();
+            int kingCol = kingPos.col;
+            int kingRow = kingPos.row;
+            inCheck = enemyPieces.stream()
+                    .filter(p -> p != originalAtTo)  // exclude captured piece without mutating the list
+                    .flatMap(enemy -> getRawMoves(enemy).stream())
+                    .anyMatch(cell -> cell.getCoords().col == kingCol
+                            && cell.getCoords().row == kingRow);
+        }
+
+        // Undo the move
+        System.out.println("UNDO: restoring " + piece.getType() + " to from=" + from.transformHextoId());
+
+        fromCell.setPiece(piece);
+        toCell.setPiece(originalAtTo);
+        piece.setPosition(from);
+
+        System.out.println("AFTER UNDO: piece.getPosition()=" + piece.getPosition().transformHextoId());
+
+        return inCheck;
+    }
+
     private List<HexCell> getPawnMoves(HexCoord coord, PlayerColor color, boolean moved) {
         List<HexCell> moves = new ArrayList<>();
         int col = coord.col;
         int row = coord.row;
         if (enpassent) {
             List<HexCell> orthogonals = board.getDirectOrthogonalNeighbors(coord);
-            //int idxfirst = (currentTurn == PlayerColor.WHITE) ? 0 : 3;
-            //int idxsecond = (currentTurn == PlayerColor.WHITE) ? 2 : 5;
-            //orthogonals = orthogonals.subList(idxfirst, idxsecond);
             HexCell helper = board.getCellByCoord(enpassentCoordGhost.col,enpassentCoordGhost.row);
             
             if (orthogonals.contains(helper)) {
                 moves.add(orthogonals.get(0));
             }
         }
-        // White moves "up" (increasing row), Black moves "down" (decreasing row)
         int dir = (color == PlayerColor.WHITE) ? 0 : 1; // dir 0 = up, dir 1 = down
         int[] stepsize = moved ? new int[]{1} : new int[]{1,2};
-        // One step forward (only if empty)
         for (int step : stepsize) {
             int fwdRow = (dir == 0) ? row + step : row - step;
             if (coord.isValid(col, fwdRow)) {
@@ -374,22 +417,19 @@ public class GameEngine {
             }
         }
 
-        // Diagonal captures: the two forward-diagonal neighbors
-        // For WHITE going up: upper-left and upper-right orthogonal neighbors
-        // For BLACK going down: lower-left and lower-right orthogonal neighbors
         int leftRowOffset  = (col <= 5) ? 0 : 1;
         int rightRowOffset = (col >= 5) ? 0 : 1;
 
         int[] captureCols = { col - 1, col + 1 };
         int[] captureRows = (color == PlayerColor.WHITE)
-                ? new int[]{ row + leftRowOffset, row + rightRowOffset }   // upper-left, upper-right
-                : new int[]{ row - 1 + leftRowOffset, row - 1 + rightRowOffset }; // lower-left, lower-right
+                ? new int[]{ row + leftRowOffset, row + rightRowOffset }
+                : new int[]{ row - 1 + leftRowOffset, row - 1 + rightRowOffset };
 
         for (int i = 0; i < 2; i++) {
             if (coord.isValid(captureCols[i], captureRows[i])) {
                 HexCell cell = board.getCellByCoord(captureCols[i], captureRows[i]);
                 if (cell.hasPiece() && cell.getPiece().getPlayer() != color) {
-                    moves.add(cell); // can only move diagonally to capture
+                    moves.add(cell);
                 }
             }
         }
@@ -471,7 +511,7 @@ public class GameEngine {
         if (king == null) return;
 
         boolean endangered = attackers.stream()
-                .flatMap(p -> getLegalMoves(p).stream())
+                .flatMap(p -> getRawMoves(p).stream())
                 .anyMatch(cell -> cell.getCoords().col == king.getPosition().col
                         && cell.getCoords().row == king.getPosition().row);
         System.out.println("ENDANGERED " + endangered);

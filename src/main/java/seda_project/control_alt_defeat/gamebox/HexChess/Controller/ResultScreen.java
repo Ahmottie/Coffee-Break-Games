@@ -3,8 +3,15 @@ package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class ResultScreen {
+public class ResultScreen extends Controller {
+
+    @FXML
+    private VBox header;
+
     @FXML
     private Label p1NameLabel, p2NameLabel, p1Score, p2Score, p1Awarded, p2Awarded, resultLabel;
 
@@ -52,9 +59,15 @@ public class ResultScreen {
     }
 
     public void onExitAction(ActionEvent actionEvent) {
-
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 
     public void onPlayAgainAction(ActionEvent actionEvent) {
+        GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
+        controller.init();
+        controller.setNames(p1NameLabel.getText(), p2NameLabel.getText());
+        controller.setPoints(Double.parseDouble(p1Score.getText()), Double.parseDouble(p2Score.getText()));
     }
 }

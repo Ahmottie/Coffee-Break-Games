@@ -162,12 +162,12 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         String id = polygon.getId();
 
         ImageView pieceOnTile = getPieceAtPolygon(id);
-
         if (pieceOnTile != null) {
             polygon.setStroke(Color.RED);
             polygon.setStrokeWidth(3.0);
-            System.out.println("Piece Legal Moves");
             Piece p = gameEngine.getBoard().getCellById(id).getPiece();
+            System.err.println("-------------------------");
+            System.out.println(p.getType());
             List<HexCell> x = gameEngine.getLegalMoves(p);
             for (HexCell cell :x ){
                 String orthogonalid = cell.getCoords().transformHextoId();
@@ -176,12 +176,13 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         innerpolygon.setStroke(Color.PURPLE);
                         innerpolygon.setStrokeWidth(3.0);
                         innerpolygon.setOnMouseClicked(event -> {
-                            System.out.println("Handle Move");
+                            event.consume();
                             gameEngine.handleMove(polygon.getId(),innerpolygon.getId());
                             for (Node n : boardPane.getChildren()) {
-                                if (n instanceof  Polygon){
-                                    ((Polygon) n).setStroke(Color.BLACK);
-                                    ((Polygon)n).setStrokeWidth(1.0);
+                                if (n instanceof  Polygon pp){
+                                    pp.setStroke(Color.BLACK);
+                                    pp.setStrokeWidth(1.0);
+                                    pp.setOnMouseClicked(this::handleTileClick);
                                 }
                             }
                         });
@@ -214,12 +215,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @Override
     public void capture(String fromId, String toId, Piece capturedPiece) {
-        System.out.println("Captured " + capturedPiece.getType().toString());
+
         ImageView captured = getPieceAtPolygon(toId);
         boardPane.getChildren().remove(captured);
-        move(fromId,toId);
-        System.out.println(piecetoString(capturedPiece));
-        // Reuse the same naming logic as piecetoString, but without "Img"
+        move(fromId, toId);
         adaptLabels(capturedPiece);
     }
 
