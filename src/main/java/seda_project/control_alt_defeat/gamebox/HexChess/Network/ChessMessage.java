@@ -14,13 +14,9 @@ public sealed interface ChessMessage extends Message
 
     record StartCountdown(long delayMs) implements ChessMessage {}
 
-    public record Input(int playerNum, int blockIndex, InputAction action) implements Message, ChessMessage {}
-
-    record StateUpdate(TetrisEngine.GameState state) implements ChessMessage {}
+    record Input(String fromId, String toId) implements ChessMessage {}
 
     record Restart() implements ChessMessage {}
 
-    enum InputAction {
-        LEFT, RIGHT, ROTATE, TOGGLE, DROP
-    }
+    record StateUpdate(String fromId, String toId, String capturedPieceId) implements ChessMessage {}
 }

@@ -1,5 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +22,12 @@ import jdk.incubator.vector.DoubleVector;
 import jdk.incubator.vector.VectorOperators;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
+import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
+import seda_project.control_alt_defeat.gamebox.network.Message;
+import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
+import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
+import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.io.IOException;
@@ -71,11 +77,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.gameEngine = new GameEngine();
-        this.gameEngine.addListener(this);
         applyTileColor();
         applyPiecePreviewImages();
-        activePlayer = gameEngine.getActivePlayer();
     }
 
     public void setNames(String p1Name, String p2Name){
@@ -90,12 +93,19 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
 
     public void init(){
+        this.gameEngine.addListener(this);
         this.gameEngine.setupInitialState();
+        activePlayer = gameEngine.getActivePlayer();
+    }
+
+    public void setGameEngine(GameEngine gameEngine){
+        this.gameEngine = gameEngine;
     }
 
     public void init(String boardState) {
+        this.gameEngine.addListener(this);
         this.gameEngine.setupInitalState(boardState);
-
+        activePlayer = gameEngine.getActivePlayer();
     }
 
     @Override
@@ -171,6 +181,16 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
         if (pieceOnTile != null) {
             PlayerColor playerColor = (pieceOnTile.getId().contains("1")) ? PlayerColor.WHITE : PlayerColor.BLACK;
+
+            Session session = Session.current();
+            if (session.network != null) {
+                PlayerColor myColor = session.isHost ? PlayerColor.WHITE : PlayerColor.BLACK;
+
+                if (playerColor != myColor || activePlayer != myColor) {
+                    return;
+                }
+            }
+
             pieceOnTile.getStyleClass().add("selectedTile");
             Piece p = gameEngine.getBoard().getCellById(currentTileId).getPiece();
             List<HexCell> legalMoves = gameEngine.getLegalMoves(p);
@@ -200,7 +220,23 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         boardPane.getChildren().add(moveDot);
                     }
                     targetPolygon.setOnMouseClicked(event -> {
-                        gameEngine.handleMove(currentTileId,targetTileId);
+                        Session s = Session.current();
+
+                        if (s.network != null) {
+                            if (s.isHost) {
+                                // Host executes the move locally, then updates the client via StateUpdate
+                                boolean ok = gameEngine.handleMove(currentTileId, targetTileId);
+                                if (ok) {
+                                    s.network.send(new ChessMessage.StateUpdate(currentTileId, targetTileId, null));
+                                }
+                            } else {
+                                // Client cannot execute directly; send an Input request to the host
+                                s.network.send(new ChessMessage.Input(currentTileId, targetTileId));
+                            }
+                        }
+                        else {
+                            gameEngine.handleMove(currentTileId, targetTileId);
+                        }
                         clearHighlights();
                         event.consume();
                         for (Node n : boardPane.getChildren()){
@@ -423,5 +459,36 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             case KNIGHT -> sb.append("KnightImg");
         }
         return sb.toString();
+    }
+
+    public void attachHostBridge(NetworkLayer network, GameEngine engine) {
+        network.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                if (msg instanceof ChessMessage.Input input) {
+                    Platform.runLater(() -> {
+                        boolean ok = engine.handleMove(input.fromId(), input.toId());
+                        if (ok) {
+                            // broadcast confirmed move back to client
+                            network.send(new ChessMessage.StateUpdate(
+                                    input.fromId(), input.toId(), null));
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void attachClientBridge(NetworkLayer network, GameEngine engine) {
+        network.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                if (msg instanceof ChessMessage.StateUpdate update) {
+                    Platform.runLater(() -> {
+                        engine.handleMove(update.fromId(), update.toId());
+                    });
+                }
+            }
+        });
     }
 }

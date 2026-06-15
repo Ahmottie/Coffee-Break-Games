@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PlayerColor;
 import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
 import seda_project.control_alt_defeat.gamebox.network.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -18,6 +20,7 @@ public class WaitForOpponent extends Controller {
     private String myname;
     private Timeline loadingDots;
     private Announcer announcer;
+    private String boardState;
 
     @FXML
     private VBox header;
@@ -184,18 +187,26 @@ public class WaitForOpponent extends Controller {
         int p1L = s.isHost ? s.myLevel : s.peerLevel;
         int p2L = s.isHost ? s.peerLevel : s.myLevel;
 
-        //TODO Start Engine Here
+        GameEngine engine = new GameEngine();
+        s.chessEngine = engine;
 
         String address = "/Views/HexChess/GameScreen.fxml";
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-        //TODO pass Controller Data Here
+        controller.setGameEngine(engine);
 
         if (s.isHost) {
-            //TODO Do We Need Those?
-            //controller.attachHostNetworkBridge(s.network);
+            if (boardState == null) {
+                controller.init();
+            }
+            else{
+                controller.init(boardState);
+            }
+            controller.attachHostBridge(s.network, engine);
         } else {
-            //controller.attachClientNetworkBridge(s.network);
+            controller.init();
+            controller.attachClientBridge(s.network, engine);
         }
+        controller.setNames(p1,p2);
     }
 
 
