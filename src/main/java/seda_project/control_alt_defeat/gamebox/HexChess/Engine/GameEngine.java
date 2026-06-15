@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceType.PAWN;
 
@@ -20,6 +22,7 @@ public class GameEngine {
     private int fullmove;
     private Map<String,Integer> fenMap = new HashMap<>();
     private HexCoord pendingPromotionCoord;
+    private static final int[] ROW_OFFSETS = {0,0,0,0,0,0,1,2,3,4,5};
 
     public GameEngine() {
         fullmove = 1;
@@ -122,17 +125,49 @@ public class GameEngine {
         if (checkRemis()) {
             isGameOver = true;
             listeners.forEach(l ->l.remis());
+            return true;
         }
 
 
-        if (checkStaleMate()){
+        PlayerColor nextTurn = (currentTurn == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
+
+        if (!playerLegalMoves(nextTurn)) {
             isGameOver = true;
-            listeners.forEach(l -> l.stalemate(currentTurn));
+            if (isKingInCheck(nextTurn)) {
+                System.out.println("Checkmate! " + currentTurn + " wins!");
+                listeners.forEach(l -> l.gameEnd(nextTurn));
+            } else {
+                System.out.println("Stalemate!");
+                listeners.forEach(l -> l.stalemate(nextTurn));
+            }
+            return true;
         }
 
         checkEndangered();
         switchTurn(e);
         return true;
+    }
+
+    private boolean isKingInCheck(PlayerColor player) {
+        List<Piece> attackers = (player == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
+        List<Piece> defenders = (player == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
+
+        Piece king = defenders.stream()
+                .filter(p -> p.getType() == PieceType.KING)
+                .findFirst()
+                .orElse(null);
+        if (king == null) return false;
+
+        HexCoord kingPos = king.getPosition();
+        return attackers.stream()
+                .flatMap(p -> getRawMoves(p).stream())
+                .anyMatch(cell -> cell.getCoords().col == kingPos.col
+                        && cell.getCoords().row == kingPos.row);
+    }
+
+    private boolean playerLegalMoves(PlayerColor player) {
+        List<Piece> pieces = (player == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
+        return pieces.stream().anyMatch(p -> !getLegalMoves(p).isEmpty());
     }
 
     public void promote(PieceType chosenType) {
@@ -361,9 +396,6 @@ public class GameEngine {
     }
 
     private boolean wouldLeaveKingInCheck(Piece piece, HexCoord from, HexCoord to) {
-        if (piece.getType() == PieceType.KING) {
-            System.out.println("LOLOLOLOL");
-        }
         HexCell fromCell = board.getCellByCoord(from.col,from.row);
         HexCell toCell = board.getCellByCoord(to.col,to.row);
 
@@ -438,7 +470,6 @@ public class GameEngine {
                         && enpassentCoordGhost.col == captureCols[i]
                         && enpassentCoordGhost.row == captureRows[i]) {
                     moves.add(cell);
-                    listeners.forEach(l -> l.enpassentCoord(enpassentCoordGhost.transformHextoId(),enpassentMovedTo.transformHextoId()));
                 }
             }
         }
@@ -505,6 +536,52 @@ public class GameEngine {
         setupPiece("e10", new Piece(PieceType.QUEEN, PlayerColor.BLACK));
         setupPiece("g10", new Piece(PieceType.KING, PlayerColor.BLACK));
     }
+
+    public void setupInitalState(String boardState){
+        System.out.println(boardState);
+        currentTurn = boardState.split(" ")[1].equals("1") ? PlayerColor.WHITE : PlayerColor.BLACK;
+        String[] rows = boardState.split(" ")[0].split("/");
+
+        Pattern p = Pattern.compile("[PRNBQKprnbqk]|\\d+");
+        for (int i = 0; i < rows.length; i++) {
+            System.out.println("ROW ROW ROW "+ rows[i]);
+            String row = rows[i];
+            Matcher m = p.matcher(row);
+            int pos = 0;
+
+            while (m.find()) {
+                String token = m.group();
+                if (Character.isDigit(token.charAt(0))) {
+                    int gap = Integer.parseInt(token);
+                    pos += gap;
+                } else {
+                    //String piece = getPiece(token);
+                    String rowName = String.valueOf((char) ('a' + pos+ROW_OFFSETS[i]));
+                    String colName = String.valueOf(i+1);
+                    String cell = rowName + colName;
+                    System.out.println("CELL CELL CELL " + cell);
+                    Piece piece = switch(token){
+                        case "P" -> new Piece(PieceType.PAWN, PlayerColor.WHITE);
+                        case "p" -> new Piece(PieceType.PAWN, PlayerColor.BLACK);
+                        case "R" -> new Piece(PieceType.ROOK, PlayerColor.WHITE);
+                        case "r" -> new Piece(PieceType.ROOK, PlayerColor.BLACK);
+                        case "N" -> new Piece(PieceType.KNIGHT, PlayerColor.WHITE);
+                        case "n" -> new Piece(PieceType.KNIGHT, PlayerColor.BLACK);
+                        case "B" -> new Piece(PieceType.BISHOP, PlayerColor.WHITE);
+                        case "b" -> new Piece(PieceType.BISHOP, PlayerColor.BLACK);
+                        case "Q" -> new Piece(PieceType.QUEEN, PlayerColor.WHITE);
+                        case "q" -> new Piece(PieceType.QUEEN, PlayerColor.BLACK);
+                        case "K" -> new Piece(PieceType.KING, PlayerColor.WHITE);
+                        case "k" -> new Piece(PieceType.KING, PlayerColor.BLACK);
+                        default -> new Piece(PieceType.PAWN, PlayerColor.WHITE);
+                    };
+                    setupPiece(cell, piece);
+                    pos ++;
+                }
+            }
+        }
+    }
+
     private void setupPiece(String cellId, Piece piece) {
         board.placePiece(cellId, piece);
         listeners.forEach(listener -> listener.onPlaced(cellId, board.getCellById(cellId).getPiece()));
@@ -531,5 +608,17 @@ public class GameEngine {
 
     public PlayerColor getActivePlayer(){
         return this.currentTurn;
+    }
+
+    public HexCoord getEnpassentCoordGhost(){
+        return this.enpassentCoordGhost;
+    }
+
+    public HexCoord getEnpassentMovedTo(){
+        return this.enpassentMovedTo;
+    }
+
+    public boolean isEnpassent() {
+        return enpassent;
     }
 }

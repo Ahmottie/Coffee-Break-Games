@@ -10,6 +10,7 @@ module seda_project.control_alt_defeat.gamebox {
     requires javafx.base;
     requires java.sql;
     requires com.fasterxml.jackson.databind;
+    requires jdk.incubator.vector;
 
     // Main Package
     exports seda_project.control_alt_defeat.gamebox;

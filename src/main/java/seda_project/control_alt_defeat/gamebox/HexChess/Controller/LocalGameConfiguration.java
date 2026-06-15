@@ -31,7 +31,12 @@ public class LocalGameConfiguration extends Controller {
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
             GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
-            controller.init();
+            if (boardState == null) {
+                controller.init();
+            }
+            else{
+                controller.init(boardState);
+            }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);
         }
@@ -42,6 +47,8 @@ public class LocalGameConfiguration extends Controller {
         BoardDesigner controller = (BoardDesigner) c.changeScene("/Views/HexChess/BoardDesigner.fxml",header,vS);
         controller.handNames(player1TF.getText(),player2TF.getText());
     }
+
+
 
     public void boardSelection(String notation, String p1Name, String p2Name) {
         boardState = notation;

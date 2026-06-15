@@ -50,26 +50,18 @@
 }
 
 .endangered {
-    -fx-effect: dropshadow(gaussian, rgba(243, 43, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-effect: dropshadow(two-pass-box, rgba(243, 43, 43, 0.95), 18, 0.6, 0, 0);
     -fx-opacity: 1.0 ;
 }
 
 .capture {
-    -fx-effect: dropshadow(gaussian, rgba(243, 133, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-effect: dropshadow(two-pass-box, rgba(243, 133, 43, 0.95), 18, 0.6, 0, 0);
     -fx-opacity: 1.0 ;
 }
 
 .selectedTile {
-    -fx-effect: dropshadow(gaussian, rgba(93, 243, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-effect: dropshadow(two-pass-box, rgba(93, 243, 43, 0.95), 18, 0.6, 0, 0);
     -fx-opacity: 1.0 ;
-}
-
-.selfDot {
-    -fx-fill: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 50.0%, #d100ff 0.0%, #d100ff 17.8947%, #00000000 100.0%);
-}
-
-.enemyDot {
-    -fx-fill: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 50.0%, #d100ff 0.0%, #ff0000 17.8947%, #00000000 100.0%);
 }
 
 .selfDot {
@@ -87,13 +79,9 @@
 }
 
 .enpassant-arrow {
-    -fx-stroke: #d32f2f; /* A nice red color */
-    -fx-stroke-width: 3px;
-    -fx-stroke-dash-array: 6 6; /* Creates the dotted/dashed effect */
-    -fx-stroke-linecap: round; /* Makes the dashes look softer */
-}
-
-/* We only apply the transparent fill to the curve, not the wings */
-.arrow-curve {
-    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    /* Smooth, modern energy trail that handles transparency beautifully */
+    -fx-fill: linear-gradient(to top, rgba(255, 111, 0, 0.85) 0%, rgba(255, 165, 0, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
+    /* Optional: Add a subtle glow to make the trail pop against dark backgrounds */
+    -fx-effect: dropshadow(gaussian, rgba(255, 111, 0, 0.4), 8, 0.3, 0, 0);
 }

@@ -14,12 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.QuadCurve;
+import javafx.scene.shape.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jdk.incubator.vector.DoubleVector;
+import jdk.incubator.vector.VectorOperators;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
@@ -93,6 +92,12 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     public void init(){
         this.gameEngine.setupInitialState();
     }
+
+    public void init(String boardState) {
+        this.gameEngine.setupInitalState(boardState);
+
+    }
+
     @Override
     public void onPlaced(String id, Piece piece){
         String pieceId = piecetoString(piece);
@@ -180,6 +185,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         pieceToCapture.getStyleClass().add("capture");
                     }
                     else {
+                        if (gameEngine.isEnpassent() && targetTileId.equals(gameEngine.getEnpassentCoordGhost().transformHextoId())){
+                            enpassentCoord(targetTileId, gameEngine.getEnpassentMovedTo().transformHextoId());
+                        }
                         Circle moveDot = new Circle(10);
                         moveDot.setLayoutX(targetPolygon.getLayoutX());
                         moveDot.setLayoutY(targetPolygon.getLayoutY());
@@ -213,7 +221,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 iv.getStyleClass().remove("selectedTile");
             }
         }
-        boardPane.getChildren().removeIf(node -> node instanceof Circle);
+
+        boardPane.getChildren().removeIf(node -> node instanceof Path || node instanceof Circle);
     }
 
     @Override
@@ -347,17 +356,41 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         this.activePlayer = currentTurn;
     }
 
-    @Override
     public void enpassentCoord(String from, String to) {
-        Polygon fromPoly = (Polygon) boardPane.lookup("#"+from);
-        Polygon toPoly = (Polygon) boardPane.lookup("#"+to);
+        System.out.println("CALLED IN SCREEN");
+        Polygon fromPoly = (Polygon) boardPane.lookup("#" + from);
+        Polygon toPoly = (Polygon) boardPane.lookup("#" + to);
 
-        double startX = fromPoly.getLayoutX();
-        double startY = fromPoly.getLayoutY();
-        double endX = toPoly.getLayoutX();
-        double endY = toPoly.getLayoutY();
+        double fromX = fromPoly.getLayoutX();
+        double fromY = fromPoly.getLayoutY();
 
-        //TODO Draw Indicator
+        double toX = toPoly.getLayoutX();
+        double toY = toPoly.getLayoutY();
+
+        double leftX = fromX-10;
+        double rightX = fromX+10;
+
+        double radius = 4;
+
+
+        Path filledArrow = new Path();
+        filledArrow.getStyleClass().add("enpassant-arrow");
+
+        double endY = (fromY>toY)? toY+15 : toY-15;
+        double controlY = fromY + (toY - fromY) * 0.5;
+
+        filledArrow.getElements().addAll(
+                new MoveTo(leftX, fromY),
+                new ArcTo(radius, radius, 0, rightX, fromY, false, (fromY > toY)),
+                new QuadCurveTo(rightX, controlY, toX, endY),
+                new QuadCurveTo(leftX, controlY, leftX, fromY),
+                new ClosePath()
+        );
+
+        boardPane.getChildren().add(filledArrow);
+
+        ImageView img = getPieceAtPolygon(to);
+        img.getStyleClass().add("capture");
     }
 
 

@@ -25,5 +25,4 @@ public interface ChessEventListener {
 
     void activePlayer(PlayerColor currentTurn);
 
-    void enpassentCoord(String from, String to);
 }
