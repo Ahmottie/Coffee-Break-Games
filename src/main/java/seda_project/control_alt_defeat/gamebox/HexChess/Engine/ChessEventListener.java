@@ -22,4 +22,8 @@ public interface ChessEventListener {
     void onPromoted(String coordId, Piece promoted);
 
     void endangered(Piece king, boolean endangered);
+
+    void activePlayer(PlayerColor currentTurn);
+
+    void enpassentCoord(String from, String to);
 }

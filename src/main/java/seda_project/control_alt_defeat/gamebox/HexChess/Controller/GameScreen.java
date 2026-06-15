@@ -3,6 +3,7 @@ package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +14,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.QuadCurve;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.Configuration;
@@ -29,6 +33,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     PieceSettings settings = PieceSettings.getInstance();
     private GameEngine gameEngine;
     private ImageView endangeredKingView = null;
+    private PlayerColor activePlayer;
     
     @FXML
     private Parent root;
@@ -71,6 +76,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         this.gameEngine.addListener(this);
         applyTileColor();
         applyPiecePreviewImages();
+        activePlayer = gameEngine.getActivePlayer();
     }
 
     public void setNames(String p1Name, String p2Name){
@@ -151,45 +157,63 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
     @FXML
     public void handleTileClick(MouseEvent mouseEvent) {
-        for (Node node : boardPane.getChildren()) {
-            if (node instanceof Polygon p) {
-                p.setStroke(Color.BLACK);
-                p.setStrokeWidth(1.0);
-                p.setOnMouseClicked(this::handleTileClick);
-            }
-        }
-        Polygon polygon = (Polygon) mouseEvent.getSource();
-        String id = polygon.getId();
+        clearHighlights();
 
-        ImageView pieceOnTile = getPieceAtPolygon(id);
+        Polygon polygon = (Polygon) mouseEvent.getSource();
+        String currentTileId = polygon.getId();
+
+        ImageView pieceOnTile = getPieceAtPolygon(currentTileId);
+
         if (pieceOnTile != null) {
-            polygon.setStroke(Color.RED);
-            polygon.setStrokeWidth(3.0);
-            Piece p = gameEngine.getBoard().getCellById(id).getPiece();
-            System.out.println("PIECE " +p.getType());
-            List<HexCell> x = gameEngine.getLegalMoves(p);
-            System.out.println(x.size());
-            for (HexCell cell :x ){;
-                String orthogonalid = cell.getCoords().transformHextoId();
-                for (Node node : boardPane.getChildren()) {
-                    if (node instanceof Polygon innerpolygon && node.getId().equals(orthogonalid)) {
-                        innerpolygon.setStroke(Color.PURPLE);
-                        innerpolygon.setStrokeWidth(3.0);
-                        innerpolygon.setOnMouseClicked(event -> {
-                            event.consume();
-                            gameEngine.handleMove(polygon.getId(),innerpolygon.getId());
-                            for (Node n : boardPane.getChildren()) {
-                                if (n instanceof  Polygon pp){
-                                    pp.setStroke(Color.BLACK);
-                                    pp.setStrokeWidth(1.0);
-                                    pp.setOnMouseClicked(this::handleTileClick);
-                                }
-                            }
-                        });
+            PlayerColor playerColor = (pieceOnTile.getId().contains("1")) ? PlayerColor.WHITE : PlayerColor.BLACK;
+            pieceOnTile.getStyleClass().add("selectedTile");
+            Piece p = gameEngine.getBoard().getCellById(currentTileId).getPiece();
+            List<HexCell> legalMoves = gameEngine.getLegalMoves(p);
+
+            for (HexCell cell :legalMoves ){;
+                String targetTileId = cell.getCoords().transformHextoId();
+
+                if(boardPane.lookup("#"+targetTileId)instanceof  Polygon targetPolygon){
+
+                    ImageView pieceToCapture = getPieceAtPolygon(targetTileId);
+                    if (pieceToCapture != null) {
+                        pieceToCapture.getStyleClass().add("capture");
                     }
+                    else {
+                        Circle moveDot = new Circle(10);
+                        moveDot.setLayoutX(targetPolygon.getLayoutX());
+                        moveDot.setLayoutY(targetPolygon.getLayoutY());
+                        if (playerColor == activePlayer) {
+                            moveDot.getStyleClass().add("selfDot");
+                        } else {
+                            moveDot.getStyleClass().add("enemyDot");
+                        }
+                        moveDot.setMouseTransparent(true);
+                        boardPane.getChildren().add(moveDot);
+                    }
+                    targetPolygon.setOnMouseClicked(event -> {
+                        gameEngine.handleMove(currentTileId,targetTileId);
+                        clearHighlights();
+                        event.consume();
+                        for (Node n : boardPane.getChildren()){
+                            if (n instanceof Polygon poly){
+                                poly.setOnMouseClicked(this::handleTileClick);
+                            }
+                        }
+                    });
                 }
             }
         }
+    }
+
+    private void clearHighlights() {
+        for (Node node : boardPane.getChildren()) {
+            if ( node instanceof ImageView iv ){
+                iv.getStyleClass().remove("capture");
+                iv.getStyleClass().remove("selectedTile");
+            }
+        }
+        boardPane.getChildren().removeIf(node -> node instanceof Circle);
     }
 
     @Override
@@ -198,12 +222,14 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         Polygon old = null;
         Polygon poly= null;
         for (Node n : boardPane.getChildren()) {
-            if (n.getId().equals(fromId)) {
-                piece = getPieceAtPolygon(fromId);
-                old = (Polygon) n;
-            }
-            if (n.getId().equals(toId)) {
-                poly = (Polygon) n;
+            if (n.getId() != null) {
+                if (n.getId().equals(fromId)) {
+                    piece = getPieceAtPolygon(fromId);
+                    old = (Polygon) n;
+                }
+                if (n.getId().equals(toId)) {
+                    poly = (Polygon) n;
+                }
             }
         }
         old.setUserData(null);
@@ -315,6 +341,25 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         kingView.getStyleClass().add("endangered");
         endangeredKingView = kingView;
     }
+
+    @Override
+    public void activePlayer(PlayerColor currentTurn) {
+        this.activePlayer = currentTurn;
+    }
+
+    @Override
+    public void enpassentCoord(String from, String to) {
+        Polygon fromPoly = (Polygon) boardPane.lookup("#"+from);
+        Polygon toPoly = (Polygon) boardPane.lookup("#"+to);
+
+        double startX = fromPoly.getLayoutX();
+        double startY = fromPoly.getLayoutY();
+        double endX = toPoly.getLayoutX();
+        double endY = toPoly.getLayoutY();
+
+        //TODO Draw Indicator
+    }
+
 
     @FXML
     protected void onExitAction(){

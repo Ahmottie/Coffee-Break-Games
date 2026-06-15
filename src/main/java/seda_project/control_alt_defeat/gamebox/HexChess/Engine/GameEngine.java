@@ -69,6 +69,7 @@ public class GameEngine {
         boolean e = false;
         if (pieceToMove.getType() == PAWN){
             int diff = getDiff(fromId,toId);
+            System.out.println( fromId + " +++ " + toId );
             if (diff == 2){
                 e = true;
                 enpassentCoordGhost = getEnpassentCoord(fromId,toId);
@@ -220,7 +221,6 @@ public class GameEngine {
             if(possibleKingmoves.isEmpty()){
                 return true;
             }
-            System.out.println(possibleKingmoves.size());
             possibleKingmoves.remove(move);
         }
         return possibleKingmoves.isEmpty();
@@ -309,6 +309,7 @@ public class GameEngine {
         enpassent = e;
         enpassentPending = false;
         this.currentTurn = (this.currentTurn == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
+        listeners.forEach(l -> l.activePlayer(currentTurn));
     }
 
     // Getters for your UI layer to inspect the board state
@@ -405,14 +406,7 @@ public class GameEngine {
         List<HexCell> moves = new ArrayList<>();
         int col = coord.col;
         int row = coord.row;
-        if (enpassent) {
-            List<HexCell> orthogonals = board.getDirectOrthogonalNeighbors(coord);
-            HexCell helper = board.getCellByCoord(enpassentCoordGhost.col,enpassentCoordGhost.row);
-            
-            if (orthogonals.contains(helper)) {
-                moves.add(orthogonals.get(0));
-            }
-        }
+
         int dir = (color == PlayerColor.WHITE) ? 0 : 1; // dir 0 = up, dir 1 = down
         int[] stepsize = moved ? new int[]{1} : new int[]{1,2};
         for (int step : stepsize) {
@@ -440,6 +434,12 @@ public class GameEngine {
                 if (cell.hasPiece() && cell.getPiece().getPlayer() != color) {
                     moves.add(cell);
                 }
+                if (enpassent && enpassentCoordGhost != null
+                        && enpassentCoordGhost.col == captureCols[i]
+                        && enpassentCoordGhost.row == captureRows[i]) {
+                    moves.add(cell);
+                    listeners.forEach(l -> l.enpassentCoord(enpassentCoordGhost.transformHextoId(),enpassentMovedTo.transformHextoId()));
+                }
             }
         }
 
@@ -449,16 +449,18 @@ public class GameEngine {
     private HexCoord getEnpassentCoord(String fromId, String toId) {
         int from = Integer.parseInt(fromId.replaceAll("[abcdefghijk]",""));
         int to = Integer.parseInt(toId.replaceAll("[abcdefghijk]",""));
-        String enpassentId = null;
+        String enpassentId = "";
         if (from > to ){
-            enpassentId = fromId.charAt(0) + String.valueOf(to+1);
+            enpassentId = (fromId.charAt(0)) + String.valueOf(to+1);
         }
         else {
-            enpassentId = toId.charAt(0) + String.valueOf(from+1);
+            enpassentId = (fromId.charAt(0)) + String.valueOf(from+1);
         }
+
         System.out.println("from " + from +"  to " + to);
         System.out.println("ENPASSENT ID"+enpassentId);
         HexCoord coord = HexCoord.transformIdToHex(enpassentId);
+        System.out.println("COLUMN " + coord.col +  "    ROW "+ coord.row);
         return coord;
     }
 
@@ -525,5 +527,9 @@ public class GameEngine {
                         && cell.getCoords().row == king.getPosition().row);
         System.out.println("ENDANGERED " + endangered);
         listeners.forEach(l -> l.endangered(king, endangered));
+    }
+
+    public PlayerColor getActivePlayer(){
+        return this.currentTurn;
     }
 }

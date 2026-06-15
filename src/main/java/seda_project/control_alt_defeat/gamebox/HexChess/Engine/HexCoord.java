@@ -14,6 +14,7 @@ public class HexCoord {
 
     public static HexCoord transformIdToHex(String id){
         char[] parts = id.toCharArray();
+        System.out.println("LETTER IN TRANSFORM HEX " +parts[0]);
         int col = parts[0]- 'a';
         int row = Integer.parseInt(id.replaceAll("[abcdefghijk]",""));
         return new HexCoord(col,row);

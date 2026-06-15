@@ -53,3 +53,47 @@
     -fx-effect: dropshadow(gaussian, rgba(243, 43, 43, 0.95), 18, 0.6, 0, 0);
     -fx-opacity: 1.0 ;
 }
+
+.capture {
+    -fx-effect: dropshadow(gaussian, rgba(243, 133, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
+
+.selectedTile {
+    -fx-effect: dropshadow(gaussian, rgba(93, 243, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
+
+.selfDot {
+    -fx-fill: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 50.0%, #d100ff 0.0%, #d100ff 17.8947%, #00000000 100.0%);
+}
+
+.enemyDot {
+    -fx-fill: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 50.0%, #d100ff 0.0%, #ff0000 17.8947%, #00000000 100.0%);
+}
+
+.selfDot {
+    -fx-fill: transparent;
+    -fx-stroke: #f5a3ff; /* White-hot Electric Lavender - pierces beautifully through the dark purple glow */
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(gaussian, #790a8f, 8, 0.5, 0, 0); /* Kept exactly the same */
+}
+
+.enemyDot {
+    -fx-fill: transparent;
+    -fx-stroke: #ff7373; /* Vivid Pastel Coral/Red - creates a high-intensity center for the blood-red glow */
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(gaussian, #981111, 8, 0.5, 0, 0); /* Kept exactly the same */
+}
+
+.enpassant-arrow {
+    -fx-stroke: #d32f2f; /* A nice red color */
+    -fx-stroke-width: 3px;
+    -fx-stroke-dash-array: 6 6; /* Creates the dotted/dashed effect */
+    -fx-stroke-linecap: round; /* Makes the dashes look softer */
+}
+
+/* We only apply the transparent fill to the curve, not the wings */
+.arrow-curve {
+    -fx-fill: transparent;
+}
