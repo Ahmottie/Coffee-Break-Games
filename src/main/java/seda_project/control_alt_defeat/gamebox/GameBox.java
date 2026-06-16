@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,8 +11,10 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class GameBox extends Application {
+    @FXML
+    VBox header;
+
     private static final Logger logger = LoggerFactory.getLogger(GameBox.class);
     private static ViewStack vS =  ViewStack.getInstance();
     Configuration c = Configuration.getInstance();
@@ -27,14 +28,12 @@ public class GameBox extends Application {
         String address = "/Views/StartingScreen.fxml";
         FXMLLoader loader = new FXMLLoader(GameBox.class.getResource(address));
         vS.addFxmlLoaders(address);
-        final var mainMenuScene = new Scene(loader.load(), 800, 600);
+
+        var mainMenuScene = new Scene(loader.load());
 
         stage.setScene(mainMenuScene);
         logger.debug("Startup completed");
     }
-
-    @FXML
-    VBox header;
 
     public static void cleanExit() {
         logger.debug("Shutting down");

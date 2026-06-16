@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.ChessSettings">
+    <children>
+        <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Hex Chess Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                  <Label text="Hex Chess Settings" />
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0" />
+                    </padding>
+                </VBox>
+                <StackPane fx:id="stackPane" prefHeight="493.0" prefWidth="800.0">
+               <children>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="box">
+                     <children>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                           <children>
+                              <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                 <children>
+                                    <Label styleClass="normalText" text="Player 1" />
+                                    <ColorPicker fx:id="p1ColorPicker" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#onP1ColorAction" />
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                       <children>
+                                          <ImageView fx:id="p1Pawn" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-pawn.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p1Rook" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-rook.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p1Knight" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-knight.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                       <children>
+                                          <ImageView fx:id="p1Bishop" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-bishop.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p1Queen" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-queen.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p1King" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/White/white-king.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <styleClass>
+                                    <String fx:value="box" />
+                                    <String fx:value="error" />
+                                 </styleClass>
+                              </VBox>
+                              <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                 <children>
+                                    <Label styleClass="normalText" text="Player 2" />
+                                    <ColorPicker fx:id="p2ColorPicker" onAction="#onP2ColorAction">
+                                       <value>
+                                          <Color />
+                                       </value>
+                                    </ColorPicker>
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                       <children>
+                                          <ImageView fx:id="p2Pawn" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-pawn.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p2Rook" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-rook.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p2Knight" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-knight.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                       <children>
+                                          <ImageView fx:id="p2Bishop" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-bishop.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p2Queen" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-queen.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="p2King" fitHeight="75" fitWidth="75" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../Images/HexChess/Black/black-king.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <styleClass>
+                                    <String fx:value="box" />
+                                    <String fx:value="ready" />
+                                 </styleClass>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Dark Tiles" />
+                                 <ColorPicker fx:id="darkTilesColorPicker" onAction="#onDarkTileAction" />
+                                  <Polygon fx:id="darkPolygon">
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Normal Tiles" />
+                                 <ColorPicker fx:id="normalTilesColorPicker" onAction="#onNormalTileAction" />
+                                  <Polygon fx:id="normalPolygon">
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
+                           <VBox alignment="CENTER" spacing="10.0">
+                              <children>
+                                 <Label styleClass="normalText" text="Light Tiles" />
+                                 <ColorPicker fx:id="lightTilesColorPicker" onAction="#onLightTileaAction" />
+                                  <Polygon fx:id="lightPolygon">
+                                    <points>
+                                       <Double fx:value="-27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="23.38" />
+                                       <Double fx:value="27.0" />
+                                       <Double fx:value="0.0" />
+                                       <Double fx:value="13.5" />
+                                       <Double fx:value="-23.38" />
+                                       <Double fx:value="-13.5" />
+                                       <Double fx:value="-23.38" />
+                                    </points>
+                                 </Polygon>
+                              </children>
+                           </VBox>
+                        </HBox>
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
+                           <children>
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onBackAction" text="Back" />
+                                 </children>
+                              </StackPane>
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
+                                 </children>
+                              </StackPane>
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                 <children>
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onDefaultAction" text="Default" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+                </StackPane>
+            </children>
+        </VBox>
+    </children>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/HexChessMenu.css" />
+    </stylesheets>
+</AnchorPane>

@@ -11,7 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import seda_project.control_alt_defeat.gamebox.Tetris.network.Discovery;
+import seda_project.control_alt_defeat.gamebox.network.Advertisement;
+import seda_project.control_alt_defeat.gamebox.network.Discovery;
+import seda_project.control_alt_defeat.gamebox.network.GameMode;
+import seda_project.control_alt_defeat.gamebox.network.Listener;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.Session;
@@ -28,7 +31,7 @@ import java.util.Set;
 public class JoinLan extends Controller implements Initializable {
     private final ArrayList<Label> availableHosts = new ArrayList<>();
 
-    private Discovery.Listener discoveryListener;
+    private Listener discoveryListener;
     private Timeline            refreshTimeline;
     private Set<String>         shownHostIps = new HashSet<>();
 
@@ -65,7 +68,7 @@ public class JoinLan extends Controller implements Initializable {
             return;
         }
 
-        Discovery.Advertisement ad = (Discovery.Advertisement) selectedHost.getUserData();
+        Advertisement ad = (Advertisement) selectedHost.getUserData();
         stopDiscovery();
 
         try {
@@ -134,15 +137,15 @@ public class JoinLan extends Controller implements Initializable {
 
     private void refreshHostList() {
         if (discoveryListener == null) return;
-        List<Discovery.Advertisement> ads = discoveryListener.currentHosts();
+        List<Advertisement> ads = discoveryListener.currentHosts();
 
         Set<String> newIps = new HashSet<>();
-        for (Discovery.Advertisement ad : ads) newIps.add(ad.ipAddress());
+        for (Advertisement ad : ads) newIps.add(ad.ipAddress());
         if (newIps.equals(shownHostIps)) return;
 
         String previouslySelectedIp = null;
         if (selectedHost != null) {
-            Discovery.Advertisement prev = (Discovery.Advertisement) selectedHost.getUserData();
+            Advertisement prev = (Advertisement) selectedHost.getUserData();
             previouslySelectedIp = prev != null ? prev.ipAddress() : null;
         }
 
@@ -150,7 +153,8 @@ public class JoinLan extends Controller implements Initializable {
         availableHosts.clear();
         selectedHost = null;
 
-        for (Discovery.Advertisement ad : ads) {
+        for (Advertisement ad : ads) {
+            if (ad.gameMode() != GameMode.TETRIS) continue;
             Label l = makeHostLabel(ad);
             availableHosts.add(l);
             scrollElements.getChildren().add(l);
@@ -163,7 +167,7 @@ public class JoinLan extends Controller implements Initializable {
         shownHostIps = newIps;
     }
 
-    private Label makeHostLabel(Discovery.Advertisement ad) {
+    private Label makeHostLabel(Advertisement ad) {
         Label l = new Label(ad.name() + "   (" + ad.ipAddress() + ")");
         l.setUserData(ad);
         l.setAlignment(Pos.CENTER);

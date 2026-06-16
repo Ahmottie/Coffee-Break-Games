@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.JoinLan">
+   <children>
+        <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="800.0">
+            <children>
+                <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Hex Chess Game">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Hex Chess Join Game" />
+                    </children>
+                    <padding>
+                        <Insets left="5.0" right="5.0" />
+                    </padding>
+                </VBox>
+             <StackPane prefHeight="517.0" prefWidth="800.0">
+                 <children>
+                     <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                         <children>
+                             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                                 <children>
+                                     <Label alignment="CENTER" text="Your Name:">
+                                         <HBox.margin>
+                                             <Insets right="10.0" />
+                                         </HBox.margin>
+                              </Label>
+                                     <TextField fx:id="joinPlayerNameTF" prefHeight="26.0" prefWidth="180.0" promptText="Insert Player 1 Name " />
+                                 </children>
+                                 <VBox.margin>
+                                     <Insets bottom="10.0" />
+                                 </VBox.margin>
+                             </HBox>
+                             <ScrollPane fx:id="scrollPane" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="transparent-scroll">
+                                 <content>
+                                     <VBox fx:id="scrollElements" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="transparent-scroll-content" />
+                                 </content>
+                                 <VBox.margin>
+                                     <Insets />
+                                 </VBox.margin>
+                             </ScrollPane>
+                             <Label fx:id="joinStatus" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" visible="false" wrapText="true">
+                                 <styleClass>
+                                     <String fx:value="error" />
+                                     <String fx:value="box" />
+                                 </styleClass>
+                                 <padding>
+                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                             </Label>
+                             <HBox alignment="CENTER" prefHeight="40.0">
+                                 <children>
+                                     <StackPane styleClass="button-wrapper">
+                                         <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                                             <HBox.margin>
+                                                 <Insets right="10.0" />
+                                             </HBox.margin>
+                                         </Button>
+                                     </StackPane>
+                                     <StackPane styleClass="button-wrapper">
+                                         <Button mnemonicParsing="false" onAction="#onConnectAction" text="Connect">
+                                             <HBox.margin>
+                                                 <Insets left="10.0" />
+                                             </HBox.margin>
+                                         </Button>
+                                     </StackPane>
+                                 </children>
+                             </HBox>
+                         </children>
+                         <StackPane.margin>
+                             <Insets />
+                         </StackPane.margin>
+                         <padding>
+                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                         </padding>
+                     </VBox>
+                 </children>
+                 <VBox.margin>
+                     <Insets />
+                 </VBox.margin>
+                 <padding>
+                     <Insets top="5.0" />
+                 </padding>
+             </StackPane>
+            </children>
+        </VBox>
+    </children>
+
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/HexChessMenu.css" />
+    </stylesheets>
+</AnchorPane>

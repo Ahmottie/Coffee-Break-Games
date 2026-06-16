@@ -13,7 +13,8 @@ import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
-import seda_project.control_alt_defeat.gamebox.Tetris.network.Discovery;
+import seda_project.control_alt_defeat.gamebox.network.Announcer;
+import seda_project.control_alt_defeat.gamebox.network.Discovery;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
 import seda_project.control_alt_defeat.gamebox.network.LanHost;
@@ -26,7 +27,7 @@ import seda_project.control_alt_defeat.gamebox.ui.Controller;
 public class WaitForOpponent extends Controller {
 
     private Timeline loadingDots;
-    private Discovery.Announcer announcer;
+    private Announcer announcer;
 
     @FXML
     private VBox header;
@@ -76,7 +77,7 @@ public class WaitForOpponent extends Controller {
         loadingDots.play();
 
         // Start UDP broadcast so joiners can discover us 
-        announcer = Discovery.announce(hostName, Lan.DEFAULT_PORT, hostLevel);
+        announcer = Discovery.announceTetris(hostName, Lan.DEFAULT_PORT, hostLevel);
 
         // Open the server socket on the background
         LanHost.hostAsync(Lan.DEFAULT_PORT,

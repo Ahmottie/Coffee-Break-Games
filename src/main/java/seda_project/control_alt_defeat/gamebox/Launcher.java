@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

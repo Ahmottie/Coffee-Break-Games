@@ -1,10 +1,8 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
-import javafx.css.PseudoClass;
 
 
 public class TetrisMenu extends Controller {

@@ -185,18 +185,18 @@ public class BlockController extends Controller implements Initializable {
         Pane preview = buildMiniPreview(piece);
 
         Label name = new Label("Custom " + (index + 1));
-        name.setStyle("-fx-text-fill: -fx-text-base-color;");
 
         HBox row = new HBox(8, preview, name);
         row.setAlignment(Pos.CENTER);
+        row.getStyleClass().add("scrollItem");
         row.setStyle("-fx-padding: 4; -fx-cursor: hand;");
 
         row.setOnMouseClicked(e -> {
             selectedListIndex = index;
             ((VBox) scrollPane.getContent()).getChildren().forEach(
-                    n -> n.setStyle("-fx-padding: 4; -fx-cursor: hand;")
+                    n -> n.getStyleClass().remove("selectedItem")
             );
-            row.setStyle("-fx-padding: 4; -fx-cursor: hand; -fx-background-color: -fx-selection-bar;");
+            row.getStyleClass().add("selectedItem");
         });
         return row;
     }

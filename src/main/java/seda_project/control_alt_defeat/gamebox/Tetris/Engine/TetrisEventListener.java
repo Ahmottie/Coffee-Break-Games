@@ -1,7 +1,5 @@
 package seda_project.control_alt_defeat.gamebox.Tetris.Engine;
 
-import java.util.List;
-
 public interface TetrisEventListener {
     default void onTick(TetrisEngine.GameState snapshot, int player) {}
     default void onBlockLocked(int playerNum, TetrisEngine.GameState snapshot) {}

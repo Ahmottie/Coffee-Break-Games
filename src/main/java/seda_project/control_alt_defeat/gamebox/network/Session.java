@@ -42,4 +42,5 @@ public final class Session {
     public boolean      peerReady;
 
     public boolean      lanVertical = true;
+    public seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine chessEngine;
 }

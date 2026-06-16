@@ -2,7 +2,6 @@ package seda_project.control_alt_defeat.gamebox.Tetris.Controller;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;

@@ -1,0 +1,94 @@
+.root {
+    -light-poly-color: #C19A6B;
+    -normal-poly-color: #8B5A2B;
+    -dark-poly-color: #5C4033;
+}
+
+.background{
+    -fx-background-image: url('../../Images/HexChess/Background.jpeg');
+    -fx-background-size: auto 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.gameField {
+    -fx-border-color: #1ecfcf;
+    -fx-background-color: #000000;
+    -fx-border-width: 2px;
+    -fx-effect: innershadow(gaussian, rgba(30,207,207,0.3), 10, 0.5, 0, 0);
+}
+
+.gameField Line{
+    -fx-stroke: #4a4a4a;
+}
+
+.playground {
+    -fx-background-color: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 80.0%, #0080ff 0.0%, #1a3a5a 50.7895%, #0a1a2e 100.0%);
+}
+
+.lightPoly {
+    -fx-fill: -light-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
+}
+
+.normalPoly {
+    -fx-fill:-normal-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
+}
+
+.darkPoly {
+    -fx-fill: -dark-poly-color;
+    -fx-stroke: #000000;
+    -fx-stroke-type: inside;
+}
+
+.selectedPiece {
+    -fx-effect: dropshadow(gaussian, rgba(77, 235, 184, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0;
+}
+
+.endangered {
+    -fx-effect: dropshadow(two-pass-box, rgba(243, 43, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
+
+.capture {
+    -fx-effect: dropshadow(two-pass-box, rgba(243, 133, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
+
+.selectedTile {
+    -fx-effect: dropshadow(two-pass-box, rgba(93, 243, 43, 0.95), 18, 0.6, 0, 0);
+    -fx-opacity: 1.0 ;
+}
+
+.selfDot {
+    -fx-fill: transparent;
+    -fx-stroke: #f5a3ff; /* White-hot Electric Lavender - pierces beautifully through the dark purple glow */
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(gaussian, #790a8f, 8, 0.5, 0, 0); /* Kept exactly the same */
+}
+
+.enemyDot {
+    -fx-fill: transparent;
+    -fx-stroke: #ff7373; /* Vivid Pastel Coral/Red - creates a high-intensity center for the blood-red glow */
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(gaussian, #981111, 8, 0.5, 0, 0); /* Kept exactly the same */
+}
+
+.enpassant-arrow {
+    -fx-stroke: transparent;
+    /* Smooth, modern energy trail that handles transparency beautifully */
+    -fx-fill: linear-gradient(to top, rgba(255, 111, 0, 0.85) 0%, rgba(255, 165, 0, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
+    /* Optional: Add a subtle glow to make the trail pop against dark backgrounds */
+    -fx-effect: dropshadow(gaussian, rgba(255, 111, 0, 0.4), 8, 0.3, 0, 0);
+}
+
+.movedFrom {
+    -fx-fill: #8f8f8f;
+}
+.movedTo {
+    -fx-fill: #8f8f8f;
+}

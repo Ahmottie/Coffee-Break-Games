@@ -9,16 +9,18 @@ module seda_project.control_alt_defeat.gamebox {
     requires java.desktop;
     requires javafx.base;
     requires java.sql;
+    requires com.fasterxml.jackson.databind;
+    requires jdk.incubator.vector;
 
     // Main Package
     exports seda_project.control_alt_defeat.gamebox;
     opens seda_project.control_alt_defeat.gamebox to javafx.fxml;
 
-    // Game Engine
+    // Memory Game Engine
     exports seda_project.control_alt_defeat.gamebox.Memory.engine;
     opens seda_project.control_alt_defeat.gamebox.Memory.engine to javafx.fxml;
 
-    // Controllers and Logic
+    // Memory Controllers and Logic
     exports seda_project.control_alt_defeat.gamebox.Memory.Controller;
     opens seda_project.control_alt_defeat.gamebox.Memory.Controller to javafx.fxml;
 
@@ -26,9 +28,13 @@ module seda_project.control_alt_defeat.gamebox {
     exports seda_project.control_alt_defeat.gamebox.Memory;
     opens seda_project.control_alt_defeat.gamebox.Memory to javafx.fxml;
 
-    //Tetris
+    //Tetris Controller
     exports  seda_project.control_alt_defeat.gamebox.Tetris.Controller;
     opens seda_project.control_alt_defeat.gamebox.Tetris.Controller to javafx.fxml;
+
+    //Hex Chess Controller
+    exports  seda_project.control_alt_defeat.gamebox.HexChess.Controller;
+    opens seda_project.control_alt_defeat.gamebox.HexChess.Controller to javafx.fxml;
 
     // UI
     exports seda_project.control_alt_defeat.gamebox.ui;

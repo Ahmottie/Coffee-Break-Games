@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.BlockController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.BlockController">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
             <children>
@@ -31,7 +31,7 @@
                      <items>
                         <VBox alignment="CENTER" maxWidth="200.0" minWidth="200.0">
                            <children>
-                              <ScrollPane fx:id="scrollPane" prefHeight="447.0" prefWidth="200.0" />
+                              <ScrollPane fx:id="scrollPane" prefHeight="447.0" prefWidth="200.0" styleClass="scroller" />
                               <HBox alignment="CENTER">
                                  <children>
                                      <StackPane styleClass="button-wrapper">
