@@ -27,8 +27,11 @@ public class HostLanConfiguration  extends Controller {
             Session s = Session.current();
             s.myName = yourName;
             s.isHost = true;
+            if (boardState != null) {
+                s.boardState = boardState;
+            }
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/HexChess/WaitForOpponent.fxml", header, vS);
-            controller.passHostData(yourName);
+            controller.passHostData(yourName, boardState);
         }
     }
 

@@ -53,7 +53,6 @@ public class Board {
 
     public HexCell getCellById(String id){
         HexCoord cell = HexCoord.transformIdToHex(id);
-        System.out.println(id);
         return getCellByCoord(cell.col, cell.row);
     }
 
@@ -416,5 +415,13 @@ public class Board {
 
     public List<List<HexCell>> getCells(){
         return cells;
+    }
+
+    public List<HexCoord> getWhitePromotions(){
+        return this.WHITE_PROMOTION;
+    }
+
+    public List<HexCoord> getBlackPromotions(){
+        return this.BLACK_PROMOTION;
     }
 }

@@ -69,6 +69,7 @@ public class JoinLan extends Controller implements Initializable {
             s.isHost   = false;
             s.network  = layer;
             s.peerName = ad.name();
+            s.boardState = ad.boardState();
 
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/HexChess/WaitForOpponent.fxml", header, vS);
             controller.passJoinData(yourName, ad.ipAddress());

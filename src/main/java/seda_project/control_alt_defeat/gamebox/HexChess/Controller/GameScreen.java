@@ -462,7 +462,6 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
 
     public void enpassentCoord(String from, String to) {
-        System.out.println("CALLED IN SCREEN");
         Polygon fromPoly = (Polygon) boardPane.lookup("#" + from);
         Polygon toPoly = (Polygon) boardPane.lookup("#" + to);
 
