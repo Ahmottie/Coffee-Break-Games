@@ -268,7 +268,7 @@ public class GameEngine {
 
 
 
-    private boolean checkMaterial(){
+    public boolean checkMaterial(){
         List<Piece> white = board.whitePieces();
         List<Piece> black = board.blackPieces();
 

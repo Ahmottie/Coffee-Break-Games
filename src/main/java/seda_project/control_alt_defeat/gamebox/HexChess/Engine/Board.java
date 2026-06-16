@@ -416,4 +416,12 @@ public class Board {
     public List<List<HexCell>> getCells(){
         return cells;
     }
+
+    public List<HexCoord> getWhitePromotions(){
+        return this.WHITE_PROMOTION;
+    }
+
+    public List<HexCoord> getBlackPromotions(){
+        return this.BLACK_PROMOTION;
+    }
 }

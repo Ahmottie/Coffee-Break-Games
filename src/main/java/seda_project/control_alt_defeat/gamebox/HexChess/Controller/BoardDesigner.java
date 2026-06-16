@@ -21,10 +21,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.Configuration;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.BoardDesignState;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.BoardDesignerEngine;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.JsonHandler;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceSettings;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
 
@@ -214,8 +211,14 @@ public class BoardDesigner extends Controller implements Initializable {
             }
         }
         if (!exist) {
-            listofBoards.add(jsonHandler.createNewState(engine.createNotation(rows), engine.getPieceAmounts(),engine.getActivePlayer()));
-            jsonHandler.writeBoardStates(listofBoards);
+            if (validateBoardState()){
+                listofBoards.add(jsonHandler.createNewState(engine.createNotation(rows), engine.getPieceAmounts(),engine.getActivePlayer()));
+                jsonHandler.writeBoardStates(listofBoards);
+                Toast.makeText(stackPane,"State was added!");
+            }
+            else {
+                Toast.makeText(stackPane,"You can only add valid States");
+            }
         }
         else {
             Toast.makeText(stackPane,"This State does already exist");
@@ -257,12 +260,17 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onUseAction(){
-        Object controller = c.backScene(header,vS);
-        if (controller instanceof LocalGameConfiguration lGC){
-            lGC.boardSelection(engine.createNotation(rows), p1Name, p2Name);
+        if (validateBoardState()) {
+            Object controller = c.backScene(header,vS);
+            if (controller instanceof LocalGameConfiguration lGC){
+                lGC.boardSelection(engine.createNotation(rows), p1Name, p2Name);
+            }
+            if (controller instanceof HostLanConfiguration hLC) {
+                hLC.boardSelection(engine.createNotation(rows), p1Name);
+            }
         }
-        if (controller instanceof HostLanConfiguration hLC){
-            hLC.boardSelection(engine.createNotation(rows), p1Name);
+        else {
+            Toast.makeText(stackPane,"You can only use valid States");
         }
     }
 
@@ -455,5 +463,48 @@ public class BoardDesigner extends Controller implements Initializable {
     public void handNames(String text, String text1) {
         p1Name = text;
         p2Name = text1;
+    }
+
+    private boolean validateBoardState() {
+        int activePlayer = p1GoFirst.getStyleClass().contains("ready") ? 1 : 2;
+        String fenNotation = engine.createNotation(rows) + " " + activePlayer;
+        System.out.println(fenNotation);
+        GameEngine validator = new GameEngine();
+        validator.setupInitalState(fenNotation);
+
+        long whiteKings = validator.getBoard().whitePieces().stream()
+                .filter(p -> p.getType() == PieceType.KING).count();
+        long blackKings = validator.getBoard().blackPieces().stream()
+                .filter(p -> p.getType() == PieceType.KING).count();
+
+        if (whiteKings != 1 || blackKings != 1) {
+            return false;
+        }
+
+        boolean invalidWhitePawn = validator.getBoard().whitePieces().stream()
+                .filter(p -> p.getType() == PieceType.PAWN)
+                .anyMatch(p -> {
+                    HexCoord pos = p.getPosition();
+                    return validator.getBoard().getWhitePromotions().stream()
+                            .anyMatch(c -> c.col == pos.col && c.row == pos.row);
+                });
+
+        boolean invalidBlackPawn = validator.getBoard().blackPieces().stream()
+                .filter(p -> p.getType() == PieceType.PAWN)
+                .anyMatch(p -> {
+                    HexCoord pos = p.getPosition();
+                    return validator.getBoard().getBlackPromotions().stream()
+                            .anyMatch(c -> c.col == pos.col && c.row == pos.row);
+                });
+
+        if (invalidWhitePawn || invalidBlackPawn) {
+            return false;
+        }
+
+        if (validator.checkMaterial()) {
+            return false;
+        }
+
+        return true;
     }
 }
