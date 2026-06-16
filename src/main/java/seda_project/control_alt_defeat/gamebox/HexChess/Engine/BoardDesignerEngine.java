@@ -45,24 +45,18 @@ public class BoardDesignerEngine {
         for (String key : pieceAmounts.keySet()) {
             if (key.equals(pieceId)) {
                 if (key.startsWith(playerPrefix)) {
-                    System.err.println(key);
                     if (!key.contains("King") && !key.contains("Pawn")) {
-                        System.out.println("NO KING or PAWN");
                         if ((key.contains("Rook") || key.contains("Knight")) && amount >= 2) {
-                            System.err.println("Decrement ROOK|KNIGHT");
                             pieceAmounts.put(pieceId, amount);
                             pieceAmounts.put(playerPrefix + "PawnImg",
                                     pieceAmounts.get(playerPrefix + "PawnImg") + 1);
                         }
                         if (key.contains("Bishop") && amount >= 3) {
-                            System.err.println("Decrement BISHOP");
                             pieceAmounts.put(pieceId, amount);
                             pieceAmounts.put(playerPrefix + "PawnImg",
                                     pieceAmounts.get(playerPrefix + "PawnImg") + 1);
                         }
                         if (key.contains("Queen") && amount >= 1) {
-                            System.err.println("Decrement QUEEN");
-                            System.err.println("second Queen Detected");
                             pieceAmounts.put(pieceId, amount);
                             pieceAmounts.put(playerPrefix + "PawnImg",
                                     pieceAmounts.get(playerPrefix + "PawnImg") + 1);
@@ -102,11 +96,8 @@ public class BoardDesignerEngine {
                 int totalAvailable = pieceAmounts.get(key)
                         + pieceAmounts.get(playerPrefix + "PawnImg");
                 result.put(key, String.valueOf(totalAvailable));
-                System.out.println(key + " Piece Count " + pieceAmounts.get(key));
-                System.out.println(key + " Total Available " +  totalAvailable);
             } else if (key.contains("Pawn") || key.contains("King")) {
                 result.put(key, String.valueOf(pieceAmounts.get(key)));
-                System.out.println(key + " Total Available " + pieceAmounts.get(key));
             }
         }
         return result;
@@ -172,7 +163,6 @@ public class BoardDesignerEngine {
                 Map.entry("p2QueenImg",  state.getP2Queen()),
                 Map.entry("p2KingImg",   state.getP2King())
         ));
-        pieceAmounts.entrySet().forEach(System.out::println);
     }
 
     public void activePlayer(int x){

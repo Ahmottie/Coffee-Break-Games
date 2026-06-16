@@ -23,12 +23,14 @@ public class PieceSettings {
     }
 
     private PieceSettings(){
-        initDefaultPieces();
+        initDefault();
     }
 
-    private void initDefaultPieces() {
+    private void initDefault() {
         p1Pieces = loadPieces("White");
         p2Pieces = loadPieces("Black");
+        p1Color = Color.WHITE;
+        p2Color = Color.BLACK;
     }
 
     private List<ImageView> loadPieces(String color) {

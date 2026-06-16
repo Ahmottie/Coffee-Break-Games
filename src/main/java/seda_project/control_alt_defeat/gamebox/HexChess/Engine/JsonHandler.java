@@ -72,7 +72,6 @@ public class JsonHandler {
             } else {
                 file = new File("src/main/resources/HexChess/BoardDesign.json");
             }
-            System.out.println("File " +file );
             jsonMapper.writerWithDefaultPrettyPrinter().writeValue(file, arrayNode);
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);

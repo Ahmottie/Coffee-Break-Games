@@ -53,7 +53,6 @@ public class Board {
 
     public HexCell getCellById(String id){
         HexCoord cell = HexCoord.transformIdToHex(id);
-        System.out.println(id);
         return getCellByCoord(cell.col, cell.row);
     }
 

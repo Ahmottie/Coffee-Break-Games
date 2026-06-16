@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine;
-import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PlayerColor;
 import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
 import seda_project.control_alt_defeat.gamebox.network.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -89,8 +88,9 @@ public class WaitForOpponent extends Controller {
         layer.send(new ChessMessage.Hello(playerName));
     }
 
-    public void passHostData(String hostName){
+    public void passHostData(String hostName, String boardState){
         myname = hostName;
+        this.boardState = boardState;
         yourNameLabel.setText(hostName);
         hostIpAddressLabel.setText(Lan.localIp());
         startButton.setText("Ready");
@@ -208,7 +208,12 @@ public class WaitForOpponent extends Controller {
             }
             controller.attachHostBridge(s.network, engine);
         } else {
-            controller.init();
+            if(s.boardState == null) {
+                controller.init();
+            }
+            else {
+                controller.init(s.boardState);
+            }
             controller.attachClientBridge(s.network, engine);
         }
         controller.setNames(p1,p2);

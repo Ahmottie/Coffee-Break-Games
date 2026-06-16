@@ -38,48 +38,38 @@ public class GameEngine {
 
     public boolean handleMove(String fromId, String toId) {
         if (isGameOver) {
-            System.out.println("The game is already over.");
             return false;
         }
 
         HexCell fromCell = board.getCellById(fromId);
-        // 1. Check if there's actually a piece to move
+        // Check if there's actually a piece to move
         if (!fromCell.hasPiece()) {
-            System.out.println("There is no piece at " + fromId);
             return false;
         }
 
         Piece pieceToMove = fromCell.getPiece();
-        if( pieceToMove.getType() == PieceType.KING){
-            System.out.println("King was moved");
-        }
 
-        // 2. Validate turn: Ensure player is only moving their own color
+        // Only allow the current Player to move
         if (pieceToMove.getPlayer() != currentTurn) {
-            System.out.println("It's " + currentTurn + "'s turn, not " + pieceToMove.getPlayer() + "'s!");
             return false;
         }
 
-        // 3. Convert IDs to HexCoords for board logic
         HexCoord fromCoord = HexCoord.transformIdToHex(fromId);
         HexCoord toCoord = HexCoord.transformIdToHex(toId);
 
-        // 4. Validate legality (Placeholder for your move validation logic)
         if (!isValidMove(fromCoord, toCoord, pieceToMove)) {
-            System.out.println("Invalid move for a " + pieceToMove.getType());
             return false;
         }
         boolean e = false;
         if (pieceToMove.getType() == PAWN){
             int diff = getDiff(fromId,toId);
-            System.out.println( fromId + " +++ " + toId );
             if (diff == 2){
                 e = true;
                 enpassentCoordGhost = getEnpassentCoord(fromId,toId);
                 enpassentMovedTo = toCoord;
             }
         }
-        // 5. Execute the move using your Board class methods
+        // Actual Movement
         Piece capturedPiece = board.movePiece(fromCoord, toCoord);
         pieceToMove.setMoved(true);
 
@@ -98,7 +88,6 @@ public class GameEngine {
                     ? board.WHITE_PROMOTION.stream().anyMatch(c -> c.col == toCoord.col && c.row == toCoord.row)
                     : board.BLACK_PROMOTION.stream().anyMatch(c -> c.col == toCoord.col && c.row == toCoord.row);
             if (isPromotion) {
-                System.out.println("PROMOTE");
                 pendingPromotionCoord = toCoord;
                 listeners.forEach(l -> l.promotion(currentTurn));
             }
@@ -106,7 +95,6 @@ public class GameEngine {
 
         if (capturedPiece != null) {
             if (capturedPiece.getType() == PieceType.KING) {
-                System.out.println("Checkmate! " + currentTurn + " wins!");
                 isGameOver = true;
                 listeners.forEach( l -> l.gameEnd(capturedPiece.getPlayer()));
                 return true;
@@ -128,16 +116,17 @@ public class GameEngine {
             return true;
         }
 
+        if (pendingPromotionCoord != null) {
+            return true;
+        }
 
         PlayerColor nextTurn = (currentTurn == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
 
         if (!playerLegalMoves(nextTurn)) {
             isGameOver = true;
             if (isKingInCheck(nextTurn)) {
-                System.out.println("Checkmate! " + currentTurn + " wins!");
                 listeners.forEach(l -> l.gameEnd(nextTurn));
             } else {
-                System.out.println("Stalemate!");
                 listeners.forEach(l -> l.stalemate(nextTurn));
             }
             return true;
@@ -194,6 +183,26 @@ public class GameEngine {
         pendingPromotionCoord = null;
 
         listeners.forEach(l -> l.onPromoted(coordId, promoted));
+
+        if (checkRemis()) {
+            isGameOver = true;
+            listeners.forEach(l ->l.remis());
+        }
+
+
+        PlayerColor nextTurn = (currentTurn == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
+
+        if (!playerLegalMoves(nextTurn)) {
+            isGameOver = true;
+            if (isKingInCheck(nextTurn)) {
+                listeners.forEach(l -> l.gameEnd(nextTurn));
+            } else {
+                listeners.forEach(l -> l.stalemate(nextTurn));
+            }
+        }
+
+        checkEndangered();
+        switchTurn(false);
     }
 
     private boolean checkRemis() {
@@ -204,17 +213,13 @@ public class GameEngine {
             return true;
         }
         String notation = board.createNotation(currentTurn);
-        System.err.println("ENPASSENT BEFORE NOTATION " + enpassent);
         if (enpassentPending) {
             notation = notation + " " + enpassentCoordGhost.transformHextoId();
-            System.out.println(notation);
         }
         else {
             notation = notation + " -";
         }
-        System.out.println(notation);
         if (fenMap.get(notation)!= null){
-            System.err.println("Ist enthalten");
             int amount = fenMap.get(notation);
             if (amount == 2){
                 return true;
@@ -361,9 +366,6 @@ public class GameEngine {
     public List<HexCell> getLegalMoves(Piece piece){
         HexCoord currentPos = piece.getPosition();
         List<HexCell> candidates  = getRawMoves(piece);
-        if (piece.getType()== PieceType.KING){
-            candidates.forEach(System.out::println);
-        }
         candidates.removeIf(cell -> wouldLeaveKingInCheck(piece, currentPos, cell.getCoords()));
         return candidates;
     }
@@ -487,11 +489,7 @@ public class GameEngine {
         else {
             enpassentId = (fromId.charAt(0)) + String.valueOf(from+1);
         }
-
-        System.out.println("from " + from +"  to " + to);
-        System.out.println("ENPASSENT ID"+enpassentId);
         HexCoord coord = HexCoord.transformIdToHex(enpassentId);
-        System.out.println("COLUMN " + coord.col +  "    ROW "+ coord.row);
         return coord;
     }
 
@@ -538,13 +536,11 @@ public class GameEngine {
     }
 
     public void setupInitalState(String boardState){
-        System.out.println(boardState);
         currentTurn = boardState.split(" ")[1].equals("1") ? PlayerColor.WHITE : PlayerColor.BLACK;
         String[] rows = boardState.split(" ")[0].split("/");
 
         Pattern p = Pattern.compile("[PRNBQKprnbqk]|\\d+");
         for (int i = 0; i < rows.length; i++) {
-            System.out.println("ROW ROW ROW "+ rows[i]);
             String row = rows[i];
             Matcher m = p.matcher(row);
             int pos = 0;
@@ -559,7 +555,6 @@ public class GameEngine {
                     String rowName = String.valueOf((char) ('a' + pos+ROW_OFFSETS[i]));
                     String colName = String.valueOf(i+1);
                     String cell = rowName + colName;
-                    System.out.println("CELL CELL CELL " + cell);
                     Piece piece = switch(token){
                         case "P" -> new Piece(PieceType.PAWN, PlayerColor.WHITE);
                         case "p" -> new Piece(PieceType.PAWN, PlayerColor.BLACK);
@@ -602,7 +597,6 @@ public class GameEngine {
                 .flatMap(p -> getRawMoves(p).stream())
                 .anyMatch(cell -> cell.getCoords().col == king.getPosition().col
                         && cell.getCoords().row == king.getPosition().row);
-        System.out.println("ENDANGERED " + endangered);
         listeners.forEach(l -> l.endangered(king, endangered));
     }
 
