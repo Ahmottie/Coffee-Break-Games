@@ -26,8 +26,6 @@ public class LocalGameConfiguration extends Controller {
 
     @FXML
     public void onStartAction() {
-        //TODO Initialize Engine and change to GameScreen
-
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {

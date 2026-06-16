@@ -8,5 +8,6 @@ public record Advertisement(
         String ipAddress,
         int    tcpPort,
         long   lastSeenMs,
-        GameMode gameMode
+        GameMode gameMode,
+        String boardState
 ) implements Serializable {}

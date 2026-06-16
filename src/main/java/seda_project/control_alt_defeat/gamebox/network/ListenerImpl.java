@@ -45,7 +45,7 @@ final class ListenerImpl implements Listener {
                 if (obj instanceof AdPayload p) {
                     String ip = src.getHostAddress();
                     hosts.put(ip, new Advertisement(p.name(), p.level(), ip, p.tcpPort(),
-                            System.currentTimeMillis(), p.gameMode()));
+                            System.currentTimeMillis(), p.gameMode(),p.boardState()));
                 }
             } catch (Exception ignored) {
             }

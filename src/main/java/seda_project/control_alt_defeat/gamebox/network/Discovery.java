@@ -28,8 +28,8 @@ public final class Discovery {
         return new TetrisAnnouncer(name, tcpPort, level);
     }
 
-    public static ChessAnnouncer announceChess(String name, int tcpPort) {
-        return new ChessAnnouncer(name, tcpPort);
+    public static ChessAnnouncer announceChess(String name, int tcpPort, String boardState) {
+        return new ChessAnnouncer(name, tcpPort, boardState);
     }
 
     public static Listener listen() throws IOException {

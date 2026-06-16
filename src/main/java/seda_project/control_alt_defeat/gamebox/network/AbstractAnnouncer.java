@@ -14,18 +14,18 @@ public abstract class AbstractAnnouncer implements Announcer {
     private final Thread thread;
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
-    protected AbstractAnnouncer(String name, int tcpPort, int level, GameMode gameMode) {
-        this.thread = new Thread(() -> announceLoop(name, tcpPort, level, gameMode), "discovery-announcer");
+    protected AbstractAnnouncer(String name, int tcpPort, int level, GameMode gameMode, String boardState) {
+        this.thread = new Thread(() -> announceLoop(name, tcpPort, level, gameMode, boardState), "discovery-announcer");
         this.thread.setDaemon(true);
         this.thread.start();
     }
 
-    private void announceLoop(String name, int tcpPort, int level, GameMode gameMode) {
+    private void announceLoop(String name, int tcpPort, int level, GameMode gameMode, String boardState) {
         byte[] payload;
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                oos.writeObject(new AdPayload(name, tcpPort, level, gameMode));
+                oos.writeObject(new AdPayload(name, tcpPort, level, gameMode, boardState));
             }
             payload = baos.toByteArray();
         } catch (IOException e) {

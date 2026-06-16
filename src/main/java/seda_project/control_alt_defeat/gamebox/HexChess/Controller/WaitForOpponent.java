@@ -107,7 +107,7 @@ public class WaitForOpponent extends Controller {
         loadingDots.play();
 
         // Start UDP broadcast so joiners can discover us
-        announcer = Discovery.announceChess(hostName, Lan.DEFAULT_PORT);
+        announcer = Discovery.announceChess(hostName, Lan.DEFAULT_PORT, boardState);
 
         // Open the server socket on the background
         LanHost.hostAsync(Lan.DEFAULT_PORT,
