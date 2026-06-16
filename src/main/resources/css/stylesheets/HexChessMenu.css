@@ -85,3 +85,10 @@
     /* Optional: Add a subtle glow to make the trail pop against dark backgrounds */
     -fx-effect: dropshadow(gaussian, rgba(255, 111, 0, 0.4), 8, 0.3, 0, 0);
 }
+
+.movedFrom {
+    -fx-fill: #8f8f8f;
+}
+.movedTo {
+    -fx-fill: #8f8f8f;
+}

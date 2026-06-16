@@ -51,10 +51,10 @@
                            <children>
                               <Label fx:id="p1NameLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" />
                               <Label fx:id="p2NameLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Label" GridPane.rowIndex="1" />
-                              <Label fx:id="p1Score" text="Label" GridPane.columnIndex="1" />
-                              <Label fx:id="p2Score" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label fx:id="p1Awarded" text="Label" GridPane.columnIndex="2" />
-                              <Label fx:id="p2Awarded" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label fx:id="p1Score" text="0.0" GridPane.columnIndex="1" />
+                              <Label fx:id="p2Score" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="p1Awarded" text="0.0" GridPane.columnIndex="2" />
+                              <Label fx:id="p2Awarded" text="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <HBox alignment="CENTER">

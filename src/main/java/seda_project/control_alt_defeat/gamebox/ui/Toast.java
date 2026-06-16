@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public final class Toast
@@ -22,6 +23,9 @@ public final class Toast
         label.getStyleClass().add("normalText");
         label.getStyleClass().add("box");
         label.setStyle("-fx-padding: 20px;");
+        label.wrapTextProperty().set(true);
+        label.alignmentProperty().set(Pos.CENTER);
+        label.setTextAlignment(TextAlignment.CENTER);
 
         StackPane.setAlignment(label, Pos.CENTER);
         rootPane.getChildren().add(label);

@@ -9,9 +9,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.GameScreen">
-    <children>
-        <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
+<StackPane styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.GameScreen">
+   <children>
+        <VBox alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
             <children>
                 <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                     <children>
@@ -30,6 +30,11 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                 </VBox>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+               <children>
+                  <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#onExitAction" text="Exit" />
+               </children>
+            </StackPane>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
                <children>
                   <VBox fx:id="p1" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -45,12 +50,12 @@
                            <children>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Draw" />
+                                    <Button mnemonicParsing="false" onAction="#onP1DrawAction" text="Draw" />
                                  </children>
                               </StackPane>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Resign" />
+                                    <Button mnemonicParsing="false" onAction="#onP1ResignAction" text="Resign" />
                                  </children>
                               </StackPane>
                            </children>
@@ -61,7 +66,8 @@
                               <ImageView fx:id="p1PawnImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-pawn.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1Pawn" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -70,7 +76,8 @@
                               <ImageView fx:id="p1RookImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-rook.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1Rook" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -79,7 +86,8 @@
                               <ImageView fx:id="p1KnightImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-knight.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1Knight" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -88,7 +96,8 @@
                               <ImageView fx:id="p1BishopImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-bishop.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1Bishop" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -97,7 +106,8 @@
                               <ImageView fx:id="p1QueenImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-queen.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1Queen" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -106,7 +116,8 @@
                               <ImageView fx:id="p1KingImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/White/white-king.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                               <Label fx:id="p1King" styleClass="normalText" text="x0" />
                            </children>
                         </HBox>
@@ -116,7 +127,7 @@
                         <String fx:value="error" />
                      </styleClass>
                   </VBox>
-                      <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                      <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity">
                           <children>
                               <Pane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity">
                                   <children>
@@ -216,8 +227,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="b7" layoutX="65.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+
+                                            <Polygon fx:id="b7" layoutX="65.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -329,8 +340,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="c8" layoutX="106" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+
+                                            <Polygon fx:id="c8" layoutX="106" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -458,8 +469,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="d9" layoutX="146.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+
+                                            <Polygon fx:id="d9" layoutX="146.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -603,8 +614,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="e10" layoutX="187" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+
+                                            <Polygon fx:id="e10" layoutX="187" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -764,8 +775,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="f11" layoutX="227.5" layoutY="25.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+
+                                            <Polygon fx:id="f11" layoutX="227.5" layoutY="25.0" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -941,8 +952,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="g10" layoutX="268" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+
+                                            <Polygon fx:id="g10" layoutX="268" layoutY="48.4" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1102,8 +1113,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="h9" layoutX="308.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+
+                                            <Polygon fx:id="h9" layoutX="308.5" layoutY="71.8" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1247,8 +1258,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="i8" layoutX="349" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
+
+                                            <Polygon fx:id="i8" layoutX="349" layoutY="95.2" onMouseClicked="#handleTileClick" styleClass="lightPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1376,8 +1387,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="j7" layoutX="389.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
+
+                                            <Polygon fx:id="j7" layoutX="389.5" layoutY="118.6" onMouseClicked="#handleTileClick" styleClass="normalPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1489,8 +1500,8 @@
                                     <Double fx:value="-23.38" />
                                  </points>
                               </Polygon>
-      
-                                      <Polygon fx:id="k6" layoutX="430" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
+
+                                            <Polygon fx:id="k6" layoutX="430" layoutY="142.0" onMouseClicked="#handleTileClick" styleClass="darkPoly">
                                  <points>
                                     <Double fx:value="-27.0" />
                                     <Double fx:value="0.0" />
@@ -1603,12 +1614,12 @@
                            <children>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Draw" />
+                                    <Button mnemonicParsing="false" onAction="#onP2DrawAction" text="Draw" />
                                  </children>
                               </StackPane>
                               <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Resign" />
+                                    <Button mnemonicParsing="false" onAction="#onP2ResignAction" text="Resign" />
                                  </children>
                               </StackPane>
                            </children>
@@ -1620,7 +1631,8 @@
                               <ImageView fx:id="p2PawnImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-pawn.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" layoutX="53.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -1629,7 +1641,8 @@
                               <ImageView fx:id="p2RookImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-rook.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" layoutX="53.0" layoutY="160.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -1638,7 +1651,8 @@
                               <ImageView fx:id="p2KnightImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-knight.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" layoutX="53.0" layoutY="211.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -1647,7 +1661,8 @@
                               <ImageView fx:id="p2BishopImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-bishop.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" layoutX="53.0" layoutY="261.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -1656,7 +1671,8 @@
                               <ImageView fx:id="p2QueenImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-queen.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" layoutX="53.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity">
@@ -1665,7 +1681,8 @@
                               <ImageView fx:id="p2KingImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Images/HexChess/Black/black-king.png" />
-                                 </image></ImageView>
+                                 </image>
+                              </ImageView>
                            </children>
                         </HBox>
                      </children>
@@ -1678,15 +1695,10 @@
             </HBox>
             </children>
         </VBox>
-      <StackPane layoutX="-8.0" layoutY="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-         <children>
-            <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#onExitAction" text="Exit" />
-         </children>
-      </StackPane>
-    </children>
+   </children>
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
         <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>

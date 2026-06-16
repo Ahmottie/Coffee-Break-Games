@@ -1,10 +1,10 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,22 +13,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jdk.incubator.vector.DoubleVector;
-import jdk.incubator.vector.VectorOperators;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
-import seda_project.control_alt_defeat.gamebox.Memory.engine.Player;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
+import seda_project.control_alt_defeat.gamebox.ui.Toast;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,12 +38,17 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private GameEngine gameEngine;
     private ImageView endangeredKingView = null;
     private PlayerColor activePlayer;
+    private boolean isNetworkPromotion = false;
     
     @FXML
     private Parent root;
 
     @FXML
     private VBox header, p1, p2;
+
+
+    @FXML
+    private StackPane stackPane;
 
     @FXML
     private Pane boardPane;
@@ -55,25 +59,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private ImageView p2PawnImg, p2RookImg, p2KnightImg, p2BishopImg, p2QueenImg, p2KingImg;
 
     @FXML
-    private Label p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King;
-    @FXML
-    private Label p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King;
-
-    @FXML
     private Label p1Score, p2Score, p1NameLabel, p2NameLabel;
-
-    @FXML
-    private Polygon a6, a5, a4, a3, a2, a1,
-            b7, b6, b5, b4, b3, b2, b1,
-            c8, c7, c6, c5, c4, c3, c2, c1,
-            d9, d8, d7, d6, d5, d4, d3, d2, d1,
-            e10, e9, e8, e7, e6, e5, e4, e3, e2, e1,
-            f11, f10, f9, f8, f7, f6, f5, f4, f3, f2, f1,
-            g10, g9, g8, g7, g6, g5, g4, g3, g2, g1,
-            h9, h8, h7, h6, h5, h4, h3, h2, h1,
-            i8, i7, i6, i5, i4, i3, i2, i1,
-            j7, j6, j5, j4, j3, j2, j1,
-            k6, k5, k4, k3, k2, k1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -172,19 +158,18 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
     @FXML
     public void handleTileClick(MouseEvent mouseEvent) {
+        Session s = Session.current();
         clearHighlights();
 
         Polygon polygon = (Polygon) mouseEvent.getSource();
         String currentTileId = polygon.getId();
 
         ImageView pieceOnTile = getPieceAtPolygon(currentTileId);
-
         if (pieceOnTile != null) {
             PlayerColor playerColor = (pieceOnTile.getId().contains("1")) ? PlayerColor.WHITE : PlayerColor.BLACK;
 
-            Session session = Session.current();
-            if (session.network != null) {
-                PlayerColor myColor = session.isHost ? PlayerColor.WHITE : PlayerColor.BLACK;
+            if (s.network != null) {
+                PlayerColor myColor = s.isHost ? PlayerColor.WHITE : PlayerColor.BLACK;
 
                 if (playerColor != myColor || activePlayer != myColor) {
                     return;
@@ -205,32 +190,49 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         pieceToCapture.getStyleClass().add("capture");
                     }
                     else {
-                        if (gameEngine.isEnpassent() && targetTileId.equals(gameEngine.getEnpassentCoordGhost().transformHextoId())){
+                        if (gameEngine.isEnpassent() && targetTileId.equals(gameEngine.getEnpassentCoordGhost().transformHextoId())&& p.getType() == PieceType.PAWN){
                             enpassentCoord(targetTileId, gameEngine.getEnpassentMovedTo().transformHextoId());
                         }
                         Circle moveDot = new Circle(10);
                         moveDot.setLayoutX(targetPolygon.getLayoutX());
                         moveDot.setLayoutY(targetPolygon.getLayoutY());
-                        if (playerColor == activePlayer) {
-                            moveDot.getStyleClass().add("selfDot");
-                        } else {
-                            moveDot.getStyleClass().add("enemyDot");
+                        if (s.network != null){
+                            if (s.isHost){
+                                if (playerColor == PlayerColor.WHITE) {
+                                    moveDot.getStyleClass().add("selfDot");
+                                }
+                                else {
+                                    moveDot.getStyleClass().add("enemyDot");
+                                }
+                            }
+                            else{
+                                if (playerColor == PlayerColor.BLACK){
+                                    moveDot.getStyleClass().add("selfDot");
+                                }
+                                else {
+                                    moveDot.getStyleClass().add("enemyDot");
+                                }
+                            }
+                        }
+                        else {
+                            if (playerColor == activePlayer) {
+                                moveDot.getStyleClass().add("selfDot");
+                            } else {
+                                moveDot.getStyleClass().add("enemyDot");
+                            }
                         }
                         moveDot.setMouseTransparent(true);
                         boardPane.getChildren().add(moveDot);
                     }
                     targetPolygon.setOnMouseClicked(event -> {
-                        Session s = Session.current();
-
+                        clearMove();
                         if (s.network != null) {
                             if (s.isHost) {
-                                // Host executes the move locally, then updates the client via StateUpdate
                                 boolean ok = gameEngine.handleMove(currentTileId, targetTileId);
                                 if (ok) {
                                     s.network.send(new ChessMessage.StateUpdate(currentTileId, targetTileId, null));
                                 }
                             } else {
-                                // Client cannot execute directly; send an Input request to the host
                                 s.network.send(new ChessMessage.Input(currentTileId, targetTileId));
                             }
                         }
@@ -250,11 +252,23 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         }
     }
 
+    private void clearMove() {
+        for (Node node : boardPane.getChildren()) {
+            if (node instanceof Polygon poly) {
+                poly.getStyleClass().remove("movedFrom");
+                poly.getStyleClass().remove("movedTo");
+            }
+        }
+    }
+
     private void clearHighlights() {
         for (Node node : boardPane.getChildren()) {
             if ( node instanceof ImageView iv ){
                 iv.getStyleClass().remove("capture");
                 iv.getStyleClass().remove("selectedTile");
+            }
+            if (node instanceof Polygon poly) {
+                poly.setOnMouseClicked(this::handleTileClick);
             }
         }
 
@@ -277,12 +291,16 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 }
             }
         }
+        old.getStyleClass().add("movedFrom");
+        poly.getStyleClass().add("movedTo");
+
         old.setUserData(null);
         piece.setUserData(toId);
         piece.setLayoutX(poly.getLayoutX() - 20);
         piece.setLayoutY(poly.getLayoutY() - 20);
-
+        clearHighlights();
     }
+
 
     @Override
     public void capture(String fromId, String toId, Piece capturedPiece) {
@@ -312,32 +330,80 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         adaptLabels(enpassentPiece);
     }
 
-    @Override
-    public void gameEnd(PlayerColor player) {
-        int winner = (player == PlayerColor.WHITE) ? 2:1;
-        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
-        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
-        controller.winner(winner);
-    }
 
     @Override
-    public void remis(){
-        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
-        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
-        controller.remis();
+    public void gameEnd(PlayerColor player) {
+        int winner = (player == PlayerColor.WHITE) ? 2 : 1;
+        handleNetworkGameEnd("WIN", winner);
+    }
+    private void resign(PlayerColor playerColor) {
+        int winner = (playerColor == PlayerColor.WHITE) ? 1 : 2;
+        handleNetworkGameEnd("RESIGN",winner);
+    }
+
+
+    @Override
+    public void remis() {
+        handleNetworkGameEnd("REMIS", 0);
+    }
+
+    public void drawProposal() {
+        handleNetworkGameEnd("PROPOSAL", 0);
     }
 
     @Override
     public void stalemate(PlayerColor currentTurn) {
-        int winner = (currentTurn == PlayerColor.WHITE) ? 1:2;
-        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml",header,vS);
-        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
-        controller.stalemate(winner);
+        int winner = (currentTurn == PlayerColor.WHITE) ? 2 : 1;
+        handleNetworkGameEnd("STALEMATE", winner);
+    }
 
+    private void handleNetworkGameEnd(String reason, int winner) {
+        Session s = Session.current();
+
+        if (s.network != null) {
+            if (s.isHost) {
+                s.network.send(new ChessMessage.GameEnded(reason, winner));
+                showResultScreen(reason, winner);
+            }
+            else{
+                s.network.send(new ChessMessage.GameEnded(reason, winner));
+            }
+        } else {
+            showResultScreen(reason, winner);
+        }
+    }
+
+    public void showResultScreen(String reason, int winner) {
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml", header, vS);
+        controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
+        controller.initNetwork();
+
+        switch (reason) {
+            case "WIN" -> controller.winner(winner);
+            case "STALEMATE" -> controller.stalemate(winner);
+            case "REMIS" -> controller.remis();
+            case "PROPOSAL" -> controller.draw();
+            case "RESIGN" -> controller.resign(winner);
+        }
     }
 
     @Override
     public void promotion(PlayerColor currentTurn) {
+        Session s = Session.current();
+        if  (s.network != null) {
+            if (s.isHost && currentTurn == PlayerColor.WHITE) {
+                prom(currentTurn);
+            }
+            else if(!s.isHost && currentTurn == PlayerColor.BLACK){
+                prom(currentTurn);
+            }
+        }
+        else {
+            prom(currentTurn);
+        }
+    }
+
+    public void prom(PlayerColor currentTurn){
         try {
             Stage promotionStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/PromotionStage.fxml"));
@@ -349,9 +415,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
             Promotion controller = loader.getController();
             List<ImageView> views = (currentTurn == PlayerColor.WHITE) ? settings.getP1Pieces() : settings.getP2Pieces();
-            controller.sendPieces(views,gameEngine);
-        }
-        catch (IOException e) {
+            controller.sendPieces(views, gameEngine);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -368,6 +433,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         }
 
         pawnView.setId(newPieceId);
+        Session s = Session.current();
+        if (s.network != null && !isNetworkPromotion) {
+            s.network.send(new ChessMessage.PromotionChoice(coordId, piece.getType()));
+        }
     }
 
     @Override
@@ -432,7 +501,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onExitAction(){
-        c.backScene(header, vS);
+        Session s = Session.current();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 
     private ImageView getPieceAtPolygon(String tileId) {
@@ -441,7 +512,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 return (ImageView) node;
             }
         }
-        return null; // No piece found on this tile
+        return null;
     }
 
     private String piecetoString(Piece piece){
@@ -475,6 +546,28 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         }
                     });
                 }
+                else if (msg instanceof ChessMessage.PromotionChoice choice) {
+                    Platform.runLater(() -> {
+                        isNetworkPromotion = true;
+                        engine.promote(choice.pieceType());
+                        isNetworkPromotion = false;
+                    });
+                }
+                // --- NEW: Handle Client End Game / Resignation ---
+                else if (msg instanceof ChessMessage.GameEnded endMsg) {
+                    Platform.runLater(() -> {
+                        network.send(endMsg); // Broadcast to client to finalize their UI
+                        showResultScreen(endMsg.reason(), endMsg.winner());
+                    });
+                }
+                // --- NEW: Handle Client offering a Draw ---
+                else if (msg instanceof ChessMessage.DrawOffer offer) {
+                    Platform.runLater(() -> drawProposal(offer.getProposing()));
+                }
+                // --- NEW: Handle Client declining a Draw ---
+                else if (msg instanceof ChessMessage.DrawDeclined declinedMsg) {
+                    Platform.runLater(() -> showDeclinedToast(declinedMsg.getProposing()));
+                }
             }
         });
     }
@@ -487,8 +580,98 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                     Platform.runLater(() -> {
                         engine.handleMove(update.fromId(), update.toId());
                     });
+                } else if (msg instanceof ChessMessage.GameEnded endMsg) {
+                    Platform.runLater(() -> {
+                        showResultScreen(endMsg.reason(), endMsg.winner());
+                    });
+                } else if (msg instanceof ChessMessage.PromotionChoice choice) {
+                    Platform.runLater(() -> {
+                        isNetworkPromotion = true;
+                        engine.promote(choice.pieceType());
+                        isNetworkPromotion = false;
+                    });
+                }
+                // --- NEW: Handle Host offering a Draw ---
+                else if (msg instanceof ChessMessage.DrawOffer offer) {
+                    Platform.runLater(() -> drawProposal(offer.getProposing()));
+                }
+                // --- NEW: Handle Host declining a Draw ---
+                else if (msg instanceof ChessMessage.DrawDeclined declinedMsg) {
+                    Platform.runLater(() -> showDeclinedToast(declinedMsg.getProposing()));
                 }
             }
         });
+    }
+
+    public void drawProposal(int proposing){
+        try {
+            Stage proposalStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/DrawProposal.fxml"));
+            Parent root = loader.load();
+            proposalStage.setScene(new Scene(root));
+            proposalStage.setTitle("Promotion Stage");
+            proposalStage.initModality(Modality.APPLICATION_MODAL);
+            proposalStage.show();
+
+            DrawProposal controller = loader.getController();
+            controller.sendGameScreen(this);
+            controller.sendPlayer(proposing);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    protected void onP1DrawAction() {
+        Session s = Session.current();
+        if (s.network != null) {
+            if (!s.isHost) return;
+            s.network.send(new ChessMessage.DrawOffer(1));
+        } else {
+            drawProposal(1);
+        }
+    }
+
+    @FXML
+    protected void onP1ResignAction() {
+        Session s = Session.current();
+        if (s.network != null && !s.isHost) return;
+        resign(PlayerColor.BLACK);
+    }
+
+    @FXML
+    protected void onP2DrawAction() {
+        Session s = Session.current();
+        if (s.network != null) {
+            if (s.isHost) return;
+            s.network.send(new ChessMessage.DrawOffer(2));
+        } else {
+            drawProposal(2);
+        }
+    }
+
+    @FXML
+    protected void onP2ResignAction() {
+        Session s = Session.current();
+        if (s.network != null && s.isHost) return;
+        resign(PlayerColor.WHITE);
+    }
+
+
+    public void declined(int proposing) {
+        Session s = Session.current();
+        if (s.network != null) {
+            s.network.send(new ChessMessage.DrawDeclined(proposing));
+        }
+        showDeclinedToast(proposing);
+    }
+
+    private void showDeclinedToast(int proposing) {
+        if (proposing == 1){
+            Toast.makeText(stackPane, p2NameLabel.getText() + " has declined the Draw Proposal");
+        }
+        else{
+            Toast.makeText(stackPane, p1NameLabel.getText() + " has declined the Draw Proposal");
+        }
     }
 }

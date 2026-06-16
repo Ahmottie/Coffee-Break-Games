@@ -181,6 +181,11 @@ public class WaitForOpponent extends Controller {
 
     private void startGameNow() {
         Session s = Session.current();
+
+        if (s.network != null) {
+            s.network.clearListeners();
+        }
+
         // Player 1 = host , Player 2 = client
         String p1 = s.isHost ? s.myName  : s.peerName;
         String p2 = s.isHost ? s.peerName : s.myName;
@@ -207,6 +212,7 @@ public class WaitForOpponent extends Controller {
             controller.attachClientBridge(s.network, engine);
         }
         controller.setNames(p1,p2);
+        controller.setPoints(0.0, 0.0);
     }
 
 

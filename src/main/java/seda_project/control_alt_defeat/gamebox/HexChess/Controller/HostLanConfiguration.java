@@ -22,7 +22,6 @@ public class HostLanConfiguration  extends Controller {
 
     @FXML
     protected void onSearchAction() {
-        //TODO Change Scene and Lan Stuff
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         if (c.checkNameLength(yourName,1,statusLabel)) {
             Session s = Session.current();
