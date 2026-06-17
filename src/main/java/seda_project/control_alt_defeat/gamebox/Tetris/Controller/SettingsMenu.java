@@ -18,13 +18,11 @@ public class SettingsMenu extends Controller implements Initializable {
     TetrisSettings tS = TetrisSettings.getInstance();
 
     @FXML
-    VBox header;
-
-    @FXML
     Label player1Left,player1Right,player1Down,player1Up,player2Left,player2Right,player2Down,player2Up;
 
     @FXML
     protected void changePlayer1(ActionEvent event) {
+        sC.play("button");
         Button clicked = (Button) event.getSource();
         int position = Integer.parseInt((String)clicked.getUserData());
         KeyCode input= tS.change(0,position);
@@ -35,6 +33,7 @@ public class SettingsMenu extends Controller implements Initializable {
 
     @FXML
     protected void changePlayer2(ActionEvent event) {
+        sC.play("button");
         Button clicked = (Button) event.getSource();
         int position = Integer.parseInt((String)clicked.getUserData());
         KeyCode input= tS.change(1,position);
@@ -45,6 +44,7 @@ public class SettingsMenu extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         c.backScene(header, vS);
     }
 

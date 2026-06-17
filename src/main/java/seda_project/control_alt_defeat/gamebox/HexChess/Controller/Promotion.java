@@ -7,12 +7,13 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PieceType;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
 
 import java.util.List;
 import java.util.Map;
 
-public class Promotion {
+public class Promotion extends Controller {
 
     private GameEngine gameEngine;
     private ImageView selected;
@@ -56,6 +57,7 @@ public class Promotion {
 
     @FXML
     protected void onPromoteAction(){
+        sC.play("button");
         if (selected == null){
             Toast.makeText(stackpane,"You need to select a Pice!");
             return;

@@ -1,4 +1,5 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
+import jdk.dynalink.beans.StaticClass;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
 import seda_project.control_alt_defeat.gamebox.network.Message;
@@ -25,6 +26,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.MCard;
+import seda_project.control_alt_defeat.gamebox.ui.Toast;
 
 
 import java.util.ArrayList;
@@ -39,23 +41,23 @@ public class GameScreen extends Controller {
     ArrayList<MCard> flippedCards = new ArrayList<>();
     boolean canClick = true;
     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-    ScaleTransition blink;
     private final java.util.Set<Integer> remoteFlipIds = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private boolean disconnected = false;
-
     private String myName;
     private final Map<Integer, MCard> cardsById = new HashMap<>();
     private final Map<MCard, Integer> cardIdOf = new HashMap<>();
     private GameConfig config;
     private GameSetup setup;
 
-    @FXML private VBox header;
-    @FXML private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel, turnStatusLabel;
-    @FXML private StackPane gamePane;
-    @FXML private Text notificationText;
+    @FXML
+    private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel, turnStatusLabel;
+
+    @FXML
+    private StackPane gamePane;
 
     @FXML
     private void onExitGameAction() {
+        sC.play("button");
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -163,14 +165,14 @@ public class GameScreen extends Controller {
     }
 
     public void setStatusLabel(boolean match) {
-        notificationText.setVisible(true);
-        notificationText.setViewOrder(-1.0);
-        notificationText.setText(match ? "Match" : "Mismatch");
-        blink.play();
-        blink.setOnFinished(e -> {
-            notificationText.setVisible(false);
-            notificationText.setViewOrder(5.0);
-        });
+        if (match){
+            sC.play("memory_match");
+            Toast.makeText(gamePane,"Match");
+        }
+        else {
+            sC.play("memory_missmatch");
+            Toast.makeText(gamePane,"Missmatch");
+        }
     }
 
     public void setActivePlayerLabel(String name) {
@@ -178,14 +180,6 @@ public class GameScreen extends Controller {
     }
 
     public void startGame(String player1Name, String player2Name) {
-        blink = new ScaleTransition(Duration.seconds(0.5), notificationText);
-        blink.setFromX(1.0);
-        blink.setToX(0.75);
-        blink.setFromY(1.0);
-        blink.setToY(0.75);
-        blink.setAutoReverse(true);
-        blink.setCycleCount(4);
-
         // Build the engine and start it with our prepared setup.
         engine = new GameEngineImpl();
         engine.start(config, setup);
@@ -286,6 +280,12 @@ public class GameScreen extends Controller {
         controller.passMatchData(sboardP1.getText(), sboardP2.getText(),
                     sboardScoreP1.getText(), sboardScoreP2.getText(),
                     matchSize, deckSize, winner);
+        if(flipped){
+            controller.flip();
+        }
+        if(rainbowed){
+            controller.rainbow();
+        }
     }
 
     private void flipmotion(MCard card, int cardId) {

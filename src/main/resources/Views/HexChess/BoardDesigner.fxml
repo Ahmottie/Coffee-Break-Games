@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardDesigner">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardDesigner">
     <children>
         <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0">
             <children>
@@ -27,7 +27,7 @@
                         </Label>
                     </children>
                     <padding>
-                        <Insets left="5.0" right="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </VBox>
             <HBox fx:id="buttonBox" alignment="CENTER" spacing="10.0">
@@ -1678,4 +1678,4 @@
         <URL value="@../../css/stylesheets/MenuStyle.css" />
         <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>

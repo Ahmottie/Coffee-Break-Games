@@ -15,10 +15,6 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class ResultScreen extends Controller {
-
-    @FXML
-    private VBox header;
-
     @FXML
     private Label p1NameLabel, p2NameLabel, p1Score, p2Score, p1Awarded, p2Awarded, resultLabel;
 
@@ -100,26 +96,27 @@ public class ResultScreen extends Controller {
         }
     }
 
-    public void onExitAction(ActionEvent actionEvent) {
+    public void onExitAction() {
+        sC.play("button");
+        sC.stopLooping();
+        sC.playLooping("lobby_background",.2);
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
 
-    public void onPlayAgainAction(ActionEvent actionEvent) {
+    public void onPlayAgainAction() {
+        sC.play("button");
         Session s = Session.current();
 
         if (s.network != null) {
             s.localReady = true;
             s.network.send(new ChessMessage.Ready(true));
 
-            // Give the user visual feedback that they are waiting
             resultLabel.setText("Waiting for opponent...");
 
-            // In case the peer was already ready
             checkStart();
         } else {
-            // Local offline play: skip the network wait and start immediately
             startGameNow();
         }
     }
@@ -137,7 +134,12 @@ public class ResultScreen extends Controller {
         GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
         controller.setGameEngine(engine);
         controller.init();
-
+        if (flipped){
+            controller.flip();
+        }
+        if (rainbowed){
+            controller.rainbow();
+        }
         if (s.network != null) {
             if (s.isHost) {
                 controller.attachHostBridge(s.network, engine);

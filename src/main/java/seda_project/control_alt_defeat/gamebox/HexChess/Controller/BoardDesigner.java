@@ -39,21 +39,12 @@ public class BoardDesigner extends Controller implements Initializable {
     private List<List<Polygon>> rows;
     private Map<String, Label> pieceLabels;
     private JsonHandler jsonHandler = new JsonHandler();
-
     private List<BoardDesignState> listofBoards;
     private BoardDesignState selectedBoard;
-
     private String p1Name, p2Name;
-
 
     @FXML
     private VBox header;
-
-    @FXML
-    private HBox buttonBox;
-
-    @FXML
-    private Parent root;
 
     @FXML
     private StackPane stackPane;
@@ -193,6 +184,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         Object controller = c.backScene(header,vS);
         if (controller instanceof LocalGameConfiguration lGC){
             lGC.boardSelection(null, p1Name, p2Name);
@@ -204,6 +196,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onExportAction(){
+        sC.play("button");
         boolean exist = false;
         for (BoardDesignState state :listofBoards){
             if(state.getFENState().contains(engine.createNotation(rows))){
@@ -227,6 +220,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onImportAction(){
+        sC.play("button");
         try {
             Stage selectionStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/BoardSelection.fxml"));
@@ -246,6 +240,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onP1FirstAcion(){
+        sC.play("button");
         p1GoFirst.getStyleClass().add("ready");
         p2GoFirst.getStyleClass().remove("ready");
         engine.activePlayer(1);
@@ -253,6 +248,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onP2FirstAction(){
+        sC.play("button");
         p2GoFirst.getStyleClass().add("ready");
         p1GoFirst.getStyleClass().remove("ready");
         engine.activePlayer(2);
@@ -260,6 +256,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onUseAction(){
+        sC.play("button");
         if (validateBoardState()) {
             Object controller = c.backScene(header,vS);
             if (controller instanceof LocalGameConfiguration lGC){

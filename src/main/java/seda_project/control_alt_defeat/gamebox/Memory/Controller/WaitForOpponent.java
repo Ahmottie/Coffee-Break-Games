@@ -22,8 +22,6 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class WaitForOpponent extends Controller {
-    private boolean host;
-    private boolean ready;
     private String hostName;
     private String joinName;
     private int tupleSize;
@@ -31,12 +29,16 @@ public class WaitForOpponent extends Controller {
     private Timeline timeline;
     private String ipAddress;
 
-    @FXML private VBox header;
-    @FXML private Button startGameButton;
-    @FXML private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
+
+    @FXML
+    private Button startGameButton;
+
+    @FXML
+    private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         Session.clear();
         Object controller = c.backScene(header,vS);
         if (controller instanceof HostLan c) {
@@ -49,6 +51,7 @@ public class WaitForOpponent extends Controller {
 
     @FXML
     protected void onStartGameAction() {
+        sC.play("button");
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
@@ -100,10 +103,15 @@ public class WaitForOpponent extends Controller {
                 Session.current().config.player1Name(),
                 Session.current().config.player2Name()
         );
+        if (c.checkFlip(Session.current().config.player1Name(), Session.current().config.player2Name())){
+            controller.flip();
+        }
+        if (c.checkRainbow(Session.current().config.player1Name(), Session.current().config.player2Name())){
+            controller.rainbow();
+        }
     }
 
     public void passHostData(boolean host, String hostName, int tupleSize, int deckSize) {
-        this.host = host;
         this.hostName = hostName;
         this.tupleSize = tupleSize;
         this.deckSize = deckSize;
@@ -142,8 +150,6 @@ public class WaitForOpponent extends Controller {
     }
 
     public void passJoinData(boolean host, String playerName, String ipAddress) {
-        this.host = host;
-        this.ready = false;
         this.joinName = playerName;
         this.ipAddress = ipAddress;
 

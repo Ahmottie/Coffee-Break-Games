@@ -16,10 +16,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class JoinLan extends Controller implements Initializable {
-
-    @FXML
-    private VBox header;
-
     @FXML
     private Label joinStatus;
 
@@ -28,6 +24,7 @@ public class JoinLan extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
     }
@@ -39,6 +36,7 @@ public class JoinLan extends Controller implements Initializable {
 
     @FXML
     protected void onConnectAction(){
+        sC.play("button");
         String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
         if (c.checkNameLength(yourName,2,joinStatus)) {
             if (checkIP()) {

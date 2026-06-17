@@ -375,6 +375,7 @@ public class TetrisEngine {
                 else {
                     board.lockBlock(activeBlock);
                     GameState snapLock = getSnapshot();
+                    listeners.forEach(l ->l.lockSound());
                     listeners.forEach(l -> l.onBlockLocked(playerNum, snapLock));
                 }
 
@@ -557,6 +558,7 @@ public class TetrisEngine {
                         grid[posYminus][posXplus] = null;
                 }
             }
+            listeners.forEach(TetrisEventListener::radialBomb);
         }
         if (type == BombType.CLEAR_BELOW){
             int i = posY;
@@ -564,6 +566,7 @@ public class TetrisEngine {
                 grid[i][posX] = null;
                 if (playerNum == 1) i++; else i--;
             }
+            listeners.forEach(TetrisEventListener::columnBomb);
         }
     }
 

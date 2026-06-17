@@ -28,9 +28,6 @@ public class AdvancedSettings extends Controller implements Initializable {
     private IntField itemSpawnRate, itemDespawnTime;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private ToggleGroup Layout;
 
     @FXML
@@ -38,6 +35,7 @@ public class AdvancedSettings extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         var controller = c.backScene(header,vS);
         if (controller instanceof HostLan hL){
             hL.handPlayerData(p1Name,p1Level);
@@ -47,6 +45,7 @@ public class AdvancedSettings extends Controller implements Initializable {
     }
     @FXML
     protected void onSaveAction(){
+        sC.play("button");
         advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue());
 
         advancedSettings.setSwapBoards(swapBoards.isSelected());

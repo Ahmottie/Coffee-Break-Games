@@ -1,21 +1,20 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
-
-import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class DrawProposal {
+public class DrawProposal extends Controller {
     private GameScreen screen;
     private int proposing;
-    @FXML
-    private AnchorPane root;
+
     public void onAcceptAction() {
+        sC.play("button");
         screen.drawProposal();
         ((Stage) root.getScene().getWindow()).close();
     }
 
     public void onDeclineAction() {
+        sC.play("button");
         screen.declined(proposing);
         ((Stage) root.getScene().getWindow()).close();
     }

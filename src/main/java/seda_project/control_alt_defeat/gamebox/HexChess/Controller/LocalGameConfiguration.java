@@ -14,18 +14,19 @@ public class LocalGameConfiguration extends Controller {
     private TextField player1TF, player2TF;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private Label statusLabel;
 
     @FXML
     public void onBackAction() {
+        sC.play("button");
         c.backScene(header, vS);
     }
 
     @FXML
     public void onStartAction() {
+        sC.play("button");
+        sC.stopLooping();
+        sC.playLooping("chess_background",.2);
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
@@ -37,6 +38,12 @@ public class LocalGameConfiguration extends Controller {
             }
             else{
                 controller.init(boardState);
+            }
+            if (c.checkFlip(player1Name,player2Name)){
+                controller.flip();
+            }
+            if (c.checkRainbow(player1Name,player2Name)){
+                controller.rainbow();
             }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);

@@ -30,9 +30,6 @@ public class WaitForOpponent extends Controller {
     private Announcer announcer;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private Label yourNameLabel, statusLabel, hostIpAddressLabel, opponentNameLabel;
 
     @FXML
@@ -40,6 +37,7 @@ public class WaitForOpponent extends Controller {
 
     @FXML
     public void onBackAction() {
+        sC.play("button");
         stopAnnouncer();
         if (loadingDots != null) loadingDots.stop();
         Session.clear(); 
@@ -48,6 +46,7 @@ public class WaitForOpponent extends Controller {
 
     @FXML
     public void onStartGameAction() {
+        sC.play("button");
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
@@ -187,6 +186,8 @@ public class WaitForOpponent extends Controller {
     }
 
     private void startGameNow() {
+        sC.stopLooping();
+        sC.playLooping("tetris_background",.5);
         Session s = Session.current();
         // Player 1 = host , Player 2 = client
         String p1 = s.isHost ? s.myName  : s.peerName;
@@ -207,7 +208,12 @@ public class WaitForOpponent extends Controller {
 
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
         controller.create(p1, p2, p1L,p2L, true, engine);
-
+        if (c.checkFlip(p1,p1)){
+            controller.flip();
+        }
+        if (c.checkRainbow(p1,p2)){
+            controller.rainbow();
+        }
         if (s.isHost) {
             controller.attachHostNetworkBridge(s.network);
         } else {

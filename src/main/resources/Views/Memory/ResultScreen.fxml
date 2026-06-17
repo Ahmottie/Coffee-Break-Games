@@ -6,83 +6,86 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.ResultScreen">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.ResultScreen">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="100.0" prefWidth="800.0">
             <children>
-                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" prefHeight="83.0" prefWidth="563.0" styleClass="box">
+                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="576.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="201.0" styleClass="normalText" text="Memory Game">
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Memory Game">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Result Screen" />
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Result Screen" />
                     </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                 </VBox>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="494.0" prefWidth="800.0">
+               <children>
+                      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                          <children>
+                              <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
+                                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Game Result" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                      <Label fx:id="positionLooserLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Looser" GridPane.rowIndex="2" />
+                                      <Label fx:id="looserLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                      <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Deck Size" GridPane.rowIndex="3" />
+                                      <Label fx:id="deckSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                      <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Match Size" GridPane.rowIndex="4" />
+                                      <Label fx:id="matchSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <padding>
+                                              <Insets left="5.0" right="5.0" />
+                                          </padding>
+                                      </Label>
+                                      <Label fx:id="positionWinnerLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Winner:" GridPane.rowIndex="1" />
+                                      <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                      <Label fx:id="winnerPointsLabel" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                      <Label fx:id="looserPointsLabel" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                  </children>
+                                  <padding>
+                                      <Insets left="15.0" right="15.0" />
+                                  </padding>
+                              </GridPane>
+                              <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="80.0">
+                                  <children>
+                                      <StackPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                          <Button fx:id="ExitButton" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit" />
+                                      </StackPane>
+                                      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                          <Button fx:id="playAgainButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onPlayAgainAction" text="Play Again" />
+                                      </StackPane>
+                                  </children>
+                              </HBox>
+                          </children>
+                      </VBox>
+               </children>
+            </StackPane>
             </children>
         </VBox>
-      <StackPane layoutX="1.0" layoutY="104.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="494.0" prefWidth="800.0">
-         <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-                    <children>
-                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="Game Result" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                <Label fx:id="positionLooserLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Looser" GridPane.rowIndex="2" />
-                                <Label fx:id="looserLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Deck Size" GridPane.rowIndex="3" />
-                                <Label fx:id="deckSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Match Size" GridPane.rowIndex="4" />
-                                <Label fx:id="matchSizeLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                    <padding>
-                                        <Insets left="5.0" right="5.0" />
-                                    </padding>
-                                </Label>
-                                <Label fx:id="positionWinnerLabel" maxHeight="-Infinity" maxWidth="-Infinity" text="Winner:" GridPane.rowIndex="1" />
-                                <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                <Label fx:id="winnerPointsLabel" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                <Label fx:id="looserPointsLabel" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                            </children>
-                            <padding>
-                                <Insets left="15.0" right="15.0" />
-                            </padding>
-                        </GridPane>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="80.0">
-                            <children>
-                                <StackPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                                    <Button fx:id="ExitButton" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit" />
-                                </StackPane>
-                                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                                    <Button fx:id="playAgainButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onPlayAgainAction" text="Play Again" />
-                                </StackPane>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-         </children>
-      </StackPane>
     </children>
     <stylesheets>
         <URL value="@../../css/stylesheets/MemoryMenu.css" />
         <URL value="@../../css/stylesheets/fontstyle.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>

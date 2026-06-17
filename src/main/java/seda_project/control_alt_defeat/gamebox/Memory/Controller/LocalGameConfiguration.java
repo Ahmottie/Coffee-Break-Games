@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LocalGameConfiguration extends Controller implements Initializable {
-    @FXML
-    private VBox header;
 
     @FXML
     private ComboBox<Integer> matchSize;
@@ -47,11 +45,13 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         c.backScene(header,vS);
     }
 
     @FXML
     private void onStartGameAction(){
+        sC.play("button");
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
         String player1Name = c.checkNameInput(player1TF.getText(),1);
@@ -63,6 +63,12 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             if (selected != null) {
                 int deckSize = Integer.parseInt(selected.getText());
                 GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
+                if (c.checkFlip(player1Name,player2Name)){
+                    controller.flip();
+                }
+                if (c.checkRainbow(player1Name, player2Name)){
+                    controller.rainbow();
+                }
 
                 controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
                 controller.startGame(player1Name,player2Name);

@@ -6,23 +6,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.GameScreen">
     <children>
-            <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0">
+            <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                 <children>
-                    <VBox fx:id="header" prefHeight="87.0" prefWidth="568.0" styleClass="box">
+                    <VBox fx:id="header" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                         <children>
-                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="552.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
                                 <font>
                                     <Font name="Arial Bold" size="24.0" />
                                 </font>
                             </Label>
-                            <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Memory Game">
+                            <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Memory Game">
                                 <font>
                                     <Font size="18.0" />
                                 </font>
                             </Label>
                         </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                     </VBox>
                     <AnchorPane prefHeight="100.0" prefWidth="800.0">
                         <children>
@@ -36,7 +39,7 @@
                                 </rowConstraints>
                                 <children>
                                     <Label prefHeight="50.0" prefWidth="122.0" text="Current Turn: " />
-                                    <Label fx:id="activePlayerLabel" GridPane.columnIndex="1" />
+                                    <Label fx:id="activePlayerLabel" styleClass="normalText" GridPane.columnIndex="1" />
                                 </children>
                                 <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -75,7 +78,7 @@
                         <Insets top="15.0" />
                     </VBox.margin>
                 </AnchorPane>
-                <StackPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="800.0" />
+                <StackPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="800.0" />
             </children>
         </VBox>
     </children>
@@ -84,4 +87,4 @@
         <URL value="@../../css/stylesheets/MemoryMenu.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>

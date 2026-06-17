@@ -57,12 +57,14 @@ public class BoardSelection extends Controller{
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         Stage stage = (Stage) scrollPane.getScene().getWindow();
         stage.close();
     }
 
     @FXML
     protected void onDeleteAction(){
+        sC.play("button");
         if (selectedboard == null) return;
         int position = boards.indexOf(selectedboard);
         availableStates.remove(position);
@@ -75,6 +77,7 @@ public class BoardSelection extends Controller{
 
     @FXML
     protected void onUseAction(){
+        sC.play("button");
         designer.loadBoard(selectedboard);
         onBackAction();
     }

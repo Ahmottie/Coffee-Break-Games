@@ -12,9 +12,6 @@ public class HostLanConfiguration  extends Controller {
     private String boardState;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private TextField hostNameTF;
 
     @FXML
@@ -22,6 +19,7 @@ public class HostLanConfiguration  extends Controller {
 
     @FXML
     protected void onSearchAction() {
+        sC.play("button");
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         if (c.checkNameLength(yourName,1,statusLabel)) {
             Session s = Session.current();
@@ -38,6 +36,7 @@ public class HostLanConfiguration  extends Controller {
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
     }

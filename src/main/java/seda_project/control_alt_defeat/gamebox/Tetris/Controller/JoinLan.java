@@ -36,7 +36,7 @@ public class JoinLan extends Controller implements Initializable {
     private Set<String>         shownHostIps = new HashSet<>();
 
     @FXML
-    VBox header, scrollElements;
+    VBox scrollElements;
 
     @FXML
     private TextField joinPlayerNameTF;
@@ -49,12 +49,14 @@ public class JoinLan extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         stopDiscovery();
         c.backScene(header,vS);
     }
 
     @FXML
     private void onConnectAction(){
+        sC.play("button");
         if (selectedHost == null){
             joinStatus.setVisible(true);
             joinStatus.setText("Select a Game to join!");

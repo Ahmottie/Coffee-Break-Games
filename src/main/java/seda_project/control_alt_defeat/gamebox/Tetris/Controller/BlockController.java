@@ -30,9 +30,6 @@ public class BlockController extends Controller implements Initializable {
     private final int RECTANGLE_SIZE = 75;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private GridPane gridPane;
 
     @FXML
@@ -221,11 +218,13 @@ public class BlockController extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         c.backScene(header,vS);
     }
 
     @FXML
     protected void onLoadAction(){
+        sC.play("button");
         if (selectedListIndex < 0) return;
 
         var customPieces = BlockRegistry.getInstance().getCustomPieces();
@@ -283,6 +282,7 @@ public class BlockController extends Controller implements Initializable {
 
     @FXML
     protected void onDeleteAction(){
+        sC.play("button");
         if (selectedListIndex < 0) return;
 
         BlockRegistry pR = BlockRegistry.getInstance();
@@ -293,7 +293,8 @@ public class BlockController extends Controller implements Initializable {
     }
 
     @FXML
-    protected void onColorAction(ActionEvent actionEvent){
+    protected void onColorAction(){
+        sC.play("button");
         Color c = colorPicker.getValue();
         this.selectedColor = c;
         refreshGrid();
@@ -301,6 +302,7 @@ public class BlockController extends Controller implements Initializable {
 
     @FXML
     protected void onResetAction(){
+        sC.play("button");
         editorController.reset();
         refreshGrid();
         refreshList();

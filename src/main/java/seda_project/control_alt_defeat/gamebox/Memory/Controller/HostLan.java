@@ -14,10 +14,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HostLan extends Controller implements Initializable {
-
-    @FXML
-    private VBox header;
-
     @FXML
     private RadioButton smallGame,mediumGame,largeGame;
 
@@ -43,6 +39,7 @@ public class HostLan extends Controller implements Initializable {
         }
         matchSize.getSelectionModel().select(2);
     }
+
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
@@ -50,14 +47,15 @@ public class HostLan extends Controller implements Initializable {
     }
 
     @FXML
-    private void onBackAction(){
+    protected void onBackAction(){
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
     }
 
     @FXML
-    private void onSearchAction(){
-
+    protected void onSearchAction(){
+        sC.play("button");
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
         String yourName = c.checkNameInput(hostNameTF.getText(),1);

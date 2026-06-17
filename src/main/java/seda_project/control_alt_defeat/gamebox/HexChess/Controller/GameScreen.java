@@ -1,7 +1,6 @@
 package seda_project.control_alt_defeat.gamebox.HexChess.Controller;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -40,9 +39,6 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private PlayerColor activePlayer;
     private boolean isNetworkPromotion = false;
     
-    @FXML
-    private Parent root;
-
     @FXML
     private VBox header, p1, p2;
 
@@ -225,10 +221,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         boardPane.getChildren().add(moveDot);
                     }
                     targetPolygon.setOnMouseClicked(event -> {
+                        boolean ok = gameEngine.handleMove(currentTileId, targetTileId);
                         clearMove();
                         if (s.network != null) {
                             if (s.isHost) {
-                                boolean ok = gameEngine.handleMove(currentTileId, targetTileId);
                                 if (ok) {
                                     s.network.send(new ChessMessage.StateUpdate(currentTileId, targetTileId, null));
                                 }
@@ -238,6 +234,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         }
                         else {
                             gameEngine.handleMove(currentTileId, targetTileId);
+                            playSound();
                         }
                         clearHighlights();
                         event.consume();
@@ -250,6 +247,13 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 }
             }
         }
+    }
+
+    private void playSound(){
+        Random rand  = new Random();
+        int sound = rand.nextInt(1,5);
+        String soundName = "chess_move_"+sound;
+        sC.play(soundName);
     }
 
     private void clearMove() {
@@ -377,7 +381,12 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         ResultScreen controller = (ResultScreen) c.changeScene("/Views/HexChess/ResultScreen.fxml", header, vS);
         controller.handData(p1NameLabel.getText(), p2NameLabel.getText(), p1Score.getText(), p2Score.getText());
         controller.initNetwork();
-
+        if (flipped){
+            controller.flip();
+        }
+        if (rainbowed){
+            controller.rainbow();
+        }
         switch (reason) {
             case "WIN" -> controller.winner(winner);
             case "STALEMATE" -> controller.stalemate(winner);
@@ -500,6 +509,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onExitAction(){
+        sC.play("button");
+        sC.stopLooping();
+        sC.playLooping("lobby_background",.2);
         Session s = Session.current();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -538,8 +550,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 if (msg instanceof ChessMessage.Input input) {
                     Platform.runLater(() -> {
                         boolean ok = engine.handleMove(input.fromId(), input.toId());
+                        playSound();
+                        playSound();
                         if (ok) {
-                            // broadcast confirmed move back to client
                             network.send(new ChessMessage.StateUpdate(
                                     input.fromId(), input.toId(), null));
                         }
@@ -552,18 +565,15 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         isNetworkPromotion = false;
                     });
                 }
-                // --- NEW: Handle Client End Game / Resignation ---
                 else if (msg instanceof ChessMessage.GameEnded endMsg) {
                     Platform.runLater(() -> {
-                        network.send(endMsg); // Broadcast to client to finalize their UI
+                        network.send(endMsg);
                         showResultScreen(endMsg.reason(), endMsg.winner());
                     });
                 }
-                // --- NEW: Handle Client offering a Draw ---
                 else if (msg instanceof ChessMessage.DrawOffer offer) {
                     Platform.runLater(() -> drawProposal(offer.getProposing()));
                 }
-                // --- NEW: Handle Client declining a Draw ---
                 else if (msg instanceof ChessMessage.DrawDeclined declinedMsg) {
                     Platform.runLater(() -> showDeclinedToast(declinedMsg.getProposing()));
                 }
@@ -578,6 +588,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                 if (msg instanceof ChessMessage.StateUpdate update) {
                     Platform.runLater(() -> {
                         engine.handleMove(update.fromId(), update.toId());
+                        playSound();
                     });
                 } else if (msg instanceof ChessMessage.GameEnded endMsg) {
                     Platform.runLater(() -> {
@@ -590,11 +601,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                         isNetworkPromotion = false;
                     });
                 }
-                // --- NEW: Handle Host offering a Draw ---
                 else if (msg instanceof ChessMessage.DrawOffer offer) {
                     Platform.runLater(() -> drawProposal(offer.getProposing()));
                 }
-                // --- NEW: Handle Host declining a Draw ---
                 else if (msg instanceof ChessMessage.DrawDeclined declinedMsg) {
                     Platform.runLater(() -> showDeclinedToast(declinedMsg.getProposing()));
                 }
@@ -602,7 +611,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         });
     }
 
-    public void drawProposal(int proposing){
+    private void drawProposal(int proposing){
+        sC.play("button");
         try {
             Stage proposalStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/DrawProposal.fxml"));
@@ -622,6 +632,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onP1DrawAction() {
+        sC.play("button");
         Session s = Session.current();
         if (s.network != null) {
             if (!s.isHost) return;
@@ -633,6 +644,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onP1ResignAction() {
+        sC.play("button");
         Session s = Session.current();
         if (s.network != null && !s.isHost) return;
         resign(PlayerColor.BLACK);
@@ -640,6 +652,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onP2DrawAction() {
+        sC.play("button");
         Session s = Session.current();
         if (s.network != null) {
             if (s.isHost) return;
@@ -651,6 +664,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @FXML
     protected void onP2ResignAction() {
+        sC.play("button");
         Session s = Session.current();
         if (s.network != null && s.isHost) return;
         resign(PlayerColor.WHITE);

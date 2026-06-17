@@ -58,11 +58,13 @@ public class ChessSettings extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         c.backScene(header,vS);
     }
 
     @FXML
     protected void onSaveAction() {
+        sC.play("button");
         settings.setP1Color(p1Color);
         settings.setP2Color(p2Color);
         settings.setP1Pieces(p1Pieces);
@@ -77,6 +79,7 @@ public class ChessSettings extends Controller implements Initializable {
 
     @FXML
     protected void onDefaultAction() {
+        sC.play("button");
         for (int i = 0; i < p1Pieces.size(); i++) {
             p1Pieces.get(i).setImage(p1OriginalImages.get(i));
         }

@@ -7,24 +7,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.JoinLan">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.JoinLan">
     <children>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
             <children>
-                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" prefHeight="113.0" prefWidth="604.0" styleClass="box">
+                <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Tetris Game">
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Tetris Game">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Join Lan Game" />
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Join Lan Game" />
                     </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                 </VBox>
             <StackPane prefHeight="517.0" prefWidth="800.0">
                <children>
@@ -114,4 +117,4 @@
         <URL value="@../../css/stylesheets/TetrisMenu.css" />
         <URL value="@../../css/stylesheets/fontstyle.css" />
     </stylesheets>
-</AnchorPane>
+</StackPane>
