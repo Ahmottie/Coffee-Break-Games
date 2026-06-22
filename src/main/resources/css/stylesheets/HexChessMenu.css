@@ -15,7 +15,7 @@
     -fx-border-color: #1ecfcf;
     -fx-background-color: #000000;
     -fx-border-width: 2px;
-    -fx-effect: innershadow(gaussian, rgba(30,207,207,0.3), 10, 0.5, 0, 0);
+    -fx-effect: innershadow(gaussian, -theme-accent-cyan, 10, 0.5, 0, 0);
 }
 
 .gameField Line{

@@ -62,8 +62,6 @@ public class LocalGameConfiguration extends Controller implements Initializable 
     @FXML
     protected void onStartAction() {
         sC.play("button");
-        sC.stopLooping();
-        sC.playLooping("tetris_background",.5);
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
@@ -77,6 +75,8 @@ public class LocalGameConfiguration extends Controller implements Initializable 
         }
 
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
+            sC.stopLooping();
+            sC.playLooping("tetris_background",.5);
             GameScreen controller = (GameScreen) c.changeScene(address,header,vS);
             TetrisEngine engine = new TetrisEngine(player1Name,player2Name, p1Level,p2Level, BlockRegistry.getInstance(),advancedSettings);
             controller.create(player1Name,player2Name,p1Level, p2Level, engine);
@@ -87,6 +87,9 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             if (c.checkRainbow(player1Name,player2Name)){
                 controller.rainbow();
             }
+        }
+        else {
+            sC.play("error");
         }
     }
 

@@ -50,6 +50,7 @@ public class JoinLan extends Controller implements Initializable {
         sC.play("button");
         if (selectedHost == null){
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Select a Game to join!");
             return;
         }
@@ -57,6 +58,7 @@ public class JoinLan extends Controller implements Initializable {
         String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
         if (!c.checkNameLength(yourName,2,joinStatus)) {
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Your name cant be longer than 16 characters");
             return;
         }
@@ -77,6 +79,7 @@ public class JoinLan extends Controller implements Initializable {
             controller.passJoinData(yourName, ad.ipAddress());
         } catch (Exception e) {
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Could not connect: " + e.getMessage());
         }
     }

@@ -40,7 +40,6 @@ public class BoardDesigner extends Controller implements Initializable {
     private Map<String, Label> pieceLabels;
     private JsonHandler jsonHandler = new JsonHandler();
     private List<BoardDesignState> listofBoards;
-    private BoardDesignState selectedBoard;
     private String p1Name, p2Name;
 
     @FXML
@@ -210,10 +209,12 @@ public class BoardDesigner extends Controller implements Initializable {
                 Toast.makeText(stackPane,"State was added!");
             }
             else {
+                sC.play("error");
                 Toast.makeText(stackPane,"You can only add valid States");
             }
         }
         else {
+            sC.play("error");
             Toast.makeText(stackPane,"This State does already exist");
         }
     }
@@ -267,6 +268,7 @@ public class BoardDesigner extends Controller implements Initializable {
             }
         }
         else {
+            sC.play("error");
             Toast.makeText(stackPane,"You can only use valid States");
         }
     }
@@ -498,10 +500,6 @@ public class BoardDesigner extends Controller implements Initializable {
             return false;
         }
 
-        if (validator.checkMaterial()) {
-            return false;
-        }
-
-        return true;
+        return !validator.checkMaterial();
     }
 }

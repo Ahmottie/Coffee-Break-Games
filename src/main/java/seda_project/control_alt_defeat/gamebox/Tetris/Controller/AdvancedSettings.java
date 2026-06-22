@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.IntField;
+import seda_project.control_alt_defeat.gamebox.ui.Toast;
 import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 import java.net.URL;
@@ -60,6 +61,7 @@ public class AdvancedSettings extends Controller implements Initializable {
         advancedSettings.setColumnBomb(columnBomb.isSelected());
         advancedSettings.setBoardChange(toggleSwitch.switchOnProperty().getValue());
         advancedSettings.setVertical(((RadioButton)Layout.getSelectedToggle()).getText().equals("Vertical"));
+        Toast.makeText(root,"Settings saved!");
     }
 
     @Override

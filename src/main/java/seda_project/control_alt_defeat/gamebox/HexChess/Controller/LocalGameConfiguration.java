@@ -25,11 +25,11 @@ public class LocalGameConfiguration extends Controller {
     @FXML
     public void onStartAction() {
         sC.play("button");
-        sC.stopLooping();
-        sC.playLooping("chess_background",.2);
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
+            sC.stopLooping();
+            sC.playLooping("chess_background",.2);
             GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
             GameEngine gameEngine = new GameEngine();
             controller.setGameEngine(gameEngine);
@@ -53,6 +53,10 @@ public class LocalGameConfiguration extends Controller {
             }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);
+        }
+        else{
+            statusLabel.setVisible(true);
+            sC.play("error");
         }
     }
 

@@ -228,6 +228,7 @@ Mug from: https://www.cgtrader.com/items/3536740/download-page
 
 * Button press: https://pixabay.com/sound-effects/film-special-effects-button-press-382713/
 * Lobby Background: https://pixabay.com/music/ambient-coffee-morning-coffee-shop-music-499186/
+* Error Sound: https://pixabay.com/sound-effects/film-special-effects-windows-error-sound-effect-35894/
 
 * Konami EasterEgg: https://www.vgmpf.com/Wiki/index.php?title=Nemesis_(ARC)
 

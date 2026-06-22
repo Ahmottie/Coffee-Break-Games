@@ -3,20 +3,30 @@
     src: url('../fonts/Michroma-Regular.ttf');
 }
 
+.root {
+    -theme-text-primary: rgba(180, 240, 240, 0.9);
+    -theme-accent-cyan: rgba(30, 207, 207, 0.55);
+    -theme-button-top: #71bdff;
+    -theme-button-bottom: #3d7db8;
+    -theme-panel-bg: rgba(10, 20, 40, 0.72);
+}
+
 .text {
     -fx-font-family: 'Michroma';
 }
 
-.label{
-    -fx-text-fill: rgba(180, 240, 240, 0.9);
-}
-
-.radio-button {
-    -fx-text-fill:  rgba(180, 240, 240, 0.9);
-}
-
-.check-box {
-    -fx-text-fill:  rgba(180, 240, 240, 0.9);
+.label,
+.radio-button,
+.check-box,
+.text-field,
+.normalText,
+.combo-box,
+.combo-box > .text-field,
+.combo-box > .list-cell,
+.radio-button .label,
+.combo-box-popup .list-cell,
+.text-field {
+    -fx-text-fill: -theme-text-primary;
 }
 
 .color-picker .label{
@@ -31,7 +41,6 @@
 
 .normalText {
     -fx-font-size: 18px;
-    -fx-text-fill: rgba(200, 255, 255, 0.85);
 }
 
 .button{

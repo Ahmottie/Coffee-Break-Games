@@ -52,8 +52,12 @@ public class JoinLan extends Controller implements Initializable {
                 } catch (Exception e) {
                     joinStatus.setVisible(true);
                     joinStatus.setText("Could not connect: " + e.getMessage());
+                    sC.play("error");
                 }
             }
+        }
+        else {
+            sC.play("error");
         }
     }
 
@@ -65,6 +69,7 @@ public class JoinLan extends Controller implements Initializable {
         joinStatus.setVisible(false);
         String ipAdresse = ipAdresseTF.getText();
         if (ipAdresse.isEmpty()){
+            sC.play("error");
             joinStatus.setVisible(true);
             joinStatus.setText("You need to fill in an IP-Address");
             return false;
@@ -75,6 +80,7 @@ public class JoinLan extends Controller implements Initializable {
                 System.out.println(ipParts.length);
                 joinStatus.setVisible(true);
                 joinStatus.setText("You need to fill in a correct IP-Address");
+                sC.play("error");
                 return false;
             }
 
@@ -83,12 +89,14 @@ public class JoinLan extends Controller implements Initializable {
                 if (number<0||number >255){
                     joinStatus.setVisible(true);
                     joinStatus.setText("The numbers of your IP-Address can only be in the range of 0 to 255!");
+                    sC.play("error");
                     return false;
                 }
             }
             if (ipAdresse.endsWith(".")){
                 joinStatus.setVisible(true);
                 joinStatus.setText("Your IP-Address may not end with a dot!");
+                sC.play("error");
                 return false;
             }
         }

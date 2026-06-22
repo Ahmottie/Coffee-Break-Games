@@ -77,7 +77,11 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             else {
                 statusLabel.setVisible(true);
                 statusLabel.setText("You need to select a deck Size!");
+                sC.play("error");
             }
+        }
+        else{
+            sC.play("error");
         }
 
     }

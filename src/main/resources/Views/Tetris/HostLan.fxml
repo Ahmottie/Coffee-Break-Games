@@ -7,7 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
+
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.HostLan">
     <children>
@@ -67,9 +69,9 @@
                          <StackPane styleClass="button-wrapper">
                         <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
                          </StackPane>
-                         <Label fx:id="statusLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="0.0" textAlignment="CENTER" visible="false" wrapText="true">
+                         <Label fx:id="statusLabel" alignment="CENTER" maxWidth="300.0" textAlignment="CENTER" visible="false" wrapText="true">
                            <styleClass>
-                              <String fx:value="information" />
+                              <String fx:value="error" />
                               <String fx:value="box" />
                            </styleClass>
                            <padding>

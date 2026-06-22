@@ -51,6 +51,9 @@ public class HostLan extends Controller implements Initializable {
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
             controller.passHostData(yourName,hostLevel);
         }
+        else{
+            sC.play("error");
+        }
     }
 
     public void handData(String hostName){
