@@ -7,10 +7,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<!--
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 <?import seda_project.control_alt_defeat.gamebox.ui.IntField?>
--->
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.AdvancedSettings">
     <children>

@@ -1,18 +1,15 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
-import jdk.dynalink.beans.StaticClass;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.network.GameMessage;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
-
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -27,7 +24,6 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.MCard;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +46,7 @@ public class GameScreen extends Controller {
     private GameSetup setup;
 
     @FXML
-    private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel, turnStatusLabel;
+    private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel;
 
     @FXML
     private StackPane gamePane;
@@ -112,7 +108,7 @@ public class GameScreen extends Controller {
 
         int height = 340;
 
-        double size = height/row;
+        double size = (double) height /row;
 
         playingGrid.setPrefSize(size*col, size*row);
         playingGrid.setMaxSize(size*col, size*row);
@@ -138,6 +134,7 @@ public class GameScreen extends Controller {
                     int cardId = c.id();
                     int symbolId = c.symbolId();
                     MCard cell = new MCard(i, j + helper, symbolId);
+                    cell.setHeightProporties(size,size);
                     cell.setPrefSize(size, size);
                     cell.setMinSize(size, size);
                     cell.setMaxSize(size, size);
@@ -146,7 +143,7 @@ public class GameScreen extends Controller {
                     cardsById.put(cardId, cell);
                     cardIdOf.put(cell, cardId);
 
-                    cell.setOnAction(e -> {
+                    cell.setOnAction(_ -> {
                         if (!canClick) return;
                         // In LAN mode, only the active player can flip.
                         if (Session.current().network != null
@@ -179,7 +176,7 @@ public class GameScreen extends Controller {
         activePlayerLabel.setText(name);
     }
 
-    public void startGame(String player1Name, String player2Name) {
+    public void startGame() {
         // Build the engine and start it with our prepared setup.
         engine = new GameEngineImpl();
         engine.start(config, setup);
@@ -233,7 +230,7 @@ public class GameScreen extends Controller {
     }
 
     public void turnCardsBack() {
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             for (MCard c : flippedCards) {
                 flipmotion(c, cardIdOf.get(c));
             }
@@ -245,7 +242,7 @@ public class GameScreen extends Controller {
 
     public void removeMatch() {
         canClick = false;
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             for (MCard c : flippedCards) {
                 c.setVisible(false);
             }
@@ -302,7 +299,7 @@ public class GameScreen extends Controller {
             if (flippedCards.size() >= matchSize) {
                 canClick = false;
             }
-            firstHalf.setOnFinished(e -> {
+            firstHalf.setOnFinished(_ -> {
                 card.setFaceUp(true);
                 boolean wasRemote = remoteFlipIds.remove(cardId);
                 engine.flip(cardId);
@@ -312,9 +309,7 @@ public class GameScreen extends Controller {
                 }
             });
         } else {
-            firstHalf.setOnFinished(e -> {
-                card.faceDown();
-            });
+            firstHalf.setOnFinished(_ -> card.faceDown());
         }
 
         SequentialTransition flip = new SequentialTransition(firstHalf, secondHalf);

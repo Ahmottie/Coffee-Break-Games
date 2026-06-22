@@ -3,6 +3,7 @@ package seda_project.control_alt_defeat.gamebox.ui;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 
 public class MCard extends Button {
     int id;
@@ -24,13 +25,20 @@ public class MCard extends Button {
         this.getStyleClass().remove("button");
         this.getStyleClass().add("card");
 
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(50);  // Creates a 10px corner radius to match your CSS border
+        clip.setArcHeight(50);
+        clip.widthProperty().bind(this.widthProperty());
+        clip.heightProperty().bind(this.heightProperty());
+        this.setClip(clip);
+
         BackgroundSize backgroundSize = new BackgroundSize(
                 BackgroundSize.AUTO,
                 BackgroundSize.AUTO,
                 false,
                 false,
-                true,
-                false
+                false,
+                true
         );
 
         String back = getClass().getResource("/Images/Memory/backface.png").toExternalForm();
@@ -38,6 +46,11 @@ public class MCard extends Button {
         cardBack = new Background(new BackgroundImage(new Image(back,true), BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize));
         cardFront = new Background(new BackgroundImage(new Image(front,true),  BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize));
         this.setBackground(cardBack);
+    }
+
+    public void setHeightProporties(double height, double width){
+        this.heightProperty().add(height);
+        this.widthProperty().add(width);
     }
 
     public void faceDown(){

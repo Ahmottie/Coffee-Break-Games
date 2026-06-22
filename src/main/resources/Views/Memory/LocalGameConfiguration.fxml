@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.LocalGameConfiguration">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.LocalGameConfiguration">
     <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity">
             <children>
                 <VBox fx:id="header" alignment="CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                     <children>
@@ -25,87 +32,93 @@
                         </Label>
                         <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Local Game Setup" />
                     </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
                 </VBox>
-                <AnchorPane prefHeight="520.0" prefWidth="800.0">
-                    <children>
-                        <GridPane layoutX="224.0" layoutY="100.0" prefWidth="352.0" styleClass="box">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="130.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="10.0" prefWidth="70.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label alignment="CENTER" text="Player1 Name:" />
-                                <Label text="Player 2 Name:" GridPane.rowIndex="1" />
-                                <TextField fx:id="player1TF" prefHeight="26.0" prefWidth="180.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
-                                    <GridPane.margin>
-                                        <Insets right="5.0" />
-                                    </GridPane.margin>
-                                </TextField>
-                                <TextField fx:id="player2TF" prefHeight="26.0" prefWidth="180.0" promptText="Insert Player 2 Name" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
-                                    <GridPane.margin>
-                                        <Insets right="5.0" />
-                                    </GridPane.margin>
-                                </TextField>
-                                <Label text="Deck Size:" GridPane.rowIndex="3" />
-                                <RadioButton fx:id="smallGame" mnemonicParsing="false" text="15" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                    <toggleGroup>
-                                        <ToggleGroup fx:id="DeckSizeGroup" />
-                                    </toggleGroup>
-                                </RadioButton>
-                                <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                <RadioButton fx:id="largeGame" mnemonicParsing="false" text="45" toggleGroup="$DeckSizeGroup" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                <Label text="Match Size" GridPane.rowIndex="2" />
-                                <StackPane alignment="CENTER_RIGHT" styleClass="button-wrapper" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
-                                    <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
-                                        <GridPane.margin>
-                                            <Insets right="15.0" />
-                                        </GridPane.margin>
-                                    </Button>
-                                </StackPane>
-                                <StackPane alignment="CENTER_LEFT" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6">
-                                    <Button mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game">
-                                        <GridPane.margin>
-                                            <Insets left="10.0" />
-                                        </GridPane.margin>
-                                    </Button>
-                                </StackPane>
-                                    <ComboBox fx:id="matchSize" onAction="#calcDeckSize" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="342.0" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="4" GridPane.rowIndex="4" GridPane.rowSpan="2">
-                                        <styleClass>
-                                            <String fx:value="box" />
-                                            <String fx:value="error" />
-                                    </styleClass>
-                                    <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding>
-                                </Label>
-                            </children>
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                        </GridPane>
-                    </children>
-                </AnchorPane>
+                  <StackPane prefHeight="475.0">
+                      <children>
+                          <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" styleClass="box">
+                              <children>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                                          <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 1 Name: " />
+                                          <TextField fx:id="player1TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 1 Name " />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                                          <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 2 Name: " />
+                                          <TextField fx:id="player2TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 2 Name" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                                          <Label text="Deck Size: " />
+                                          <RadioButton fx:id="smallGame" mnemonicParsing="false" text="15">
+                                              <toggleGroup>
+                                                  <ToggleGroup fx:id="DeckSizeGroup" />
+                                              </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton fx:id="mediumGame" mnemonicParsing="false" text="30" toggleGroup="$DeckSizeGroup" />
+                                          <RadioButton fx:id="largeGame" mnemonicParsing="false" text="45" toggleGroup="$DeckSizeGroup" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                                          <Label text="Match Size: " />
+                                          <ComboBox fx:id="matchSize" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#calcDeckSize" visibleRowCount="7" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="3.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER">
+                           <children>
+                                          <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="250.0" textAlignment="CENTER" wrapText="true">
+                                              <styleClass>
+                                                  <String fx:value="box" />
+                                                  <String fx:value="error" />
+                                              </styleClass>
+                                              <padding>
+                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                              </padding>
+                                          </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="5.0">
+                           <children>
+                                          <StackPane alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                              <Button mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                                              </Button>
+                                          </StackPane>
+                                          <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                                              <Button mnemonicParsing="false" onAction="#onStartGameAction" text="Start Game" />
+                                          </StackPane>
+                           </children>
+                        </HBox>
+                              </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                          </VBox>
+                      </children>
+                  </StackPane>
             </children>
         </VBox>
     </children>
-   <stylesheets>
-      <URL value="@../../css/stylesheets/fontstyle.css" />
-      <URL value="@../../css/stylesheets/MemoryMenu.css" />
-       <URL value="@../../css/stylesheets/MenuStyle.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MemoryMenu.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+    </stylesheets>
 </StackPane>

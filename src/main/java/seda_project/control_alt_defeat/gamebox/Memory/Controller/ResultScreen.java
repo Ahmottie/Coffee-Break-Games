@@ -2,14 +2,10 @@ package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import seda_project.control_alt_defeat.gamebox.Configuration;
-import seda_project.control_alt_defeat.gamebox.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
@@ -64,7 +60,7 @@ public class ResultScreen extends Controller {
     private void startNewLocalGame() {
         GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
         controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
-        controller.startGame(player1Name, player2Name);
+        controller.startGame();
         if (flipped){
             controller.flip();
         }
@@ -78,7 +74,7 @@ public class ResultScreen extends Controller {
         Session.current().setup  = setup;
         GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
         controller.passLanData();
-        controller.startGame(cfg.player1Name(), cfg.player2Name());
+        controller.startGame();
         if (flipped){
             controller.flip();
         }

@@ -527,9 +527,13 @@ public class TetrisEngine {
 
     private void executePortal(int playerNum, Block activeBlock, int sourceIndex) {
         if (playerNum == 1) {
+            activeBlock.setY(p1Board.getHeight() - activeBlock.getShape().length);
+            activeBlock.setX(3);
             p2NextActiveBlock.add(activeBlock);
             spawnNewBlock(1, sourceIndex);
         } else {
+            activeBlock.setX(3);
+            activeBlock.setY(0);
             p1NextActiveBlock.add(activeBlock);
             spawnNewBlock(2, sourceIndex);
         }

@@ -138,10 +138,10 @@ public class Configuration {
 
 
     public boolean checkFlip(String player1Name, String player2Name) {
-        if (player1Name.equals("UpsideDown")){
+        if (player1Name.equals("Upsidedown")){
             return true;
         }
-        if (player2Name.equals("UpsideDown")){
+        if (player2Name.equals("Upsidedown")){
             return true;
         }
         if (player1Name.equals("Dinnerbone")){

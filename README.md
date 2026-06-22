@@ -205,22 +205,27 @@ Pieces from: https://greenchess.net/info.php?item=downloads
 Mug from: https://www.cgtrader.com/items/3536740/download-page
 3d pieces from: https://free3d.com/3d-model/chess-19650.html
 
+## Images
+* Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
+
 ## Sounds
-Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/
-Chess Background: https://pixabay.com/music/video-games-music-for-puzzle-game-146738/
+* Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/
+* Chess Background: https://pixabay.com/music/video-games-music-for-puzzle-game-146738/
 
-Tetris Background: https://pixabay.com/music/classical-string-quartet-tetris-theme-korobeiniki-rearranged-arr-for-strings-185592/
-Tetris Lineclear: https://pixabay.com/sound-effects/film-special-effects-clear-notification-355970/
-Tetris Piecesnap: https://pixabay.com/sound-effects/film-special-effects-finger-snap-179180/
-Tetris Levelup: https://pixabay.com/sound-effects/film-special-effects-level-up-05-326133/
-Tetris Radialbomb: https://pixabay.com/sound-effects/bomb-explosion-469038/
-Tetris Columnbomb: https://pixabay.com/sound-effects/film-special-effects-drill-spinning-in-open-air-33575/
+* Tetris Background: https://pixabay.com/music/classical-string-quartet-tetris-theme-korobeiniki-rearranged-arr-for-strings-185592/
+* Tetris Lineclear: https://pixabay.com/sound-effects/film-special-effects-clear-notification-355970/
+* Tetris Piecesnap: https://pixabay.com/sound-effects/film-special-effects-finger-snap-179180/
+* Tetris Levelup: https://pixabay.com/sound-effects/film-special-effects-level-up-05-326133/
+* Tetris Radialbomb: https://pixabay.com/sound-effects/bomb-explosion-469038/
+* Tetris Columnbomb: https://pixabay.com/sound-effects/film-special-effects-drill-spinning-in-open-air-33575/
 
-Memory Match: https://pixabay.com/sound-effects/film-special-effects-sample-confirm-success03-kofi-by-miraclei-360151/
-Memory Missmatch: https://pixabay.com/sound-effects/film-special-effects-fail-234710/
+* Memory Background: https://pixabay.com/music/solo-piano-retro-arcade-game-music-491487/
+* Memory Match: https://pixabay.com/sound-effects/film-special-effects-sample-confirm-success03-kofi-by-miraclei-360151/
+* Memory Missmatch: https://pixabay.com/sound-effects/film-special-effects-fail-234710/
 
-Button press: https://pixabay.com/sound-effects/film-special-effects-button-press-382713/
-Lobby Background: https://pixabay.com/music/ambient-coffee-morning-coffee-shop-music-499186/
 
-Konami EasterEgg: https://www.vgmpf.com/Wiki/index.php?title=Nemesis_(ARC)
+* Button press: https://pixabay.com/sound-effects/film-special-effects-button-press-382713/
+* Lobby Background: https://pixabay.com/music/ambient-coffee-morning-coffee-shop-music-499186/
+
+* Konami EasterEgg: https://www.vgmpf.com/Wiki/index.php?title=Nemesis_(ARC)
 

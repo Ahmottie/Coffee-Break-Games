@@ -79,7 +79,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
             GameScreen controller = (GameScreen) c.changeScene(address,header,vS);
             TetrisEngine engine = new TetrisEngine(player1Name,player2Name, p1Level,p2Level, BlockRegistry.getInstance(),advancedSettings);
-            controller.create(player1Name,player2Name,p1Level, p2Level,false, engine);
+            controller.create(player1Name,player2Name,p1Level, p2Level, engine);
             controller.setInitialLevels(p1Level,p2Level);
             if (c.checkFlip(player1Name,player2Name)){
                 controller.flip();

@@ -158,55 +158,6 @@
     -fx-background-radius: 4px;
 }
 
-.scrollItem {
-    -fx-text-fill: rgba(180, 240, 240, 0.80);
-    -fx-background-color: transparent;
-    -fx-background-radius: 7px;
-    -fx-border-color: transparent;
-    -fx-border-radius: 7px;
-    -fx-border-width: 1px;
-    -fx-padding: 9 14 9 14;
-    -fx-cursor: hand;
-    -fx-max-width: Infinity;
-}
-.scrollItem:hover {
-    -fx-background-color: rgba(30, 207, 207, 0.10);
-    -fx-border-color: rgba(30, 207, 207, 0.20);
-    -fx-text-fill: rgba(200, 255, 255, 0.95);
-}
-
-.scrollItem.selectedItem {
-    -fx-background-color: rgba(30, 180, 140, 0.22);
-    -fx-border-color: rgba(77, 235, 184, 0.70);
-    -fx-text-fill: rgba(160, 255, 220, 1.0);
-    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
-}
-
-.scroller .track {
-    -fx-background-color: rgba(30, 207, 207, 0.1);
-    -fx-background-radius: 4px;
-}
-
-.scroller .thumb {
-    -fx-background-color: rgba(30, 207, 207, 0.3);
-    -fx-background-radius: 4px;
-}
-
-.scroller .thumb:hover {
-    -fx-background-color: rgba(30, 207, 207, 0.55);
-}
-
-.scroller .scroll-bar:vertical .increment-button,
-.scroller .scroll-bar:vertical .decrement-button {
-    -fx-background-color: transparent;
-    -fx-padding: 2px;
-}
-
-.scroller .scroll-bar:vertical .increment-arrow,
-.scroller .scroll-bar:vertical .decrement-arrow {
-    -fx-background-color: rgba(30, 207, 207, 0.40);
-}
-
 .scroller {
     -fx-border-color: rgba(30, 207, 207, 0.3);
     -fx-border-width: 2px;
@@ -219,12 +170,132 @@
     -fx-background-color: transparent;
 }
 
+.scroller .track,
+.combo-box-popup .scroll-bar:vertical .track {
+    -fx-background-color: rgba(30, 207, 207, 0.1);
+    -fx-background-radius: 4px;
+}
 
-.scroller .scroll-bar:vertical {
+.scroller .thumb,
+.combo-box-popup .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(30, 207, 207, 0.3);
+    -fx-background-radius: 4px;
+}
+
+.scroller .thumb:hover,
+.combo-box-popup .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(30, 207, 207, 0.55);
+}
+
+.scroller .scroll-bar:vertical,
+.combo-box-popup .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
 
-.scroller .scroll-bar:vertical .track-background {
+.scroller .scroll-bar:vertical .track-background,
+.combo-box-popup .scroll-bar:vertical .track-background {
     -fx-background-color: transparent;
+}
+
+.scroller .scroll-bar:vertical .increment-button,
+.scroller .scroll-bar:vertical .decrement-button,
+.combo-box-popup .scroll-bar:vertical .increment-button,
+.combo-box-popup .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+
+.scroller .scroll-bar:vertical .increment-arrow,
+.scroller .scroll-bar:vertical .decrement-arrow,
+.combo-box-popup .scroll-bar:vertical .increment-arrow,
+.combo-box-popup .scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: rgba(30, 207, 207, 0.40);
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #B0B0B0 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #90A4AE;
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.text-field:focused {
+    -fx-border-color: transparent transparent rgba(30, 207, 207, 0.55) transparent;
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.combo-box > .text-field {
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+    -fx-prompt-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.combo-box:focused {
+    -fx-border-color: rgba(30, 207, 207, 0.55);
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: rgba(12, 24, 45, 0.98);
+    -fx-border-color: rgba(30, 207, 207, 0.5);
+    -fx-border-width: 1px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+
+.combo-box-popup .list-view .list-cell{
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+    -fx-background-color: transparent;
+
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.combo-box > .list-cell {
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.radio-button .label {
+    -fx-text-fill: rgba(180, 240, 240, 0.9);
+}
+
+.radio-button .radio {
+    -fx-background-color: transparent;
+    -fx-border-color: #B0B0B0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 100px;
+    -fx-padding: 4px;
+}
+
+.radio-button:selected .radio {
+    -fx-border-color: rgba(30, 207, 207, 0.75);
+    -fx-border-width: 2px;
+}
+
+.radio-button .radio .dot {
+    -fx-background-radius: 100px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 3px;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: rgba(30, 207, 207, 0.95);
 }

@@ -45,7 +45,7 @@ public class ResultScreen extends Controller {
                     ? "/Views/Tetris/GameScreen.fxml"
                     : "/Views/Tetris/GameScreenHorizontal.fxml";
             GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-            controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,false, fresh);
+            controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,fresh);
             controller.setInitialLevels(initP1Level,initP2Level);
             if (flipped){
                 controller.flip();
@@ -148,10 +148,10 @@ public class ResultScreen extends Controller {
             controller.rainbow();
         }
         if (s.isHost) {
-            controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,true, engineForHost);
+            controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel, engineForHost);
             controller.attachHostNetworkBridge(s.network);
         } else {
-            controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel,true, engineForHost);
+            controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel, engineForHost);
             controller.attachClientNetworkBridge(s.network);
         }
     }

@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.ui.StartingScreenController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.ui.StartingScreenController">
     <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0">
             <children>
-                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" prefHeight="83.0" prefWidth="563.0" styleClass="box">
+                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="576.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="201.0" styleClass="normalText" text="Main Menu">
+                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Main Menu">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
                     </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                 </VBox>
-            <StackPane prefHeight="544.0" prefWidth="790.0">
+            <StackPane prefHeight="495.0">
                <children>
                         <GridPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                             <columnConstraints>

@@ -3,7 +3,6 @@ package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
@@ -61,6 +60,8 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
         if (c.checkNameLength(player1Name,1, statusLabel) && c.checkNameLength(player2Name,2,statusLabel)) {
             if (selected != null) {
+                sC.stopLooping();
+                sC.playLooping("memory_background",.3);
                 int deckSize = Integer.parseInt(selected.getText());
                 GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
                 if (c.checkFlip(player1Name,player2Name)){
@@ -71,7 +72,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
                 }
 
                 controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
-                controller.startGame(player1Name,player2Name);
+                controller.startGame();
             }
             else {
                 statusLabel.setVisible(true);

@@ -76,9 +76,11 @@ public class SoundController {
     }
 
     public void activateKonami(){
-        konami = true;
-        stopLooping();
-        next();
+        if (!konami) {
+            konami = true;
+            stopLooping();
+            next();
+        }
 
     }
     private void next(){

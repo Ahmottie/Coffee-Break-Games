@@ -19,3 +19,7 @@
 .playground {
     -fx-background-color: #0a1a2e;
 }
+
+.split-pane-divider {
+    -fx-background-color: transparent;
+}

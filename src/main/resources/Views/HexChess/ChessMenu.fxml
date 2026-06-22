@@ -28,7 +28,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </VBox>
-                <StackPane prefHeight="550.0" prefWidth="817.0">
+                <StackPane prefHeight="475.0">
                     <children>
                         <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="box">
                             <columnConstraints>

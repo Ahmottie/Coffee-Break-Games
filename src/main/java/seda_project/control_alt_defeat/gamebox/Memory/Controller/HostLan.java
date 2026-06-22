@@ -7,7 +7,6 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
@@ -77,8 +76,7 @@ public class HostLan extends Controller implements Initializable {
                 s.setup  = setup;
 
                 WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Memory/WaitForOpponent.fxml",header,vS);
-                boolean host = true;
-                controller.passHostData(host, yourName, tupleSize, deckSize);
+                controller.passHostData(yourName, tupleSize, deckSize);
             } else {
                 statusLabel.setVisible(true);
                 statusLabel.setText("You need to select a deck Size!");

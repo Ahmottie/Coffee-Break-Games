@@ -1,11 +1,9 @@
 package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.network.LanClient;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.Session;
@@ -50,12 +48,10 @@ public class JoinLan extends Controller implements Initializable {
 
 
                     WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Memory/WaitForOpponent.fxml",header,vS);
-                    boolean host = false;
-                    controller.passJoinData(host, yourName, ipAdresseTF.getText());
+                    controller.passJoinData(yourName, ipAdresseTF.getText());
                 } catch (Exception e) {
                     joinStatus.setVisible(true);
                     joinStatus.setText("Could not connect: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
         }
@@ -68,7 +64,7 @@ public class JoinLan extends Controller implements Initializable {
     private boolean checkIP() {
         joinStatus.setVisible(false);
         String ipAdresse = ipAdresseTF.getText();
-        if (ipAdresse.equals("")){
+        if (ipAdresse.isEmpty()){
             joinStatus.setVisible(true);
             joinStatus.setText("You need to fill in an IP-Address");
             return false;

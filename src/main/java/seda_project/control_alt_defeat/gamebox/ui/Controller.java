@@ -13,6 +13,8 @@ import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.SoundController;
 import seda_project.control_alt_defeat.gamebox.ViewStack;
 
+import java.awt.*;
+
 public class Controller {
     protected Configuration c = Configuration.getInstance();
     protected ViewStack vS = ViewStack.getInstance();
@@ -46,4 +48,5 @@ public class Controller {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
+
 }

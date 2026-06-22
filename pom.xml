@@ -9,8 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>24</java.version>
-
-        <javafx.version>25.0.2</javafx.version>
+        <javafx.version>26</javafx.version>
         <slf4j.version>2.0.13</slf4j.version>
         <logback.version>1.5.32</logback.version>
 

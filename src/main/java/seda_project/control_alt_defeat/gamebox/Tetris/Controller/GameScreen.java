@@ -30,9 +30,10 @@ import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameScreen extends Controller implements TetrisEventListener {
-    private TetrisSettings tS = TetrisSettings.getInstance();
+    private final TetrisSettings tS = TetrisSettings.getInstance();
     private TetrisEngine engine;
     private KeyHandler handler;
     private int initP1Level, initP2Level;
@@ -59,35 +60,35 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
 
     private void loadPowerUpImages() {
-        var stream = getClass().getResource("/Images/Tetris/Swap.png").toExternalForm();
+        var stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/Swap.png")).toExternalForm();
         if (stream != null) {
             swapImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/Portal.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/Portal.png")).toExternalForm();
         if (stream != null) {
             portalImage =  new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/SwapBlocks.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/SwapBlocks.png")).toExternalForm();
         if ( stream != null) {
             swapBlockImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/DecreaseRotationOpponent.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/DecreaseRotationOpponent.png")).toExternalForm();
         if ( stream != null) {
             decreaseRotationOpponentImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/DecreaseRotationSelf.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/DecreaseRotationSelf.png")).toExternalForm();
         if ( stream != null) {
             decreaseRotationSelfImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/DecreaseTickOpponent.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/DecreaseTickOpponent.png")).toExternalForm();
         if ( stream != null) {
             decreaseTickOpponentImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/DecreaseTickSelf.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/DecreaseTickSelf.png")).toExternalForm();
         if ( stream != null) {
             decreaseTickSelfImage = new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/IncreaseTickOpponent.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/IncreaseTickOpponent.png")).toExternalForm();
         if ( stream != null) {
             increaseTickOpponentImage = new Image(stream);
         }
@@ -246,7 +247,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
 
-    public void create(String player1, String player2, int p1Level, int p2Level, boolean multiplayer, TetrisEngine engine) {
+    public void create(String player1, String player2, int p1Level, int p2Level, TetrisEngine engine) {
         this.engine = engine;
         player1NameLabel.setText(player1);
         player2NameLabel.setText(player2);
@@ -298,11 +299,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
     private void loadBombImages() {
-        var stream = getClass().getResource("/Images/Tetris/RadialBomb.png").toExternalForm();
+        var stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/RadialBomb.png")).toExternalForm();
         if (stream != null) {
             radialBombImage =  new Image(stream);
         }
-        stream = getClass().getResource("/Images/Tetris/ColumnBomb.png").toExternalForm();
+        stream = Objects.requireNonNull(getClass().getResource("/Images/Tetris/ColumnBomb.png")).toExternalForm();
         if (stream != null) {
             columnBombImage = new Image(stream);
         }
@@ -383,7 +384,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
         if (timeline != null) {
             timeline.stop();
             timeline.getKeyFrames().setAll(
-                    new KeyFrame(Duration.millis(newTickSpeed), e -> engine.tick(playerNum))
+                    new KeyFrame(Duration.millis(newTickSpeed), _ -> engine.tick(playerNum))
             );
             timeline.play();
         }
