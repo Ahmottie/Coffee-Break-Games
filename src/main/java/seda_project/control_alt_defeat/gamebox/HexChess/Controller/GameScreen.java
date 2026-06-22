@@ -27,7 +27,6 @@ import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.Toast;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -686,5 +685,11 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         else{
             Toast.makeText(stackPane, p1NameLabel.getText() + " has declined the Draw Proposal");
         }
+    }
+    public void p1Duck(){
+        p1PawnImg.setImage(settings.getP1Pieces().get(6).getImage());
+    }
+    public void p2Duck(){
+       p2PawnImg.setImage(settings.getP2Pieces().get(6).getImage());
     }
 }

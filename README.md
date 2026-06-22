@@ -211,6 +211,8 @@ Mug from: https://www.cgtrader.com/items/3536740/download-page
 ## Sounds
 * Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/
 * Chess Background: https://pixabay.com/music/video-games-music-for-puzzle-game-146738/
+* Chess Duck(White): https://www.svgrepo.com/svg/479843/duck-toy-illustration-3?edit=true
+* Chess Duck(Black): https://www.svgrepo.com/svg/479851/duck-toy-1
 
 * Tetris Background: https://pixabay.com/music/classical-string-quartet-tetris-theme-korobeiniki-rearranged-arr-for-strings-185592/
 * Tetris Lineclear: https://pixabay.com/sound-effects/film-special-effects-clear-notification-355970/
@@ -229,3 +231,8 @@ Mug from: https://www.cgtrader.com/items/3536740/download-page
 
 * Konami EasterEgg: https://www.vgmpf.com/Wiki/index.php?title=Nemesis_(ARC)
 
+## Easter Eggs:
+* Konami Code -> Change Music
+* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is roatet by 180 
+* "jeb_" -> GameScreen background has Rainbowcolors
+* "Duck" -> Pawns in Chess are replaced by Ducks

@@ -205,6 +205,12 @@ public class WaitForOpponent extends Controller {
         if (c.checkRainbow(p1,p2)){
             controller.rainbow();
         }
+        if (p1.equals("Duck")) {
+            controller.p1Duck();
+        }
+        if (p2.equals("Duck")){
+            controller.p2Duck();
+        }
         if (s.isHost) {
             if (boardState == null) {
                 controller.init();

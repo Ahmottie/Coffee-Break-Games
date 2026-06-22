@@ -7,11 +7,12 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisSettings;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class PieceSettings {
     private Color p1Color, p2Color, darkTiles, normalTiles, lightTiles;
     private List<ImageView> p1Pieces, p2Pieces;
-    private static final String[] PIECE_NAMES = {"pawn","rook","knight","bishop", "queen", "king"};
+    private static final String[] PIECE_NAMES = {"pawn","rook","knight","bishop", "queen", "king","duck"};
 
     private static PieceSettings instance;
 
@@ -37,7 +38,7 @@ public class PieceSettings {
         ImageView[] views = new ImageView[PIECE_NAMES.length];
         for (int i = 0; i < PIECE_NAMES.length; i++) {
             String path = "/Images/HexChess/" + color + "/" + color.toLowerCase() + "-" + PIECE_NAMES[i] + ".png";
-            Image image = new Image(getClass().getResourceAsStream(path));
+            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(path)));
             views[i] = new ImageView(image);
         }
         return Arrays.asList(views);

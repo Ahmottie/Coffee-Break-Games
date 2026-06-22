@@ -248,6 +248,16 @@
                 </StackPane>
             </children>
         </VBox>
+      <ImageView fx:id="p2Duck" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../Images/HexChess/Black/black-duck.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="p1Duck" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../Images/HexChess/White/white-duck.png" />
+         </image>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />

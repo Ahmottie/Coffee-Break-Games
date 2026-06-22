@@ -33,17 +33,23 @@ public class LocalGameConfiguration extends Controller {
             GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
             GameEngine gameEngine = new GameEngine();
             controller.setGameEngine(gameEngine);
-            if (boardState == null) {
-                controller.init();
-            }
-            else{
-                controller.init(boardState);
-            }
             if (c.checkFlip(player1Name,player2Name)){
                 controller.flip();
             }
             if (c.checkRainbow(player1Name,player2Name)){
                 controller.rainbow();
+            }
+            if (player1Name.equals("Duck")) {
+                controller.p1Duck();
+            }
+            if (player2Name.equals("Duck")){
+                controller.p2Duck();
+            }
+            if (boardState == null) {
+                controller.init();
+            }
+            else{
+                controller.init(boardState);
             }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);
