@@ -39,6 +39,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private ImageView endangeredKingView = null;
     private PlayerColor activePlayer;
     private boolean isNetworkPromotion = false;
+    private boolean isBotMode = false;
+    private PlayerColor botColor = null;
     
     @FXML
     private Parent root;
@@ -175,6 +177,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                     return;
                 }
             }
+            if (isBotMode && playerColor == botColor) {
+                return;
+            }
 
             pieceOnTile.getStyleClass().add("selectedTile");
             Piece p = gameEngine.getBoard().getCellById(currentTileId).getPiece();
@@ -273,6 +278,11 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         }
 
         boardPane.getChildren().removeIf(node -> node instanceof Path || node instanceof Circle);
+    }
+
+    public void setBotMode(boolean isBotMode, PlayerColor botColor) {
+        this.isBotMode = isBotMode;
+        this.botColor = botColor;
     }
 
     @Override
@@ -459,6 +469,21 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     @Override
     public void activePlayer(PlayerColor currentTurn) {
         this.activePlayer = currentTurn;
+
+        if (isBotMode && currentTurn == botColor) {
+            new Thread(() -> {
+                String[] bestMove = HexBot.getBestMove(gameEngine, botColor);
+
+                if (bestMove != null) {
+                    javafx.application.Platform.runLater(() -> {
+                        gameEngine.handleMove(bestMove[0], bestMove[1]);
+                        if (gameEngine.getCurrentTurn() == botColor && !gameEngine.isGameOver()) {
+                            gameEngine.promote(PieceType.QUEEN);
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 
     public void enpassentCoord(String from, String to) {
