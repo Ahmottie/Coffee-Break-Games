@@ -5,43 +5,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.DrawProposal">
-    <children>
-        <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity">
-            <children>
-                <StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity">
-                    <children>
-                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="box" StackPane.alignment="CENTER">
-                            <StackPane.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </StackPane.margin>
-                            <children>
-                                <Label styleClass="normalText" text="Do you accept the draw?" wrapText="true" />
-                                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                                    <children>
-                                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                                            <children>
-                                                <Button mnemonicParsing="false" onAction="#onAcceptAction" text="Yes" />
-                                            </children>
-                                        </StackPane>
-                              <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                                 <children>
-                                    <Button mnemonicParsing="false" onAction="#onDeclineAction" text="No" />
-                                 </children>
-                              </StackPane>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </StackPane>
-            </children>
-        </VBox>
-    </children>
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           styleClass="playground" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.DrawProposal">
 
     <stylesheets>
-        <URL value="@../../css/stylesheets/fontstyle.css" />
-        <URL value="@../../css/stylesheets/MenuStyle.css" />
-        <URL value="@../../css/stylesheets/HexChessMenu.css" />
+        <URL value="@../../css/stylesheets/fontstyle.css"/>
+        <URL value="@../../css/stylesheets/MenuStyle.css"/>
+        <URL value="@../../css/stylesheets/HexChessMenu.css"/>
     </stylesheets>
+
+    <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity">
+        <StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="box"
+                  StackPane.alignment="CENTER">
+                <StackPane.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </StackPane.margin>
+                <Label styleClass="normalText" text="Do you accept the draw?" wrapText="true"/>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                        <Button mnemonicParsing="false" onAction="#onAcceptAction" text="Yes"/>
+                    </StackPane>
+                    <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                        <Button mnemonicParsing="false" onAction="#onDeclineAction" text="No"/>
+                    </StackPane>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </VBox>
 </StackPane>

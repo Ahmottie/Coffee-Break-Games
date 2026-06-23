@@ -12,187 +12,262 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Region?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="playground" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.GameScreen">
-    <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
-            <children>
-            <VBox fx:id="header" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-               <children>
-                      <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                          <font>
-                              <Font name="Arial Bold" size="24.0" />
-                          </font>
-                      </Label>
-                      <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Tetris Game">
-                          <font>
-                              <Font size="18.0" />
-                          </font>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0"
+           styleClass="playground" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.GameScreen">
+    <stylesheets>
+        <URL value="@../../css/stylesheets/fontstyle.css"/>
+        <URL value="@../../css/stylesheets/TetrisMenu.css"/>
+        <URL value="@../../css/stylesheets/MenuStyle.css"/>
+    </stylesheets>
+    <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0">
+        <HBox alignment="CENTER" spacing="10.0">
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+            <Region maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+            <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity"
+                  maxWidth="-Infinity" styleClass="box">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                       styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER"
+                       textOverrun="CLIP">
+                    <font>
+                        <Font name="Arial Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText"
+                       text="Main Menu">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <StackPane prefHeight="495.0">
-               <VBox.margin>
-                  <Insets bottom="2.0" left="10.0" right="10.0" top="3.0" />
-               </VBox.margin>
-               <children>
-                  <VBox alignment="CENTER" spacing="10.0">
-                     <children>
-                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                           <children>
-                               <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onExitGameAction" text="Exit Game" />
-                           </children>
-                        </StackPane>
-                        <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0">
-                           <children>
-                                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="error">
-                                        <children>
-                                         <Label fx:id="player1NameLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Player1Name" />
-                                         <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
-                                             <columnConstraints>
-                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                       <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                 <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Points:" />
-                                                 <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Lines:" GridPane.rowIndex="1" />
-                                                 <Label fx:id="player1PointsLabel" GridPane.columnIndex="1" />
-                                                 <Label fx:id="player1LinesLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Level:" GridPane.rowIndex="2" />
-                                       <Label fx:id="p1LevelLabel" text="1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                             </children>
-                                         </GridPane>
-                                            <Group>
-                                          <GridPane fx:id="player1Field" maxHeight="-Infinity" maxWidth="-Infinity" rotate="90.0" styleClass="gameField">
-                                              <columnConstraints>
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                                  <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                              </columnConstraints>
-                                              <rowConstraints>
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                                  <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                              </rowConstraints>
-                                          </GridPane>
-                                            </Group>
-                                        </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                                    </VBox>
-                              <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="ready">
-                                 <children>
-                                 <Label fx:id="player2NameLabel" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" text="Player2Name" />
-                                 <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
-                                   <columnConstraints>
-                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                                   </columnConstraints>
-                                   <rowConstraints>
-                                     <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                     <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                       <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                   </rowConstraints>
-                                    <children>
-                                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Points:" />
-                                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Lines:" GridPane.rowIndex="1" />
-                                       <Label fx:id="player2PointsLabel" GridPane.columnIndex="1" />
-                                       <Label fx:id="player2LinesLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Level:" GridPane.rowIndex="2" />
-                                       <Label fx:id="p2LevelLabel" text="1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    </children>
-                                 </GridPane>
-                                     <Group>
-                                    <GridPane fx:id="player2Field" prefWidth="120.0" rotate="90.0" styleClass="gameField">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="12.0" minWidth="12.0" prefWidth="12.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                        <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                          <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                          <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                          <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                          <RowConstraints maxHeight="12.0" minHeight="12.0" prefHeight="12.0" vgrow="NEVER" />
-                                      </rowConstraints>
-                                    </GridPane>
-                                     </Group>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets top="1.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-            </children>
-        </VBox>
-    </children>
-   <stylesheets>
-      <URL value="@../../css/stylesheets/fontstyle.css" />
-      <URL value="@../../css/stylesheets/TetrisMenu.css" />
-      <URL value="@../../css/stylesheets/MenuStyle.css" />
-   </stylesheets>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <ImageView fx:id="muteButton" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#changeMute" pickOnBounds="true"
+                           preserveRatio="true" styleClass="mute">
+                    <Image url="@../../Images/others/mute.png"/>
+                </ImageView>
+            </VBox>
+        </HBox>
+        <StackPane prefHeight="495.0">
+            <VBox.margin>
+                <Insets bottom="2.0" left="10.0" right="10.0" top="3.0"/>
+            </VBox.margin>
+            <VBox alignment="CENTER" spacing="10.0">
+                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                    <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                            mnemonicParsing="false" onAction="#onExitGameAction" text="Exit Game"/>
+                </StackPane>
+                <HBox alignment="CENTER" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity"
+                      spacing="40.0">
+                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                          styleClass="error">
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        </padding>
+                        <Label fx:id="player1NameLabel" alignment="CENTER" maxHeight="-Infinity"
+                               maxWidth="-Infinity" text="Player1Name"/>
+                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Points:"/>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Lines:"
+                                   GridPane.rowIndex="1"/>
+                            <Label fx:id="player1PointsLabel" GridPane.columnIndex="1"/>
+                            <Label fx:id="player1LinesLabel" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="1"/>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Level:"
+                                   GridPane.rowIndex="2"/>
+                            <Label fx:id="p1LevelLabel" text="1" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="2"/>
+                        </GridPane>
+                        <Group>
+                            <GridPane fx:id="player1Field" maxHeight="-Infinity"
+                                      maxWidth="-Infinity" rotate="90.0" styleClass="gameField">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                </rowConstraints>
+                            </GridPane>
+                        </Group>
+                    </VBox>
+                    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                          styleClass="ready">
+                        <HBox.margin>
+                            <Insets top="1.0"/>
+                        </HBox.margin>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        </padding>
+                        <Label fx:id="player2NameLabel" alignment="CENTER" maxHeight="-Infinity"
+                               maxWidth="-Infinity" text="Player2Name"/>
+                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Points:"/>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Lines:"
+                                   GridPane.rowIndex="1"/>
+                            <Label fx:id="player2PointsLabel" GridPane.columnIndex="1"/>
+                            <Label fx:id="player2LinesLabel" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="1"/>
+                            <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Level:"
+                                   GridPane.rowIndex="2"/>
+                            <Label fx:id="p2LevelLabel" text="1" GridPane.columnIndex="1"
+                                   GridPane.rowIndex="2"/>
+                        </GridPane>
+                        <Group>
+                            <GridPane fx:id="player2Field" prefWidth="120.0" rotate="90.0"
+                                      styleClass="gameField">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                    <ColumnConstraints hgrow="NEVER" maxWidth="12.0"
+                                                       minWidth="12.0" prefWidth="12.0"/>
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                    <RowConstraints maxHeight="12.0" minHeight="12.0"
+                                                    prefHeight="12.0" vgrow="NEVER"/>
+                                </rowConstraints>
+                            </GridPane>
+                        </Group>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </VBox>
 </StackPane>

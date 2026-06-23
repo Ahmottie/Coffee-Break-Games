@@ -66,6 +66,7 @@ public class AdvancedSettings extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         ObservableList<Toggle> toggels = Layout.getToggles();
         if (!advancedSettings.isVertical()){
             toggels.get(1).setSelected(true);

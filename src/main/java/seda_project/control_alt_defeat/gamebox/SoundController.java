@@ -9,11 +9,13 @@ import java.util.HashMap;
 
 public class SoundController {
     private static SoundController instance;
-    private final HashMap<String, AudioClip> clips = new HashMap<>();
+    private final HashMap<String, Media> musicclips = new HashMap<>();
+    private final HashMap<String, AudioClip> sfxclips = new HashMap<>();
     private AudioClip looping;
     private boolean konami = false;
     private int konamiSound = 1;
     private MediaPlayer mediaPlayer;
+    private boolean muteState = false;
 
     public static SoundController getInstance() {
         if (instance == null) {
@@ -24,54 +26,44 @@ public class SoundController {
 
     //Method for sound Indicators like buttons etc.
     public void play(String name){
-        clips.  computeIfAbsent(name, key -> {
-            URL url = getClass().getResource("/Sounds/"+key+".wav");
-            return new AudioClip(url.toString());
-        });
-
-        AudioClip clip = clips.get(name);
-        if (clip != null) clip.play();
+        play(name,1.0);
     }
+
     public void play(String name,double volume){
-        clips.computeIfAbsent(name, key -> {
-            URL url = getClass().getResource("/Sounds/"+key+".wav");
+        if (muteState) return;
+        AudioClip clip = sfxclips.computeIfAbsent(name, key -> {
+            URL url = getClass().getResource("/Sounds/" + key + ".wav");
             return new AudioClip(url.toString());
         });
 
-        AudioClip clip = clips.get(name);
-        if (clip != null) clip.play(volume);
+        clip.play(volume);
     }
     //Method for background Music
     public void playLooping(String name) {
-        if(!konami) {
-            stopLooping();
-            play(name);
-            AudioClip clip = clips.get(name);
-            if (clip != null) {
-                clip.setCycleCount(AudioClip.INDEFINITE);
-                clip.play();
-                looping = clip;
-            }
-        }
+        playLooping(name,1.0);
     }
 
     public void playLooping(String name, double volume) {
-        if (!konami) {
-            stopLooping();
-            play(name,volume);
-            AudioClip clip = clips.get(name);
-            if (clip != null) {
-                clip.setCycleCount(AudioClip.INDEFINITE);
-                clip.play(volume);
-                looping = clip;
-            }
-        }
+        if (konami) return;
+
+        stopLooping();
+
+        Media media = musicclips.computeIfAbsent(name, key -> {
+            URL url = getClass().getResource("/Sounds/" + key + ".wav");
+            return new Media(url.toString());
+        });
+
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(volume);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        if (muteState) return;
+        mediaPlayer.play();
     }
 
     public void stopLooping() {
-        if (looping != null) {
-            looping.stop();
-            looping = null;
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer = null;
         }
     }
 
@@ -95,6 +87,33 @@ public class SoundController {
             }
             next();
         });
+        if (muteState) return;
         mediaPlayer.play();
+    }
+
+    public boolean getMute() {
+        return muteState;
+    }
+
+    public void setMute(boolean muteState) {
+        this.muteState = muteState;
+        if (muteState) {
+            pause();
+        }
+        else {
+            resume();
+        }
+    }
+
+    public void pause() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    public void resume() {
+        if (mediaPlayer != null) {
+            mediaPlayer.play();
+        }
     }
 }

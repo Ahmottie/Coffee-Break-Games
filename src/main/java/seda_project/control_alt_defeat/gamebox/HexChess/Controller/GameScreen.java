@@ -58,6 +58,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         applyTileColor();
         applyPiecePreviewImages();
     }

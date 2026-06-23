@@ -201,12 +201,13 @@ remaining side detects it right away. The 5-second timeout is the fallback
 for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Chess
-Pieces from: https://greenchess.net/info.php?item=downloads
-Mug from: https://www.cgtrader.com/items/3536740/download-page
-3d pieces from: https://free3d.com/3d-model/chess-19650.html
+* Pieces from: https://greenchess.net/info.php?item=downloads
+* Mug from: https://www.cgtrader.com/items/3536740/download-page
+* 3d pieces from: https://free3d.com/3d-model/chess-19650.html
 
 ## Images
 * Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
+* Mute Button: https://www.svgrepo.com/svg/469371/mute-2
 
 ## Sounds
 * Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/
@@ -237,3 +238,6 @@ Mug from: https://www.cgtrader.com/items/3536740/download-page
 * "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is roatet by 180 
 * "jeb_" -> GameScreen background has Rainbowcolors
 * "Duck" -> Pawns in Chess are replaced by Ducks
+
+## AI-Usage
+* FXML indentation

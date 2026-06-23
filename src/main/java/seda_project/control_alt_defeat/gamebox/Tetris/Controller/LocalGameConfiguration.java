@@ -29,6 +29,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
         statusLabel.setVisible(false);
 
         player1Level.getItems().clear();

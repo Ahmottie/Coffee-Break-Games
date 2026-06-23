@@ -79,6 +79,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         buildPieceLabelsMap();
         loadImages();
         setCustomStyle();

@@ -98,6 +98,7 @@ public class JoinLan extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         joinStatus.setVisible(false);
 
         yourLevel.getItems().clear();

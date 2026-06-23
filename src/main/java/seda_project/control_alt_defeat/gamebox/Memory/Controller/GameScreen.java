@@ -54,6 +54,7 @@ public class GameScreen extends Controller {
     @FXML
     private void onExitGameAction() {
         sC.play("button");
+        sC.playLooping("lobby_background",.2);
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);

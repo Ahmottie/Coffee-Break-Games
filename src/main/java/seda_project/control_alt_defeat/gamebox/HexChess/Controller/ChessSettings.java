@@ -140,6 +140,7 @@ public class ChessSettings extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         p1OriginalImages = Stream.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King, p1Duck).map(ImageView::getImage).toList();
         p2OriginalImages = Stream.of(p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King, p2Duck).map(ImageView::getImage).toList();
         p1Pieces = List.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King, p1Duck);

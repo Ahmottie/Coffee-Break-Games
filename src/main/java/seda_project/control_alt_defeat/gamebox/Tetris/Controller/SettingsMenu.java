@@ -93,6 +93,7 @@ public class SettingsMenu extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         updateKeys();
     }
 }

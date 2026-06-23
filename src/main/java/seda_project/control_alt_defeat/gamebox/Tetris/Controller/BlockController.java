@@ -43,6 +43,7 @@ public class BlockController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         BlockRegistry registry = BlockRegistry.getInstance();
         editorController = new BlockEditorController(registry);
         colorPicker.setValue(selectedColor);

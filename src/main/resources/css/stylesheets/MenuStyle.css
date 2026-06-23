@@ -289,3 +289,13 @@
 .radio-button:selected .radio .dot {
     -fx-background-color: rgba(30, 207, 207, 0.95);
 }
+
+.mute {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box,-theme-button-top , 12, 0.4, 0, 0);
+}
+
+.mute:hover {
+    -fx-opacity: 0.85;
+    -fx-effect: dropshadow(three-pass-box, -theme-button-top, 16, 0.6, 0, 0);
+}

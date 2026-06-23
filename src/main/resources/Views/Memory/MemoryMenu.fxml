@@ -10,78 +10,84 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Memory.Controller.MemoryMenu">
-    <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity">
-            <children>
-                <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Memory Game">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                    </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-                </VBox>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="495.0">
-               <children>
-                        <GridPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" vgap="3.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" percentWidth="30.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                <RowConstraints vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="Local Game" GridPane.columnSpan="2">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                    <Button mnemonicParsing="false" onAction="#onJoinAction" text="Join Game" />
-                                </StackPane>
-                                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="LAN Game" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalAction" text="Start Local Game" />
-                                </StackPane>
-                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                    <Button mnemonicParsing="false" onAction="#onHostAction" text="Host Game" />
-                                </StackPane>
-                                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                    <Button mnemonicParsing="false" onAction="#onExitAction" text="Back" />
-                                </StackPane>
-                            </children>
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                        </GridPane>
-               </children>
-            </StackPane>
-            </children>
-        </VBox>
-    </children>
+    <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0">
+        <HBox alignment="CENTER" spacing="10.0">
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+            <Region maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+            <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                </padding>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                    <font>
+                        <Font name="Arial Bold" size="24.0"/>
+                    </font>
+                </Label>
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Main Menu">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+            </VBox>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <ImageView fx:id="muteButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#changeMute" styleClass="mute">
+                    <Image url="@../../Images/others/mute.png"/>
+                </ImageView>
+            </VBox>
+        </HBox>
+
+        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="495.0">
+            <GridPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" vgap="3.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" percentWidth="30.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                    <RowConstraints vgrow="SOMETIMES" />
+                </rowConstraints>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="Local Game" GridPane.columnSpan="2">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <Button mnemonicParsing="false" onAction="#onJoinAction" text="Join Game" />
+                </StackPane>
+                <Label maxHeight="-Infinity" maxWidth="-Infinity" styleClass="text" text="LAN Game" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onLocalAction" text="Start Local Game" />
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <Button mnemonicParsing="false" onAction="#onHostAction" text="Host Game" />
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <Button mnemonicParsing="false" onAction="#onExitAction" text="Back" />
+                </StackPane>
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </padding>
+            </GridPane>
+        </StackPane>
+    </VBox>
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
         <URL value="@../../css/stylesheets/MemoryMenu.css" />
