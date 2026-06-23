@@ -500,6 +500,8 @@ public class BoardDesigner extends Controller implements Initializable {
             return false;
         }
 
+        if (validator.isKingInCheck(PlayerColor.BLACK) || validator.isKingInCheck(PlayerColor.WHITE)) return false;
+
         return !validator.checkMaterial();
     }
 }

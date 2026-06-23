@@ -137,7 +137,7 @@ public class GameEngine {
         return true;
     }
 
-    private boolean isKingInCheck(PlayerColor player) {
+    public boolean isKingInCheck(PlayerColor player) {
         List<Piece> attackers = (player == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
         List<Piece> defenders = (player == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
 
@@ -363,6 +363,7 @@ public class GameEngine {
     public boolean isGameOver() {
         return this.isGameOver;
     }
+
     public List<HexCell> getLegalMoves(Piece piece){
         HexCoord currentPos = piece.getPosition();
         List<HexCell> candidates  = getRawMoves(piece);
