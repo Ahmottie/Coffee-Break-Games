@@ -71,8 +71,14 @@ public class BlockController extends Controller implements Initializable {
         cell.setOnMouseClicked(e -> {
             boolean[][] grid = editorController.getGrid();
             boolean alreadyActive = grid[row][col];
-
-            if (alreadyActive || editorController.checkEmpty() || isAdjacentToActive(row, col)) {
+            if (alreadyActive) {
+                if (!editorController.isRemovalSafe(row, col)) return;
+                editorController.toggleCell(row, col);
+                updateCellVisual(cell, row, col);
+                updateAdjacent(row, col);
+                updateAdjacentCellsVisual(row, col);
+            }
+            else if (editorController.checkEmpty() || isAdjacentToActive(row, col)) {
                 editorController.toggleCell(row, col);
                 updateCellVisual(cell, row, col);
                 updateAdjacent(row, col);

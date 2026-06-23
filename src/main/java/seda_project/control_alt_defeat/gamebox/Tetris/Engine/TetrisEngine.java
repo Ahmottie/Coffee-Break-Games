@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TetrisEngine {
     private Board p1Board;
@@ -56,12 +59,10 @@ public class TetrisEngine {
     private final List<Integer> p1FastEffects = new ArrayList<>();
     private final List<Integer> p2FastEffects = new ArrayList<>();
 
-    private int p1RotationDelayCounter;
-    private int p2RotationDelayCounter;
-    private boolean p1RotationDelayCheck;
-    private boolean p2RotationDelayCheck;
-    private boolean p1RotationLocked;
-    private boolean p2RotationLocked;
+    private static final long ROTATION_DELAY_MS = 200;
+
+    private long p1RotationDelayExpiry;
+    private long p2RotationDelayExpiry;
 
     // Power-up mechanics
     private final List<PowerUp> activePowerUps = new CopyOnWriteArrayList<>();
@@ -74,6 +75,13 @@ public class TetrisEngine {
     private List<PowerUpType> possiblePowerUps;
 
     private boolean isStopped = false;
+
+    private final ScheduledExecutorService scheduler =
+            Executors.newSingleThreadScheduledExecutor(r -> {
+                Thread t = new Thread(r, "tetris-rotation-delay");
+                t.setDaemon(true);
+                return t;
+            });
 
     public TetrisEngine(String p1Name, String p2Name, int p1Level, int p2Level, BlockRegistry registry, TetrisAdvancedSettings advancedSettings) {
         this.p1Name = p1Name;
@@ -319,28 +327,35 @@ public class TetrisEngine {
                 if (!board.isValidPosition(block, otherBlock)) block.moveLeft();
             }
             case "ROTATE" -> {
-                if (playerNum == 1) {
-                    if (p1RotationLocked && p1RotationDelayCheck) p1RotationLocked = false;
-                    else {
-                        p1RotationLocked = true;
-                        if (p1RotationDelayCounter > 0) p1RotationDelayCounter--;
-                        else p1RotationDelayCheck = false;
-                        block.rotateClockwise();
-                        if (!board.isValidPosition(block, otherBlock)) block.rotateCounterClockwise();
-                    }
+                boolean delayActive = (playerNum == 1)
+                        ? System.currentTimeMillis() < p1RotationDelayExpiry
+                        : System.currentTimeMillis() < p2RotationDelayExpiry;
+
+                if (delayActive) {
+                    scheduler.schedule(
+                            () -> performRotation(playerNum, blockIndex),
+                            ROTATION_DELAY_MS, TimeUnit.MILLISECONDS
+                    );
                 } else {
-                    if (p2RotationLocked && p2RotationDelayCheck) p2RotationLocked = false;
-                    else {
-                        p2RotationLocked = true;
-                        if (p2RotationDelayCounter > 0) p2RotationDelayCounter--;
-                        else p2RotationDelayCheck = false;
-                        block.rotateClockwise();
-                        if (!board.isValidPosition(block, otherBlock)) block.rotateCounterClockwise();
-                    }
+                    performRotation(playerNum, blockIndex);
                 }
             }
             case "DROP" -> applyGravity(playerNum, blockIndex, board);
         }
+        listeners.forEach(l -> l.onBlockMovement(getSnapshot(), playerNum));
+    }
+
+    private synchronized void performRotation(int playerNum, int blockIndex) {
+        if (isGameOver || isStopped) return;
+        Block[] activeBlocks = (playerNum == 1) ? p1ActiveBlocks : p2ActiveBlocks;
+        Block block = activeBlocks[blockIndex];
+        if (block == null) return;
+        Block other = isTwoBlockMode ? activeBlocks[(blockIndex + 1) % 2] : null;
+        Board board = (playerNum == 1) ? p1Board : p2Board;
+
+        block.rotateClockwise();
+        if (!board.isValidPosition(block, other)) block.rotateCounterClockwise();
+
         listeners.forEach(l -> l.onBlockMovement(getSnapshot(), playerNum));
     }
 
@@ -468,27 +483,15 @@ public class TetrisEngine {
                         break;
                     }
                     case SELFROTATIONDELAY: {
-                        if (playerNum == 1) {
-                            p1RotationDelayCounter += 10;
-                            p1RotationDelayCheck = true;
-                            p1RotationLocked = true;
-                        } else {
-                            p2RotationDelayCounter += 10;
-                            p2RotationDelayCheck = true;
-                            p2RotationLocked = true;
-                        }
+                        long expiry = System.currentTimeMillis() + 10_000;
+                        if (playerNum == 1) p1RotationDelayExpiry = expiry;
+                        else p2RotationDelayExpiry = expiry;
                         break;
                     }
                     case OPPONENTROTATIONDELAY: {
-                        if (playerNum == 1) {
-                            p2RotationDelayCounter += 10;
-                            p2RotationDelayCheck = true;
-                            p2RotationLocked = true;
-                        } else {
-                            p1RotationDelayCounter += 10;
-                            p1RotationDelayCheck = true;
-                            p1RotationLocked = true;
-                        }
+                        long expiry = System.currentTimeMillis() + 10_000;
+                        if (playerNum == 1) p2RotationDelayExpiry = expiry;
+                        else p1RotationDelayExpiry = expiry;
                         break;
                     }
                     case SWAPBOARDS:{
