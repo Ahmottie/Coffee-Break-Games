@@ -428,9 +428,18 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             Stage promotionStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/PromotionStage.fxml"));
             Parent root = loader.load();
-            promotionStage.setScene(new Scene(root));
-            promotionStage.setTitle("Promotion Stage");
+            Stage stage = (Stage) header.getScene().getWindow();
+            Scene s = new Scene(root);
+            s.setFill(Color.TRANSPARENT);
+            promotionStage.setScene(s);
+            promotionStage.initStyle(StageStyle.TRANSPARENT);
             promotionStage.initModality(Modality.APPLICATION_MODAL);
+
+            promotionStage.setWidth(245);
+            promotionStage.setHeight(156);
+            promotionStage.setX(stage.getX() + stage.getWidth() / 2 - promotionStage.getWidth() / 2);
+            promotionStage.setY(stage.getY() + stage.getHeight() / 2 - promotionStage.getHeight() / 2);
+
             promotionStage.show();
 
             Promotion controller = loader.getController();
@@ -645,12 +654,13 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             Stage proposalStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/DrawProposal.fxml"));
             Parent root = loader.load();
-            proposalStage.setScene(new Scene(root));
-            proposalStage.initStyle(StageStyle.UNDECORATED);
-            proposalStage.setTitle("Promotion Stage");
+            Scene s = new Scene(root);
+            s.setFill(Color.TRANSPARENT);
+            proposalStage.setScene(s);
+            proposalStage.initStyle(StageStyle.TRANSPARENT);
             proposalStage.initModality(Modality.APPLICATION_MODAL);
-            proposalStage.setWidth(300);
-            proposalStage.setHeight(93);
+            proposalStage.setWidth(321);
+            proposalStage.setHeight(114);
             proposalStage.setX(stage.getX() + stage.getWidth() / 2 - proposalStage.getWidth() / 2);
             proposalStage.setY(stage.getY() + stage.getHeight() / 2 - proposalStage.getHeight() / 2);
             proposalStage.show();

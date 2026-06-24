@@ -125,6 +125,7 @@ public class Configuration {
             Parent root = loader.load();
             var controller = loader.getController();
             Scene newScene = new Scene(root);
+            newScene.setFill(Color.TRANSPARENT);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);
             stage.show();

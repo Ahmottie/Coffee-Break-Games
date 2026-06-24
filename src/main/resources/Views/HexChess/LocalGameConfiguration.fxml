@@ -6,12 +6,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 
-<?import javafx.scene.layout.HBox?>
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.LocalGameConfiguration">
     <VBox alignment="TOP_CENTER">
         <fx:include source="../TopBar.fxml" />
@@ -41,13 +41,12 @@
                </padding>
             </Label>
                 <HBox alignment="CENTER_LEFT">
-                    <Label text="Is Bot: "/>
-                    <ToggleSwitch fx:id="isP1Bot" maxHeight="-Infinity" maxWidth="-Infinity"/>
+                    <Label text="Is Bot: " />
+                    <ToggleSwitch fx:id="isP1Bot" maxHeight="-Infinity" maxWidth="-Infinity" />
                 </HBox>
                 <HBox alignment="CENTER_LEFT">
-                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 1 Name: "/>
-                    <TextField fx:id="player1TF" maxHeight="-Infinity" maxWidth="-Infinity"
-                               promptText="Insert Player 1 Name "/>
+                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 1 Name: " />
+                    <TextField fx:id="player1TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 1 Name " />
                 </HBox>
             <Label styleClass="normalText" text="Player 2">
                <VBox.margin>
@@ -58,13 +57,12 @@
                </padding>
             </Label>
                 <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="215.0">
-                    <Label text="Is Bot: "/>
-                    <ToggleSwitch fx:id="isP2Bot" maxHeight="-Infinity" maxWidth="-Infinity"/>
+                    <Label text="Is Bot: " />
+                    <ToggleSwitch fx:id="isP2Bot" maxHeight="-Infinity" maxWidth="-Infinity" />
                 </HBox>
                 <HBox alignment="CENTER_LEFT">
-                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 2 Name"/>
-                    <TextField fx:id="player2TF" maxHeight="-Infinity" maxWidth="-Infinity"
-                               promptText="Insert Player 2 Name"/>
+                    <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 2 Name" />
+                    <TextField fx:id="player2TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 2 Name" />
                 </HBox>
                 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
                     <Button mnemonicParsing="false" onAction="#onCustomBoardAction" text="Use Custom Board">
