@@ -4,6 +4,12 @@
     -theme-button-top: #71bdff;
     -theme-button-bottom: #3d7db8;
     -theme-panel-bg: rgba(10, 20, 40, 0.72);
+
+    -fx-background-color: transparent;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: #3a3a3c;
+    -fx-border-width: 1px;
 }
 
 .box {
@@ -166,17 +172,62 @@
     -fx-background-radius: 4px;
 }
 
+.combo-box-popup .list-view,
 .scroller {
     -fx-border-color: rgba(30, 207, 207, 0.3);
     -fx-border-width: 2px;
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
+}
+
+.scroller{
     -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-view{
+    -fx-background-color: -theme-panel-bg;
+}
+
+.combo-box-popup .list-view .list-cell{
+    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-background-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 7px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.scrollItem {
+    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-background-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 7px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+    -fx-max-width: Infinity;
+    -fx-padding: 9 14 9 14;
+}
+.combo-box-popup .list-view .list-cell:hover,
+.scrollItem:hover {
+    -fx-background-color: rgba(30, 207, 207, 0.10);
+    -fx-border-color: rgba(30, 207, 207, 0.20);
+    -fx-text-fill: rgba(200, 255, 255, 0.95);
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.scrollItem .selectedItem {
+    -fx-background-color: rgba(30, 180, 140, 0.22);
+    -fx-border-color: rgba(77, 235, 184, 0.70);
+    -fx-text-fill: rgba(160, 255, 220, 1.0);
+    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
 }
 
 .scroller > .viewport {
     -fx-background-color: transparent;
 }
+
 
 .scroller .track,
 .combo-box-popup .scroll-bar:vertical .track {
@@ -240,31 +291,13 @@
     -fx-background-radius: 4px;
 }
 
-.combo-box > .text-field {
+.combo-box > .comboItem {
     -fx-prompt-text-fill: -theme-text-primary;
 }
 
 .combo-box:focused {
     -fx-border-color: -theme-accent-cyan;
 }
-
-.combo-box-popup .list-view {
-    -fx-background-color: rgba(12, 24, 45, 0.98);
-    -fx-border-color: rgba(30, 207, 207, 0.5);
-    -fx-border-width: 1px;
-    -fx-background-radius: 4px;
-    -fx-border-radius: 4px;
-}
-
-.combo-box-popup .list-cell {
-    -fx-background-color: transparent;
-}
-
-.combo-box-popup .list-view .list-cell:filled:hover {
-    -fx-background-color: transparent;
-}
-
-
 
 .radio-button .radio {
     -fx-background-color: transparent;
@@ -298,4 +331,7 @@
 .mute:hover {
     -fx-opacity: 0.85;
     -fx-effect: dropshadow(three-pass-box, -theme-button-top, 16, 0.6, 0, 0);
+}
+.close {
+
 }

@@ -26,7 +26,7 @@ public class AdvancedSettings extends Controller implements Initializable {
     private CheckBox swapBoards, swapBlocks,portals, opponentSlowDown, opponentSpeedUp, opponentDelayRotation,selfSlowDown,selfDelayRotation,radialBomb,columnBomb;
 
     @FXML
-    private IntField itemSpawnRate, itemDespawnTime;
+    private IntField itemSpawnRate, itemDespawnTime, bombChance;
 
     @FXML
     private ToggleGroup Layout;
@@ -47,7 +47,7 @@ public class AdvancedSettings extends Controller implements Initializable {
     @FXML
     protected void onSaveAction(){
         sC.play("button");
-        advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue());
+        advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue(),bombChance.getValue());
 
         advancedSettings.setSwapBoards(swapBoards.isSelected());
         advancedSettings.setSwapBlocks(swapBlocks.isSelected());
@@ -85,6 +85,7 @@ public class AdvancedSettings extends Controller implements Initializable {
 
         itemSpawnRate.setText((advancedSettings.getItemSpawnRate()/1000)+"");
         itemDespawnTime.setText((advancedSettings.getItemDespawnRate()/1000)+"");
+        bombChance.setText(String.valueOf(advancedSettings.getBombChance()));
     }
 
     public void handHostData(String yourName, int hostLevel) {

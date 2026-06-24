@@ -208,6 +208,7 @@ for ungraceful disconnects (cable pulled, process force-killed).
 ## Images
 * Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
 * Mute Button: https://www.svgrepo.com/svg/469371/mute-2
+* Close Icon: https://www.svgrepo.com/svg/522388/close?edit=true
 
 ## Sounds
 * Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/

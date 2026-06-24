@@ -1,75 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<!-- ... existing imports ... -->
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardSelection">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardSelection">
     <stylesheets>
-        <URL value="@../../css/stylesheets/fontstyle.css"/>
-        <URL value="@../../css/stylesheets/MenuStyle.css"/>
-        <URL value="@../../css/stylesheets/HexChessMenu.css"/>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>
-    <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0">
-        <HBox alignment="CENTER" spacing="10.0">
-            <VBox.margin>
-                <Insets top="10.0"/>
-            </VBox.margin>
-            <Region maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+    <VBox alignment="TOP_CENTER">
+        <fx:include source="../TopBar.fxml" />
             <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
                 <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                 </padding>
                 <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
                     <font>
-                        <Font name="Arial Bold" size="24.0"/>
+                        <Font name="Arial Bold" size="24.0" />
                     </font>
                 </Label>
-                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Main Menu">
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Hex Chess">
                     <font>
-                        <Font size="18.0"/>
+                        <Font size="18.0" />
                     </font>
                 </Label>
+            <Label text="Board Selection" />
             </VBox>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-                <ImageView fx:id="muteButton" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" onMouseClicked="#changeMute" preserveRatio="true" styleClass="mute">
-                    <Image url="@../../Images/others/mute.png"/>
-                </ImageView>
-            </VBox>
-        </HBox>
+
         <StackPane prefHeight="475.0">
             <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" StackPane.alignment="CENTER">
                 <StackPane.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </StackPane.margin>
                 <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="300.0" maxWidth="-Infinity" styleClass="scroller" vbarPolicy="ALWAYS">
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </VBox.margin>
-                    <VBox fx:id="scrollContent" alignment="CENTER_LEFT" maxHeight="300.0" maxWidth="-Infinity"/>
+                    <VBox fx:id="scrollContent" alignment="CENTER_LEFT" maxHeight="300.0" maxWidth="-Infinity" />
                 </ScrollPane>
                 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onBackAction" text="Cancel"/>
+                        <Button mnemonicParsing="false" onAction="#onBackAction" text="Cancel" />
                     </StackPane>
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onUseAction" text="Use"/>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onUseAction" text="Use" />
                     </StackPane>
                     <StackPane layoutX="101.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onDeleteAction" text="Delete"/>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onDeleteAction" text="Delete" />
                     </StackPane>
                 </HBox>
             </VBox>

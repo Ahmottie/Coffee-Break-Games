@@ -21,6 +21,8 @@ public class TetrisEngine {
     private ArrayList<Block> p1NextActiveBlock;
     private ArrayList<Block> p2NextActiveBlock;
 
+    private int bombChance;
+
     private int p1Score;
     private int p2Score;
 
@@ -103,6 +105,8 @@ public class TetrisEngine {
         this.p2Level = p2Level;
 
         this.isTwoBlockMode = advancedSettings.isTwoBlocks();
+
+        this.bombChance = advancedSettings.getBombChance();
 
         POWERUP_INTERVAL_MS = advancedSettings.getItemSpawnRate();
         POWERUP_LIFESPAN_MS = advancedSettings.getItemDespawnRate();
@@ -730,7 +734,7 @@ public class TetrisEngine {
     }
 
     private void spawnNewBlock(int playerNum, int index) {
-        boolean bomb = !possibleBombs.isEmpty() && RANDOM.nextInt(1, 100) > 70;
+        boolean bomb = !possibleBombs.isEmpty() && RANDOM.nextInt(1, 100) > 100-bombChance;
         if (bomb){
             BombType selectedType = possibleBombs.get(RANDOM.nextInt(0, possibleBombs.size()));
             BombBlock newBombBlock = new BombBlock(selectedType);

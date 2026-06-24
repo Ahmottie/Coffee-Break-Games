@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.slf4j.Logger;
@@ -31,22 +32,20 @@ public class GameBox extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Coffee Break Game");
         stage.centerOnScreen();
         stage.show();
-        stage.setOnCloseRequest(_ -> cleanExit());
         stage.setMinHeight(600);
         stage.setMinWidth(800);
         stage.resizableProperty().setValue(Boolean.FALSE);
-
         stage.getIcons().add(new Image(GameBox.class.getResource("/Images/others/Application_Icon.png").toExternalForm()));
         String address = "/Views/StartingScreen.fxml";
         FXMLLoader loader = new FXMLLoader(GameBox.class.getResource(address));
         vS.addFxmlLoaders(address);
         sC.playLooping("lobby_background",.2);
         var mainMenuScene = new Scene(loader.load());
-
+        mainMenuScene.setFill(Color.TRANSPARENT);
         konamiListener(stage);
         stage.setScene(mainMenuScene);
         stage.sizeToScene();

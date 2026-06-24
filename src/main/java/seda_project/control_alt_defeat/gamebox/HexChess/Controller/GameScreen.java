@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
@@ -639,12 +640,19 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private void drawProposal(int proposing){
         sC.play("button");
         try {
+            Stage stage = (Stage) header.getScene().getWindow();
+
             Stage proposalStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/DrawProposal.fxml"));
             Parent root = loader.load();
             proposalStage.setScene(new Scene(root));
+            proposalStage.initStyle(StageStyle.UNDECORATED);
             proposalStage.setTitle("Promotion Stage");
             proposalStage.initModality(Modality.APPLICATION_MODAL);
+            proposalStage.setWidth(300);
+            proposalStage.setHeight(93);
+            proposalStage.setX(stage.getX() + stage.getWidth() / 2 - proposalStage.getWidth() / 2);
+            proposalStage.setY(stage.getY() + stage.getHeight() / 2 - proposalStage.getHeight() / 2);
             proposalStage.show();
 
             DrawProposal controller = loader.getController();

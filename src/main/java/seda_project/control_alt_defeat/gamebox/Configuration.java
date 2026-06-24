@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Configuration {
@@ -82,6 +83,7 @@ public class Configuration {
             vS.addFxmlLoaders(address);
             var controller = loader.getController();
             Scene newScene = new Scene(root);
+            newScene.setFill(Color.TRANSPARENT);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);
             stage.sizeToScene();

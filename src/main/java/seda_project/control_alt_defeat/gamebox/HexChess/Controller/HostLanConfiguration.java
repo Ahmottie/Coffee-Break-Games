@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
+import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 public class HostLanConfiguration  extends Controller {
     private String boardState;
@@ -60,4 +61,6 @@ public class HostLanConfiguration  extends Controller {
 
         controller.handNames(hostNameTF.getText(),null);
     }
+
+
 }
