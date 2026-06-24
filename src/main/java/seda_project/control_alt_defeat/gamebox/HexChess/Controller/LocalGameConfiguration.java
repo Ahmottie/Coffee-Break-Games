@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PlayerColor;
 
 public class LocalGameConfiguration extends Controller {
     private String boardState;
@@ -33,6 +34,12 @@ public class LocalGameConfiguration extends Controller {
             GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
             GameEngine gameEngine = new GameEngine();
             controller.setGameEngine(gameEngine);
+
+            if (player2Name.equalsIgnoreCase("Bot")) {
+                controller.setBotMode(true, PlayerColor.BLACK);
+            } else {
+                controller.setBotMode(false, null);
+            }
             if (c.checkFlip(player1Name,player2Name)){
                 controller.flip();
             }
