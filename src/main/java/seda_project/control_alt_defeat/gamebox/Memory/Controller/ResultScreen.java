@@ -2,13 +2,10 @@ package seda_project.control_alt_defeat.gamebox.Memory.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import seda_project.control_alt_defeat.gamebox.Configuration;
-import seda_project.control_alt_defeat.gamebox.ViewStack;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.Decks;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
@@ -17,26 +14,21 @@ import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
 import seda_project.control_alt_defeat.gamebox.network.Session;
+import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
-public class ResultScreen {
-    ViewStack vS = ViewStack.getInstance();
-    Configuration c = Configuration.getInstance();
+public class ResultScreen extends Controller {
 
     String player1Name,player2Name, pointsPlayer1, pointsPlayer2;
     int tupleSize,deckSize, winner;
-
-    @FXML
-    private VBox header;
-
+    private boolean disconnected = false;
     @FXML
     private Label matchSizeLabel, deckSizeLabel,looserLabel,winnerLabel, positionWinnerLabel, positionLooserLabel, winnerPointsLabel,looserPointsLabel;
 
     @FXML private Button playAgainButton;
 
-    private boolean disconnected = false;
-
     @FXML
     private void onExitGameAction(){
+        sC.play("button");
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -44,6 +36,7 @@ public class ResultScreen {
 
     @FXML
     private void onPlayAgainAction() {
+        sC.play("button");
         NetworkLayer net = Session.current().network;
         if (net == null) {
             // Local play: same as before — fresh game with same names + K + deck.
@@ -67,7 +60,13 @@ public class ResultScreen {
     private void startNewLocalGame() {
         GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
         controller.passMemoryData(player1Name, player2Name, tupleSize, deckSize);
-        controller.startGame(player1Name, player2Name);
+        controller.startGame();
+        if (flipped){
+            controller.flip();
+        }
+        if (rainbowed){
+            controller.rainbow();
+        }
     }
 
     private void startNewGameWithSetup(GameConfig cfg, GameSetup setup) {
@@ -75,7 +74,13 @@ public class ResultScreen {
         Session.current().setup  = setup;
         GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
         controller.passLanData();
-        controller.startGame(cfg.player1Name(), cfg.player2Name());
+        controller.startGame();
+        if (flipped){
+            controller.flip();
+        }
+        if (rainbowed){
+            controller.rainbow();
+        }
 
     }
 

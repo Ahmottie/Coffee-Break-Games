@@ -17,5 +17,9 @@
 }
 
 .playground {
-    -fx-background-color: #0a1a2e;
+    -fx-background-color: radial-gradient(focus-angle 0.5deg, focus-distance 0.0% , center 50.0% 50.0%, radius 80.0%, #0080ff 0.0%, #1a3a5a 50.7895%, #0a1a2e 100.0%);
+}
+
+.split-pane-divider {
+    -fx-background-color: transparent;
 }

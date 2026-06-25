@@ -7,17 +7,12 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HostLan extends Controller implements Initializable {
-
-    @FXML
-    private VBox header;
-
     @FXML
     private RadioButton smallGame,mediumGame,largeGame;
 
@@ -35,6 +30,7 @@ public class HostLan extends Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
         statusLabel.setVisible(false);
 
         matchSize.getItems().clear();
@@ -43,6 +39,7 @@ public class HostLan extends Controller implements Initializable {
         }
         matchSize.getSelectionModel().select(2);
     }
+
     @FXML
     private void calcDeckSize(){
         int tupleSize = matchSize.getSelectionModel().getSelectedItem();
@@ -50,14 +47,15 @@ public class HostLan extends Controller implements Initializable {
     }
 
     @FXML
-    private void onBackAction(){
+    protected void onBackAction(){
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
     }
 
     @FXML
-    private void onSearchAction(){
-
+    protected void onSearchAction(){
+        sC.play("button");
         RadioButton selected = (RadioButton) DeckSizeGroup.getSelectedToggle();
 
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
@@ -79,12 +77,15 @@ public class HostLan extends Controller implements Initializable {
                 s.setup  = setup;
 
                 WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Memory/WaitForOpponent.fxml",header,vS);
-                boolean host = true;
-                controller.passHostData(host, yourName, tupleSize, deckSize);
+                controller.passHostData(yourName, tupleSize, deckSize);
             } else {
                 statusLabel.setVisible(true);
                 statusLabel.setText("You need to select a deck Size!");
+                sC.play("error");
             }
+        }
+        else{
+            sC.play("error");
         }
 
     }

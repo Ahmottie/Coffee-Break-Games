@@ -13,6 +13,21 @@
     -fx-cursor: hand;
 }
 
-.card:hover{
-    -fx-effect: dropshadow(gaussian, #ffffff, 13, 0, 5, 5);
+.card {
+    -fx-border-color: rgba(255, 255, 255, 0.25);
+    -fx-border-radius: 20px;
+    -fx-border-width: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0.0, 0, 5);
+    -fx-cursor: hand;
+}
+
+.card:hover {
+    -fx-border-color: #1ecfcf;
+    -fx-effect: dropshadow(three-pass-box, rgba(30, 207, 207, 0.6), 15, 0.0, 0, 0);
+}
+
+.card:disabled {
+    -fx-opacity: 1.0;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 6, 0.0, 0, 2);
 }

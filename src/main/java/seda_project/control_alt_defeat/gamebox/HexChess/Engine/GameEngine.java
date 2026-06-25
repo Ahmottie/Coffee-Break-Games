@@ -110,7 +110,7 @@ public class GameEngine {
 
 
         incrementCounter(pieceToMove, capturedPiece);
-        if (checkRemis()) {
+        if (checkRemis(e)) {
             isGameOver = true;
             listeners.forEach(l ->l.remis());
             return true;
@@ -137,7 +137,7 @@ public class GameEngine {
         return true;
     }
 
-    private boolean isKingInCheck(PlayerColor player) {
+    public boolean isKingInCheck(PlayerColor player) {
         List<Piece> attackers = (player == PlayerColor.WHITE) ? board.blackPieces() : board.whitePieces();
         List<Piece> defenders = (player == PlayerColor.WHITE) ? board.whitePieces() : board.blackPieces();
 
@@ -184,7 +184,7 @@ public class GameEngine {
 
         listeners.forEach(l -> l.onPromoted(coordId, promoted));
 
-        if (checkRemis()) {
+        if (checkRemis(false)) {
             isGameOver = true;
             listeners.forEach(l ->l.remis());
         }
@@ -205,20 +205,20 @@ public class GameEngine {
         switchTurn(false);
     }
 
-    private boolean checkRemis() {
-        if (halfmove == 100){
+    private boolean checkRemis(boolean e) {
+        if (halfmove >= 100){
             return true;
         }
         if (checkMaterial()){
             return true;
         }
         String notation = board.createNotation(currentTurn);
-        if (enpassentPending) {
+        if (e) {
             notation = notation + " " + enpassentCoordGhost.transformHextoId();
-        }
-        else {
+        } else {
             notation = notation + " -";
         }
+
         if (fenMap.get(notation)!= null){
             int amount = fenMap.get(notation);
             if (amount == 2){
@@ -363,6 +363,7 @@ public class GameEngine {
     public boolean isGameOver() {
         return this.isGameOver;
     }
+
     public List<HexCell> getLegalMoves(Piece piece){
         HexCoord currentPos = piece.getPosition();
         List<HexCell> candidates  = getRawMoves(piece);
@@ -536,7 +537,8 @@ public class GameEngine {
     }
 
     public void setupInitalState(String boardState){
-        currentTurn = boardState.split(" ")[1].equals("1") ? PlayerColor.WHITE : PlayerColor.BLACK;
+        String turnIndicator = boardState.split(" ")[1];
+        currentTurn = (turnIndicator.equals("1") || turnIndicator.equalsIgnoreCase("w")) ? PlayerColor.WHITE : PlayerColor.BLACK;
         String[] rows = boardState.split(" ")[0].split("/");
 
         Pattern p = Pattern.compile("[PRNBQKprnbqk]|\\d+");
@@ -551,7 +553,6 @@ public class GameEngine {
                     int gap = Integer.parseInt(token);
                     pos += gap;
                 } else {
-                    //String piece = getPiece(token);
                     String rowName = String.valueOf((char) ('a' + pos+ROW_OFFSETS[i]));
                     String colName = String.valueOf(i+1);
                     String cell = rowName + colName;
@@ -571,6 +572,14 @@ public class GameEngine {
                         default -> new Piece(PieceType.PAWN, PlayerColor.WHITE);
                     };
                     setupPiece(cell, piece);
+
+                    if (piece.getType() == PieceType.PAWN) {
+                        boolean onStart = (piece.getPlayer() == PlayerColor.WHITE)
+                                ? board.WHITE_PAWN_STARTING.stream().anyMatch(c -> c.col == piece.getPosition().col && c.row == piece.getPosition().row)
+                                : board.BLACK_PAWN_STARTING.stream().anyMatch(c -> c.col == piece.getPosition().col && c.row == piece.getPosition().row);
+                        piece.setMoved(!onStart);
+                    }
+
                     pos ++;
                 }
             }

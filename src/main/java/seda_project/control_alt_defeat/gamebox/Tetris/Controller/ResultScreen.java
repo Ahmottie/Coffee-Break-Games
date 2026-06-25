@@ -22,11 +22,8 @@ public class ResultScreen extends Controller {
     TetrisEngine engine;
     private NetworkLayer network;
     private boolean disconnected = false;
-
     private int initP1Level,initP2Level;
 
-    @FXML
-    private VBox header;
 
     @FXML
     private Label PointsWinnerLabel, PointsLoserLabel, LinesWinnerLabel, LinesLoserLabel, positionLabel1, positionLabel2,NameWinnerLabel, NameLoserLabel;
@@ -36,6 +33,7 @@ public class ResultScreen extends Controller {
 
     @FXML
     protected void onPlayAgainAction(){
+        sC.play("button");
         Session s = Session.current();
 
         // Local mode so original behaviour fresh engine and game
@@ -47,8 +45,14 @@ public class ResultScreen extends Controller {
                     ? "/Views/Tetris/GameScreen.fxml"
                     : "/Views/Tetris/GameScreenHorizontal.fxml";
             GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-            controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,false, fresh);
+            controller.create(state.p1Name(), state.p2Name(), initP1Level,initP2Level,fresh);
             controller.setInitialLevels(initP1Level,initP2Level);
+            if (flipped){
+                controller.flip();
+            }
+            if (rainbowed){
+                controller.rainbow();
+            }
             return;
         }
 
@@ -65,6 +69,9 @@ public class ResultScreen extends Controller {
 
     @FXML
     protected void onExitGameAction(){
+        sC.play("button");
+        sC.stopLooping();
+        sC.playLooping("lobby_background",.2);
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -134,12 +141,17 @@ public class ResultScreen extends Controller {
                 ? "/Views/Tetris/GameScreen.fxml"
                 : "/Views/Tetris/GameScreenHorizontal.fxml";
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-
+        if (flipped){
+            controller.flip();
+        }
+        if (rainbowed){
+            controller.rainbow();
+        }
         if (s.isHost) {
-            controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel,true, engineForHost);
+            controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel, engineForHost);
             controller.attachHostNetworkBridge(s.network);
         } else {
-            controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel,true, engineForHost);
+            controller.create(s.peerName, s.myName, s.peerLevel,s.myLevel, engineForHost);
             controller.attachClientNetworkBridge(s.network);
         }
     }

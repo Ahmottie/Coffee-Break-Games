@@ -32,7 +32,7 @@ public class JoinLan extends Controller implements Initializable {
     private Set<String> shownHostIps = new HashSet<>();
 
     @FXML
-    private VBox header, scrollElements;
+    private VBox scrollElements;
 
     @FXML
     private TextField joinPlayerNameTF;
@@ -42,12 +42,15 @@ public class JoinLan extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         c.backScene(header,vS);
     }
     @FXML
     protected void onConnectAction() {
+        sC.play("button");
         if (selectedHost == null){
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Select a Game to join!");
             return;
         }
@@ -55,6 +58,7 @@ public class JoinLan extends Controller implements Initializable {
         String yourName = c.checkNameInput(joinPlayerNameTF.getText(),2);
         if (!c.checkNameLength(yourName,2,joinStatus)) {
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Your name cant be longer than 16 characters");
             return;
         }
@@ -75,6 +79,7 @@ public class JoinLan extends Controller implements Initializable {
             controller.passJoinData(yourName, ad.ipAddress());
         } catch (Exception e) {
             joinStatus.setVisible(true);
+            sC.play("error");
             joinStatus.setText("Could not connect: " + e.getMessage());
         }
     }
@@ -164,8 +169,8 @@ public class JoinLan extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         joinStatus.setVisible(false);
-
         startDiscovery();
     }
 

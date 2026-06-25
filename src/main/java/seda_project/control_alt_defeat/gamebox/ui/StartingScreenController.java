@@ -11,19 +11,23 @@ public class StartingScreenController extends Controller {
 
     @FXML
     public void onExitAction() {
+        sC.play("button");
         GameBox.cleanExit();
     }
     @FXML
     public void onMemoryAction() {
+        sC.play("button");
         c.changeScene("/Views/Memory/MemoryMenu.fxml", header, vS);
     }
     @FXML
     public void onTetrisAction() {
+        sC.play("button");
         c.changeScene("/Views/Tetris/TetrisMenu.fxml", header, vS);
     }
 
     @FXML
     protected void onHexChessAction(){
+        sC.play("button");
         c.changeScene("/Views/HexChess/ChessMenu.fxml", header, vS);
     }
 }

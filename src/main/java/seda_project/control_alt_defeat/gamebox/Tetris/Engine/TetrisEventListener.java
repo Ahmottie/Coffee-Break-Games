@@ -16,4 +16,7 @@ public interface TetrisEventListener {
     default void clearPowerUps(){}
     default void onBoardSizeChange(int playerNum,int linesCleared,TetrisEngine.GameState snapshot) {}
     default void changeTickSpeed(int playerNum, long newTickSpeed) {}
+    default void radialBomb() {}
+    default void lockSound() {}
+    default void columnBomb() {}
 }

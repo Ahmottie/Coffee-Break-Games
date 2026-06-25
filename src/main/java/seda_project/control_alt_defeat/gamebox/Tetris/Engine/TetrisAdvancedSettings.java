@@ -8,6 +8,7 @@ public class TetrisAdvancedSettings implements Serializable {
     private boolean vertical = true;
     private long itemSpawnRate = 30000;
     private long itemDespawnRate = 7000;
+    private int bombChance = 70;
     private boolean swapBoards = true;
     private boolean swapBlocks = false;
     private boolean portals = false;
@@ -44,9 +45,10 @@ public class TetrisAdvancedSettings implements Serializable {
     public void setColumnBomb(boolean columnBomb) { this.columnBomb = columnBomb; }
     public void setBoardChange(boolean isBoardChange) { this.isBoardChange = isBoardChange; }
 
-    public void saveIntSettings(int itemSpawnRate, int itemDespawnRate){
+    public void saveIntSettings(int itemSpawnRate, int itemDespawnRate, int bombChance){
         this.itemDespawnRate = itemDespawnRate* 1000L;
         this.itemSpawnRate = itemSpawnRate* 1000L;
+        this.bombChance = bombChance;
     }
 
     public boolean isVertical() {
@@ -60,6 +62,8 @@ public class TetrisAdvancedSettings implements Serializable {
     public long getItemDespawnRate() {
         return itemDespawnRate;
     }
+
+    public int getBombChance() { return bombChance; }
 
     public boolean isSwapBoards() {
         return swapBoards;

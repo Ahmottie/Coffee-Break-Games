@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.IntField;
+import seda_project.control_alt_defeat.gamebox.ui.Toast;
 import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 import java.net.URL;
@@ -25,10 +26,7 @@ public class AdvancedSettings extends Controller implements Initializable {
     private CheckBox swapBoards, swapBlocks,portals, opponentSlowDown, opponentSpeedUp, opponentDelayRotation,selfSlowDown,selfDelayRotation,radialBomb,columnBomb;
 
     @FXML
-    private IntField itemSpawnRate, itemDespawnTime;
-
-    @FXML
-    private VBox header;
+    private IntField itemSpawnRate, itemDespawnTime, bombChance;
 
     @FXML
     private ToggleGroup Layout;
@@ -38,6 +36,7 @@ public class AdvancedSettings extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         var controller = c.backScene(header,vS);
         if (controller instanceof HostLan hL){
             hL.handPlayerData(p1Name,p1Level);
@@ -47,7 +46,8 @@ public class AdvancedSettings extends Controller implements Initializable {
     }
     @FXML
     protected void onSaveAction(){
-        advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue());
+        sC.play("button");
+        advancedSettings.saveIntSettings(itemSpawnRate.getValue(), itemDespawnTime.getValue(),bombChance.getValue());
 
         advancedSettings.setSwapBoards(swapBoards.isSelected());
         advancedSettings.setSwapBlocks(swapBlocks.isSelected());
@@ -61,10 +61,12 @@ public class AdvancedSettings extends Controller implements Initializable {
         advancedSettings.setColumnBomb(columnBomb.isSelected());
         advancedSettings.setBoardChange(toggleSwitch.switchOnProperty().getValue());
         advancedSettings.setVertical(((RadioButton)Layout.getSelectedToggle()).getText().equals("Vertical"));
+        Toast.makeText(root,"Settings saved!");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         ObservableList<Toggle> toggels = Layout.getToggles();
         if (!advancedSettings.isVertical()){
             toggels.get(1).setSelected(true);
@@ -83,6 +85,7 @@ public class AdvancedSettings extends Controller implements Initializable {
 
         itemSpawnRate.setText((advancedSettings.getItemSpawnRate()/1000)+"");
         itemDespawnTime.setText((advancedSettings.getItemDespawnRate()/1000)+"");
+        bombChance.setText(String.valueOf(advancedSettings.getBombChance()));
     }
 
     public void handHostData(String yourName, int hostLevel) {

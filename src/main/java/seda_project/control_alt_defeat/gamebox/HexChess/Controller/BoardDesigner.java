@@ -20,6 +20,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -39,21 +40,11 @@ public class BoardDesigner extends Controller implements Initializable {
     private List<List<Polygon>> rows;
     private Map<String, Label> pieceLabels;
     private JsonHandler jsonHandler = new JsonHandler();
-
     private List<BoardDesignState> listofBoards;
-    private BoardDesignState selectedBoard;
-
     private String p1Name, p2Name;
-
 
     @FXML
     private VBox header;
-
-    @FXML
-    private HBox buttonBox;
-
-    @FXML
-    private Parent root;
 
     @FXML
     private StackPane stackPane;
@@ -89,6 +80,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         buildPieceLabelsMap();
         loadImages();
         setCustomStyle();
@@ -193,6 +185,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         Object controller = c.backScene(header,vS);
         if (controller instanceof LocalGameConfiguration lGC){
             lGC.boardSelection(null, p1Name, p2Name);
@@ -204,6 +197,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onExportAction(){
+        sC.play("button");
         boolean exist = false;
         for (BoardDesignState state :listofBoards){
             if(state.getFENState().contains(engine.createNotation(rows))){
@@ -217,18 +211,22 @@ public class BoardDesigner extends Controller implements Initializable {
                 Toast.makeText(stackPane,"State was added!");
             }
             else {
+                sC.play("error");
                 Toast.makeText(stackPane,"You can only add valid States");
             }
         }
         else {
+            sC.play("error");
             Toast.makeText(stackPane,"This State does already exist");
         }
     }
 
     @FXML
     protected void onImportAction(){
+        sC.play("button");
         try {
             Stage selectionStage = new Stage();
+            selectionStage.initStyle(StageStyle.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/BoardSelection.fxml"));
             Parent root = loader.load();
             selectionStage.setScene(new Scene(root));
@@ -246,6 +244,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onP1FirstAcion(){
+        sC.play("button");
         p1GoFirst.getStyleClass().add("ready");
         p2GoFirst.getStyleClass().remove("ready");
         engine.activePlayer(1);
@@ -253,6 +252,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onP2FirstAction(){
+        sC.play("button");
         p2GoFirst.getStyleClass().add("ready");
         p1GoFirst.getStyleClass().remove("ready");
         engine.activePlayer(2);
@@ -260,6 +260,7 @@ public class BoardDesigner extends Controller implements Initializable {
 
     @FXML
     protected void onUseAction(){
+        sC.play("button");
         if (validateBoardState()) {
             Object controller = c.backScene(header,vS);
             if (controller instanceof LocalGameConfiguration lGC){
@@ -270,6 +271,7 @@ public class BoardDesigner extends Controller implements Initializable {
             }
         }
         else {
+            sC.play("error");
             Toast.makeText(stackPane,"You can only use valid States");
         }
     }
@@ -501,10 +503,8 @@ public class BoardDesigner extends Controller implements Initializable {
             return false;
         }
 
-        if (validator.checkMaterial()) {
-            return false;
-        }
+        if (validator.isKingInCheck(PlayerColor.BLACK) || validator.isKingInCheck(PlayerColor.WHITE)) return false;
 
-        return true;
+        return !validator.checkMaterial();
     }
 }

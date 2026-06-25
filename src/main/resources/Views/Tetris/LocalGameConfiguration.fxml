@@ -1,105 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<!-- Code Block 7 corrected alignment -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.LocalGameConfiguration">
-    <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
-            <children>
-                <VBox fx:id="header" fillWidth="false" prefHeight="111.0" prefWidth="622.0" styleClass="box">
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Tetris Game">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Local Game Setup" />
-                    </children>
-                </VBox>
-            <StackPane prefHeight="516.0" prefWidth="800.0">
-               <children>
-                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-                     <children>
-                              <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                                  <columnConstraints>
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.59999999999997" minWidth="10.0" prefWidth="137.0" />
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="9.20000762939452" prefWidth="63.80000000000001" />
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="71.80000000000001" />
-                              <ColumnConstraints />
-                                  </columnConstraints>
-                                  <rowConstraints>
-                                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                                  </rowConstraints>
-                                  <children>
-                                      <Label prefHeight="19.0" prefWidth="155.0" text="Player 1 Name" />
-                                      <TextField fx:id="player1TF" prefHeight="26.0" prefWidth="220.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
-                                          <GridPane.margin>
-                                              <Insets right="5.0" />
-                                          </GridPane.margin>
-                              </TextField>
-                              <Label prefHeight="19.0" prefWidth="174.0" text="Player 2 Name" GridPane.rowIndex="3" />
-                              <TextField fx:id="player2TF" promptText="Insert Player 2 Name" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-                              <Label text="Player 1 Level:" GridPane.rowIndex="1" />
-                              <Label text="Player 2 Level:" GridPane.rowIndex="4" />
-                              <ComboBox fx:id="player1Level" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="player2Level" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                  </children>
-                                  <padding>
-                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                  </padding>
-                              </GridPane>
-                         <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
-                         </StackPane>
-                        <Label fx:id="statusLabel" maxHeight="-Infinity" maxWidth="-Infinity">
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </VBox.margin></Label>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                           <children>
-                               <StackPane styleClass="button-wrapper">
-                                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onBackAction" text="Back">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                               </StackPane>
-                               <StackPane styleClass="button-wrapper">
-                                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onStartAction" text="Start Game">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                               </StackPane>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin></HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-            </children>
-        </VBox>
-    </children>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.LocalGameConfiguration">
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
         <URL value="@../../css/stylesheets/TetrisMenu.css" />
     </stylesheets>
+    <VBox alignment="TOP_CENTER">
+        <fx:include source="../TopBar.fxml" />
 
-</AnchorPane>
+            <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                    <font>
+                        <Font name="Arial Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Tetris">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </VBox>
+
+        <StackPane prefHeight="475.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+            <Label styleClass="normalText" text="Player 1">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <GridPane vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 1 Name:" />
+                       <TextField fx:id="player1TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 1 Name " GridPane.columnIndex="1">
+                           <GridPane.margin>
+                               <Insets right="5.0" />
+                           </GridPane.margin>
+                       </TextField>
+                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 1 Level:" GridPane.rowIndex="1" />
+                       <ComboBox fx:id="player1Level" maxHeight="-Infinity" maxWidth="-Infinity" visibleRowCount="7" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Label styleClass="normalText" text="Player 2">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <GridPane vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 2 Name:" />
+                       <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Player 2 Level:" GridPane.rowIndex="1" />
+                       <TextField fx:id="player2TF" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Insert Player 2 Name" GridPane.columnIndex="1" />
+                       <ComboBox fx:id="player2Level" maxHeight="-Infinity" maxWidth="-Infinity" visibleRowCount="7" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                    <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+                </StackPane>
+                <Label fx:id="statusLabel" maxHeight="-Infinity" maxWidth="270.0" wrapText="true">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                    </VBox.margin>
+                    <styleClass>
+                        <String fx:value="box" />
+                        <String fx:value="error" />
+                    </styleClass>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </Label>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </StackPane>
+                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onStartAction" text="Start Game">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </StackPane>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </VBox>
+</StackPane>

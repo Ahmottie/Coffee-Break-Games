@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Configuration {
@@ -82,8 +83,11 @@ public class Configuration {
             vS.addFxmlLoaders(address);
             var controller = loader.getController();
             Scene newScene = new Scene(root);
+            newScene.setFill(Color.TRANSPARENT);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);
+            stage.sizeToScene();
+            stage.centerOnScreen();
             stage.show();
             if (controller != null){
                 return controller;
@@ -121,6 +125,7 @@ public class Configuration {
             Parent root = loader.load();
             var controller = loader.getController();
             Scene newScene = new Scene(root);
+            newScene.setFill(Color.TRANSPARENT);
             Stage stage = (Stage) header.getScene().getWindow();
             stage.setScene(newScene);
             stage.show();
@@ -135,4 +140,41 @@ public class Configuration {
     }
 
 
+    public boolean checkFlip(String player1Name, String player2Name) {
+        if (player1Name.equals("Upsidedown")){
+            return true;
+        }
+        if (player2Name.equals("Upsidedown")){
+            return true;
+        }
+        if (player1Name.equals("Dinnerbone")){
+            return true;
+        }
+        if (player2Name.equals("Dinnerbone")){
+            return true;
+        }
+        if (player1Name.equals("Grumm")){
+            return true;
+        }
+        if (player2Name.equals("Grumm")){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkRainbow(String player1Name, String player2Name){
+        if (player1Name.equals("jeb_")){
+            return true;
+        }
+        if (player2Name.equals("jeb_")){
+            return true;
+        }
+        if (player1Name.equals("Rainbow")){
+            return true;
+        }
+        if (player2Name.equals("Rainbow")){
+            return true;
+        }
+        return false;
+    }
 }

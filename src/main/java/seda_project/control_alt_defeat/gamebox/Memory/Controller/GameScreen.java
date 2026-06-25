@@ -4,14 +4,12 @@ import seda_project.control_alt_defeat.gamebox.network.GameMessage;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
-
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -25,7 +23,7 @@ import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSnapshot;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 import seda_project.control_alt_defeat.gamebox.ui.MCard;
-
+import seda_project.control_alt_defeat.gamebox.ui.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,23 +37,24 @@ public class GameScreen extends Controller {
     ArrayList<MCard> flippedCards = new ArrayList<>();
     boolean canClick = true;
     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-    ScaleTransition blink;
     private final java.util.Set<Integer> remoteFlipIds = java.util.concurrent.ConcurrentHashMap.newKeySet();
     private boolean disconnected = false;
-
     private String myName;
     private final Map<Integer, MCard> cardsById = new HashMap<>();
     private final Map<MCard, Integer> cardIdOf = new HashMap<>();
     private GameConfig config;
     private GameSetup setup;
 
-    @FXML private VBox header;
-    @FXML private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel, turnStatusLabel;
-    @FXML private StackPane gamePane;
-    @FXML private Text notificationText;
+    @FXML
+    private Label sboardP1, sboardP2, sboardScoreP1, sboardScoreP2, activePlayerLabel;
+
+    @FXML
+    private StackPane gamePane;
 
     @FXML
     private void onExitGameAction() {
+        sC.play("button");
+        sC.playLooping("lobby_background",.2);
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -110,7 +109,7 @@ public class GameScreen extends Controller {
 
         int height = 340;
 
-        double size = height/row;
+        double size = (double) height /row;
 
         playingGrid.setPrefSize(size*col, size*row);
         playingGrid.setMaxSize(size*col, size*row);
@@ -136,6 +135,7 @@ public class GameScreen extends Controller {
                     int cardId = c.id();
                     int symbolId = c.symbolId();
                     MCard cell = new MCard(i, j + helper, symbolId);
+                    cell.setHeightProporties(size,size);
                     cell.setPrefSize(size, size);
                     cell.setMinSize(size, size);
                     cell.setMaxSize(size, size);
@@ -144,7 +144,7 @@ public class GameScreen extends Controller {
                     cardsById.put(cardId, cell);
                     cardIdOf.put(cell, cardId);
 
-                    cell.setOnAction(e -> {
+                    cell.setOnAction(_ -> {
                         if (!canClick) return;
                         // In LAN mode, only the active player can flip.
                         if (Session.current().network != null
@@ -163,29 +163,21 @@ public class GameScreen extends Controller {
     }
 
     public void setStatusLabel(boolean match) {
-        notificationText.setVisible(true);
-        notificationText.setViewOrder(-1.0);
-        notificationText.setText(match ? "Match" : "Mismatch");
-        blink.play();
-        blink.setOnFinished(e -> {
-            notificationText.setVisible(false);
-            notificationText.setViewOrder(5.0);
-        });
+        if (match){
+            sC.play("memory_match");
+            Toast.makeText(gamePane,"Match");
+        }
+        else {
+            sC.play("memory_missmatch");
+            Toast.makeText(gamePane,"Missmatch");
+        }
     }
 
     public void setActivePlayerLabel(String name) {
         activePlayerLabel.setText(name);
     }
 
-    public void startGame(String player1Name, String player2Name) {
-        blink = new ScaleTransition(Duration.seconds(0.5), notificationText);
-        blink.setFromX(1.0);
-        blink.setToX(0.75);
-        blink.setFromY(1.0);
-        blink.setToY(0.75);
-        blink.setAutoReverse(true);
-        blink.setCycleCount(4);
-
+    public void startGame() {
         // Build the engine and start it with our prepared setup.
         engine = new GameEngineImpl();
         engine.start(config, setup);
@@ -239,7 +231,7 @@ public class GameScreen extends Controller {
     }
 
     public void turnCardsBack() {
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             for (MCard c : flippedCards) {
                 flipmotion(c, cardIdOf.get(c));
             }
@@ -251,7 +243,7 @@ public class GameScreen extends Controller {
 
     public void removeMatch() {
         canClick = false;
-        pause.setOnFinished(e -> {
+        pause.setOnFinished(_ -> {
             for (MCard c : flippedCards) {
                 c.setVisible(false);
             }
@@ -286,6 +278,12 @@ public class GameScreen extends Controller {
         controller.passMatchData(sboardP1.getText(), sboardP2.getText(),
                     sboardScoreP1.getText(), sboardScoreP2.getText(),
                     matchSize, deckSize, winner);
+        if(flipped){
+            controller.flip();
+        }
+        if(rainbowed){
+            controller.rainbow();
+        }
     }
 
     private void flipmotion(MCard card, int cardId) {
@@ -302,7 +300,7 @@ public class GameScreen extends Controller {
             if (flippedCards.size() >= matchSize) {
                 canClick = false;
             }
-            firstHalf.setOnFinished(e -> {
+            firstHalf.setOnFinished(_ -> {
                 card.setFaceUp(true);
                 boolean wasRemote = remoteFlipIds.remove(cardId);
                 engine.flip(cardId);
@@ -312,9 +310,7 @@ public class GameScreen extends Controller {
                 }
             });
         } else {
-            firstHalf.setOnFinished(e -> {
-                card.faceDown();
-            });
+            firstHalf.setOnFinished(_ -> card.faceDown());
         }
 
         SequentialTransition flip = new SequentialTransition(firstHalf, secondHalf);

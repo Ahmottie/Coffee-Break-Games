@@ -1,113 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.HostLan">
-    <children>
-        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="2.0" prefHeight="631.0" prefWidth="800.0">
-            <children>
-                <VBox fx:id="header" fillWidth="false" prefHeight="111.0" prefWidth="622.0" styleClass="box">
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="800.0" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="800.0" styleClass="normalText" text="Tetris Game">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="800.0" text="Host Game Setup" />
-                    </children>
-                </VBox>
-            <StackPane prefHeight="516.0" prefWidth="808.0">
-               <children>
-                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
-                     <children>
-                              <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                                  <columnConstraints>
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.599999999999994" />
-                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="71.80000000000001" />
-                              <ColumnConstraints />
-                                  </columnConstraints>
-                                  <rowConstraints>
-                                      <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  </rowConstraints>
-                                  <children>
-                                      <Label alignment="CENTER" text="Your Name:" />
-                                      <TextField fx:id="hostNameTF" prefHeight="26.0" prefWidth="220.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
-                                          <GridPane.margin>
-                                              <Insets right="5.0" />
-                                          </GridPane.margin>
-                              </TextField>
-                              <Label text="Your Level:" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="yourLevel" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                              <Label text="Hard Mode:" GridPane.rowIndex="2" />
-                              <ToggleSwitch fx:id="toggleSwitch" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                  </children>
-                                  <padding>
-                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                  </padding>
-                              </GridPane>
-                         <StackPane styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
-                         </StackPane>
-                         <Label fx:id="statusLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="0.0" textAlignment="CENTER" visible="false" wrapText="true">
-                           <styleClass>
-                              <String fx:value="information" />
-                              <String fx:value="box" />
-                           </styleClass>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                           <children>
-                               <StackPane styleClass="button-wrapper">
-                                      <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                                      </Button>
-                               </StackPane>
-                               <StackPane styleClass="button-wrapper">
-                                      <Button mnemonicParsing="false" onAction="#onSearchAction" text="Search for opponent">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                                      </Button>
-                               </StackPane>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </StackPane>
-            </children>
-        </VBox>
-    </children>
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.Tetris.Controller.HostLan">
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
-      <URL value="@../../css/stylesheets/TetrisMenu.css" />
+        <URL value="@../../css/stylesheets/TetrisMenu.css" />
     </stylesheets>
 
-</AnchorPane>
+    <VBox alignment="TOP_CENTER">
+        <fx:include source="../TopBar.fxml" />
+
+            <VBox fx:id="header" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </padding>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="headerText" text="COFFEE BREAK GAMES" textAlignment="CENTER" textOverrun="CLIP">
+                    <font>
+                        <Font name="Arial Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="normalText" text="Tetris">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            <Label text="Host Configuration" />
+            </VBox>
+
+        <StackPane prefHeight="516.0" prefWidth="808.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box">
+                <GridPane alignment="CENTER" hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="5.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.0" minWidth="10.0" prefWidth="109.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.599999999999994" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="10.0" prefWidth="71.80000000000001" />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <Label alignment="CENTER" text="Your Name:" />
+                    <TextField fx:id="hostNameTF" prefHeight="26.0" prefWidth="220.0" promptText="Insert Player 1 Name " GridPane.columnIndex="1" GridPane.columnSpan="3">
+                        <GridPane.margin>
+                            <Insets right="5.0" />
+                        </GridPane.margin>
+                    </TextField>
+                    <Label text="Your Level:" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="yourLevel" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label text="Hard Mode:" GridPane.rowIndex="2" />
+                    <ToggleSwitch fx:id="toggleSwitch" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </GridPane>
+                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
+                    <Button mnemonicParsing="false" onAction="#onAdvancedSettingsAction" text="Advanced Settings" />
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+                </StackPane>
+                <Label fx:id="statusLabel" alignment="CENTER" maxWidth="300.0" textAlignment="CENTER" visible="false" wrapText="true">
+                    <styleClass>
+                        <String fx:value="error" />
+                        <String fx:value="box" />
+                    </styleClass>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                    </VBox.margin>
+                    <StackPane styleClass="button-wrapper">
+                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onBackAction" text="Back">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </StackPane>
+                    <StackPane styleClass="button-wrapper">
+                        <Button mnemonicParsing="false" onAction="#onSearchAction" text="Search">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </StackPane>
+                </HBox>
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            </VBox>
+        </StackPane>
+    </VBox>
+</StackPane>

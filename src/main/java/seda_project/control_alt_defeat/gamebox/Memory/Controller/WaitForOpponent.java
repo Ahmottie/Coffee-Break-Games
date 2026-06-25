@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameConfig;
 import seda_project.control_alt_defeat.gamebox.Memory.engine.GameSetup;
@@ -22,8 +21,6 @@ import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
 
 public class WaitForOpponent extends Controller {
-    private boolean host;
-    private boolean ready;
     private String hostName;
     private String joinName;
     private int tupleSize;
@@ -31,24 +28,29 @@ public class WaitForOpponent extends Controller {
     private Timeline timeline;
     private String ipAddress;
 
-    @FXML private VBox header;
-    @FXML private Button startGameButton;
-    @FXML private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
+
+    @FXML
+    private Button startGameButton;
+
+    @FXML
+    private Label yourNameLabel, opponentNameLabel, deckSizeLabel, matchSizeLabel, statusLabel, hostIpAddressLabel;
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         Session.clear();
         Object controller = c.backScene(header,vS);
-        if (controller instanceof HostLan c) {
-            c.backTransfer(hostName, tupleSize, deckSize);
+        if (controller instanceof HostLan con) {
+            con.backTransfer(hostName, tupleSize, deckSize);
         }
-        if (controller instanceof JoinLan c) {
-            c.backTransfer(joinName, ipAddress);
+        if (controller instanceof JoinLan con) {
+            con.backTransfer(joinName, ipAddress);
         }
     }
 
     @FXML
     protected void onStartGameAction() {
+        sC.play("button");
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
@@ -89,21 +91,24 @@ public class WaitForOpponent extends Controller {
         statusLabel.setText("Starting in " + (delayMs / 1000) + "s...");
         startGameButton.setDisable(true);
         PauseTransition pt = new PauseTransition(Duration.millis(delayMs));
-        pt.setOnFinished(e -> startGameNow());
+        pt.setOnFinished(_ -> startGameNow());
         pt.play();
     }
 
     private void startGameNow() {
+        sC.playLooping("memory_background",.3);
         GameScreen controller = (GameScreen) c.changeScene("/Views/Memory/GameScreen.fxml",header,vS);
         controller.passLanData();
-        controller.startGame(
-                Session.current().config.player1Name(),
-                Session.current().config.player2Name()
-        );
+        controller.startGame();
+        if (c.checkFlip(Session.current().config.player1Name(), Session.current().config.player2Name())){
+            controller.flip();
+        }
+        if (c.checkRainbow(Session.current().config.player1Name(), Session.current().config.player2Name())){
+            controller.rainbow();
+        }
     }
 
-    public void passHostData(boolean host, String hostName, int tupleSize, int deckSize) {
-        this.host = host;
+    public void passHostData(String hostName, int tupleSize, int deckSize) {
         this.hostName = hostName;
         this.tupleSize = tupleSize;
         this.deckSize = deckSize;
@@ -115,11 +120,11 @@ public class WaitForOpponent extends Controller {
 
         // Loading-dots animation while waiting for someone to join
         timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0),   e -> opponentNameLabel.setText("")),
-                new KeyFrame(Duration.seconds(0.5), e -> opponentNameLabel.setText("o")),
-                new KeyFrame(Duration.seconds(1),   e -> opponentNameLabel.setText("oo")),
-                new KeyFrame(Duration.seconds(1.5), e -> opponentNameLabel.setText("ooo")),
-                new KeyFrame(Duration.seconds(2),   e -> opponentNameLabel.setText("ooo"))
+                new KeyFrame(Duration.seconds(0),   _ -> opponentNameLabel.setText("")),
+                new KeyFrame(Duration.seconds(0.5), _ -> opponentNameLabel.setText("o")),
+                new KeyFrame(Duration.seconds(1),   _ -> opponentNameLabel.setText("oo")),
+                new KeyFrame(Duration.seconds(1.5), _ -> opponentNameLabel.setText("ooo")),
+                new KeyFrame(Duration.seconds(2),   _ -> opponentNameLabel.setText("ooo"))
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -133,17 +138,12 @@ public class WaitForOpponent extends Controller {
                     Session.current().network = layer;
                     attachHostListener(layer);
                 }),
-                err -> Platform.runLater(() -> {
-                    statusLabel.setText("Hosting failed: " + err.getMessage());
-                    err.printStackTrace();
-                })
+                err -> Platform.runLater(() -> statusLabel.setText("Hosting failed: " + err.getMessage()))
         );
         hostIpAddressLabel.setText(Lan.localIp());
     }
 
-    public void passJoinData(boolean host, String playerName, String ipAddress) {
-        this.host = host;
-        this.ready = false;
+    public void passJoinData(String playerName, String ipAddress) {
         this.joinName = playerName;
         this.ipAddress = ipAddress;
 

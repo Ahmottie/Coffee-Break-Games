@@ -19,9 +19,6 @@ public class LocalGameConfiguration extends Controller implements Initializable 
     protected TetrisAdvancedSettings advancedSettings = TetrisAdvancedSettings.getInstance();
 
     @FXML
-    private VBox header;
-
-    @FXML
     private TextField player1TF, player2TF;
 
     @FXML
@@ -32,6 +29,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
         statusLabel.setVisible(false);
 
         player1Level.getItems().clear();
@@ -47,11 +45,13 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         c.backScene(header,vS);
     }
 
     @FXML
     protected void onAdvancedSettingsAction(){
+        sC.play("button");
         String p1Name = player1TF.getText();
         String p2Name = player2TF.getText();
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
@@ -62,6 +62,7 @@ public class LocalGameConfiguration extends Controller implements Initializable 
 
     @FXML
     protected void onStartAction() {
+        sC.play("button");
         String player1Name = c.checkNameInput(player1TF.getText(),1);
         String player2Name = c.checkNameInput(player2TF.getText(),2);
         int p1Level =  player1Level.getSelectionModel().getSelectedItem();
@@ -75,10 +76,21 @@ public class LocalGameConfiguration extends Controller implements Initializable 
         }
 
         if (c.checkNameLength(player1Name,1,statusLabel) && c.checkNameLength(player2Name,2,statusLabel)){
+            sC.stopLooping();
+            sC.playLooping("tetris_background",.5);
             GameScreen controller = (GameScreen) c.changeScene(address,header,vS);
             TetrisEngine engine = new TetrisEngine(player1Name,player2Name, p1Level,p2Level, BlockRegistry.getInstance(),advancedSettings);
-            controller.create(player1Name,player2Name,p1Level, p2Level,false, engine);
+            controller.create(player1Name,player2Name,p1Level, p2Level, engine);
             controller.setInitialLevels(p1Level,p2Level);
+            if (c.checkFlip(player1Name,player2Name)){
+                controller.flip();
+            }
+            if (c.checkRainbow(player1Name,player2Name)){
+                controller.rainbow();
+            }
+        }
+        else {
+            sC.play("error");
         }
     }
 

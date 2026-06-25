@@ -22,15 +22,13 @@ public class WaitForOpponent extends Controller {
     private String boardState;
 
     @FXML
-    private VBox header;
-
-    @FXML
     private Label yourNameLabel, statusLabel, hostIpAddressLabel, opponentNameLabel;
 
     @FXML
     private Button startButton;
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         Object controller = c.backScene(header,vS);
         if (loadingDots != null) loadingDots.stop();
         Session.clear();
@@ -44,6 +42,7 @@ public class WaitForOpponent extends Controller {
 
     @FXML
     protected void onStartGameAction() {
+        sC.play("button");
         NetworkLayer layer = Session.current().network;
         if (layer == null) return;
 
@@ -180,6 +179,8 @@ public class WaitForOpponent extends Controller {
     }
 
     private void startGameNow() {
+        sC.stopLooping();
+        sC.playLooping("chess_background",.1);
         Session s = Session.current();
 
         if (s.network != null) {
@@ -198,7 +199,18 @@ public class WaitForOpponent extends Controller {
         String address = "/Views/HexChess/GameScreen.fxml";
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
         controller.setGameEngine(engine);
-
+        if (c.checkFlip(p1,p2)){
+            controller.flip();
+        }
+        if (c.checkRainbow(p1,p2)){
+            controller.rainbow();
+        }
+        if (p1.equals("Duck")) {
+            controller.p1Duck();
+        }
+        if (p2.equals("Duck")){
+            controller.p2Duck();
+        }
         if (s.isHost) {
             if (boardState == null) {
                 controller.init();

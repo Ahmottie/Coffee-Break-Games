@@ -28,9 +28,9 @@ public class ChessSettings extends Controller implements Initializable {
     protected StackPane stackPane;
 
     @FXML
-    private ImageView p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King;
+    private ImageView p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King, p1Duck;
     @FXML
-    private ImageView p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King;
+    private ImageView p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King, p2Duck;
 
     @FXML
     private ColorPicker p1ColorPicker, p2ColorPicker, darkTilesColorPicker, normalTilesColorPicker, lightTilesColorPicker;
@@ -58,11 +58,13 @@ public class ChessSettings extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         c.backScene(header,vS);
     }
 
     @FXML
     protected void onSaveAction() {
+        sC.play("button");
         settings.setP1Color(p1Color);
         settings.setP2Color(p2Color);
         settings.setP1Pieces(p1Pieces);
@@ -77,6 +79,7 @@ public class ChessSettings extends Controller implements Initializable {
 
     @FXML
     protected void onDefaultAction() {
+        sC.play("button");
         for (int i = 0; i < p1Pieces.size(); i++) {
             p1Pieces.get(i).setImage(p1OriginalImages.get(i));
         }
@@ -137,10 +140,11 @@ public class ChessSettings extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        p1OriginalImages = Stream.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King).map(ImageView::getImage).toList();
-        p2OriginalImages = Stream.of(p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King).map(ImageView::getImage).toList();
-        p1Pieces = List.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King);
-        p2Pieces = List.of(p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King);
+        super.initialize(url, resourceBundle);
+        p1OriginalImages = Stream.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King, p1Duck).map(ImageView::getImage).toList();
+        p2OriginalImages = Stream.of(p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King, p2Duck).map(ImageView::getImage).toList();
+        p1Pieces = List.of(p1Pawn, p1Rook, p1Knight, p1Bishop, p1Queen, p1King, p1Duck);
+        p2Pieces = List.of(p2Pawn, p2Rook, p2Knight, p2Bishop, p2Queen, p2King, p2Duck);
 
         if (settings.getP1Pieces() != null){
             p1Color = settings.getP1Color();

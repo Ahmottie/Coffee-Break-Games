@@ -201,6 +201,44 @@ remaining side detects it right away. The 5-second timeout is the fallback
 for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Chess
-Pieces from: https://greenchess.net/info.php?item=downloads
-Mug from: https://www.cgtrader.com/items/3536740/download-page
-3d pieces from: https://free3d.com/3d-model/chess-19650.html
+* Pieces from: https://greenchess.net/info.php?item=downloads
+* Mug from: https://www.cgtrader.com/items/3536740/download-page
+* 3d pieces from: https://free3d.com/3d-model/chess-19650.html
+
+## Images
+* Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
+* Mute Button: https://www.svgrepo.com/svg/469371/mute-2
+* Close Icon: https://www.svgrepo.com/svg/522388/close?edit=true
+
+## Sounds
+* Chess Pieces: https://pixabay.com/sound-effects/film-special-effects-chess-pieces-60890/
+* Chess Background: https://pixabay.com/music/video-games-music-for-puzzle-game-146738/
+* Chess Duck(White): https://www.svgrepo.com/svg/479843/duck-toy-illustration-3?edit=true
+* Chess Duck(Black): https://www.svgrepo.com/svg/479851/duck-toy-1
+
+* Tetris Background: https://pixabay.com/music/classical-string-quartet-tetris-theme-korobeiniki-rearranged-arr-for-strings-185592/
+* Tetris Lineclear: https://pixabay.com/sound-effects/film-special-effects-clear-notification-355970/
+* Tetris Piecesnap: https://pixabay.com/sound-effects/film-special-effects-finger-snap-179180/
+* Tetris Levelup: https://pixabay.com/sound-effects/film-special-effects-level-up-05-326133/
+* Tetris Radialbomb: https://pixabay.com/sound-effects/bomb-explosion-469038/
+* Tetris Columnbomb: https://pixabay.com/sound-effects/film-special-effects-drill-spinning-in-open-air-33575/
+
+* Memory Background: https://pixabay.com/music/solo-piano-retro-arcade-game-music-491487/
+* Memory Match: https://pixabay.com/sound-effects/film-special-effects-sample-confirm-success03-kofi-by-miraclei-360151/
+* Memory Missmatch: https://pixabay.com/sound-effects/film-special-effects-fail-234710/
+
+
+* Button press: https://pixabay.com/sound-effects/film-special-effects-button-press-382713/
+* Lobby Background: https://pixabay.com/music/ambient-coffee-morning-coffee-shop-music-499186/
+* Error Sound: https://pixabay.com/sound-effects/film-special-effects-windows-error-sound-effect-35894/
+
+* Konami EasterEgg: https://www.vgmpf.com/Wiki/index.php?title=Nemesis_(ARC)
+
+## Easter Eggs:
+* Konami Code -> Change Music
+* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is roatet by 180 
+* "jeb_" -> GameScreen background has Rainbowcolors
+* "Duck" -> Pawns in Chess are replaced by Ducks
+
+## AI-Usage
+* FXML indentation

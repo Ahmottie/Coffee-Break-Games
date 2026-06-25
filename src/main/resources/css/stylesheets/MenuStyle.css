@@ -1,5 +1,19 @@
+.root {
+    -theme-text-primary: rgba(180, 240, 240, 0.9);
+    -theme-accent-cyan: rgba(30, 207, 207, 0.55);
+    -theme-button-top: #71bdff;
+    -theme-button-bottom: #3d7db8;
+    -theme-panel-bg: rgba(10, 20, 40, 0.72);
+
+    -fx-background-color: transparent;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: #3a3a3c;
+    -fx-border-width: 1px;
+}
+
 .box {
-    -fx-background-color: rgba(10, 20, 40, 0.72);
+    -fx-background-color: -theme-panel-bg;
     -fx-background-radius: 14px;
     -fx-border-color: rgba(255, 255, 255, 0.12);
     -fx-border-radius: 14px;
@@ -7,15 +21,16 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 18, 0.25, 0, 5);
 }
 
+.transparent-scroll,
+.transparent-scroll > .viewport,
+.transparent-scroll-content,
+.scroller,
+.scroller > .viewport {
+    -fx-background-color: transparent;
+}
+
 .transparent-scroll {
     -fx-background: transparent;
-    -fx-background-color: transparent;
-}
-.transparent-scroll > .viewport {
-    -fx-background-color: transparent;
-}
-.transparent-scroll-content {
-    -fx-background-color: transparent;
 }
 
 .error {
@@ -55,17 +70,17 @@
 }
 
 .button-wrapper {
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
     -fx-padding: 8px;
 }
 
 .button {
-    -fx-background-color: linear-gradient(to bottom, #71bdff, #3d7db8);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-top, -theme-button-bottom);
     -fx-text-fill: rgba(210, 235, 255, 0.9);
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
 }
 
 .button:hover {
@@ -73,7 +88,7 @@
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #3d7db8, #1e4e7a);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, #1e4e7a);
 }
 
 .button.ready {
@@ -82,16 +97,16 @@
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
 }
 
 .color-picker {
-    -fx-background-color: linear-gradient(to bottom, #71bdff, #3d7db8);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-top, -theme-button-bottom);
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-border-color: transparent;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
 }
 
 .color-picker:hover {
@@ -99,7 +114,7 @@
 }
 
 .color-picker:pressed {
-    -fx-background-color: linear-gradient(to bottom, #3d7db8, #1e4e7a);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, #1e4e7a);
 }
 
 .color-picker .label {
@@ -122,7 +137,7 @@
     -fx-border-width: 1.5px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.35), 14, 0.3, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.35), 14, 0.3, 0, 4);
 }
 
 .color-palette .color-square {
@@ -131,9 +146,9 @@
 }
 
 .color-palette .color-square:hover {
-    -fx-border-color: #71bdff;
+    -fx-border-color: -theme-button-top;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.7), 6, 0.5, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.7), 6, 0.5, 0, 0);
 }
 
 .custom-color-dialog .dialog-pane {
@@ -158,6 +173,29 @@
     -fx-background-radius: 4px;
 }
 
+/* --- Lists, Combo Boxes & Scroll Items --- */
+.combo-box-popup .list-view,
+.scroller {
+    -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-width: 2px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -theme-panel-bg;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-background-color: transparent;
+    -fx-background-radius: 7px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 7px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
 .scrollItem {
     -fx-text-fill: rgba(180, 240, 240, 0.80);
     -fx-background-color: transparent;
@@ -165,66 +203,127 @@
     -fx-border-color: transparent;
     -fx-border-radius: 7px;
     -fx-border-width: 1px;
-    -fx-padding: 9 14 9 14;
     -fx-cursor: hand;
     -fx-max-width: Infinity;
+    -fx-padding: 9px 14px 9px 14px;
 }
+
+.combo-box-popup .list-view .list-cell:hover,
 .scrollItem:hover {
     -fx-background-color: rgba(30, 207, 207, 0.10);
     -fx-border-color: rgba(30, 207, 207, 0.20);
     -fx-text-fill: rgba(200, 255, 255, 0.95);
 }
 
-.scrollItem.selectedItem {
+.combo-box-popup .list-view .list-cell:filled:selected,
+.scrollItem .selectedItem {
     -fx-background-color: rgba(30, 180, 140, 0.22);
     -fx-border-color: rgba(77, 235, 184, 0.70);
     -fx-text-fill: rgba(160, 255, 220, 1.0);
     -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
 }
 
-.scroller .track {
+
+.scroller .track,
+.combo-box-popup .scroll-bar:vertical .track {
     -fx-background-color: rgba(30, 207, 207, 0.1);
     -fx-background-radius: 4px;
 }
 
-.scroller .thumb {
+.scroller .thumb,
+.combo-box-popup .scroll-bar:vertical .thumb {
     -fx-background-color: rgba(30, 207, 207, 0.3);
     -fx-background-radius: 4px;
 }
 
-.scroller .thumb:hover {
-    -fx-background-color: rgba(30, 207, 207, 0.55);
+.scroller .thumb:hover,
+.combo-box-popup .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: -theme-accent-cyan;
+}
+
+.scroller .scroll-bar:vertical,
+.combo-box-popup .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroller .scroll-bar:vertical .track-background,
+.combo-box-popup .scroll-bar:vertical .track-background {
+    -fx-background-color: transparent;
 }
 
 .scroller .scroll-bar:vertical .increment-button,
-.scroller .scroll-bar:vertical .decrement-button {
+.scroller .scroll-bar:vertical .decrement-button,
+.combo-box-popup .scroll-bar:vertical .increment-button,
+.combo-box-popup .scroll-bar:vertical .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 2px;
 }
 
 .scroller .scroll-bar:vertical .increment-arrow,
-.scroller .scroll-bar:vertical .decrement-arrow {
+.scroller .scroll-bar:vertical .decrement-arrow,
+.combo-box-popup .scroll-bar:vertical .increment-arrow,
+.combo-box-popup .scroll-bar:vertical .decrement-arrow {
     -fx-background-color: rgba(30, 207, 207, 0.40);
 }
 
-.scroller {
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #B0B0B0 transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-prompt-text-fill: #90A4AE;
+}
+
+.text-field:focused {
+    -fx-border-color: transparent transparent -theme-accent-cyan transparent;
+}
+
+.combo-box {
+    -fx-background-color: transparent;
     -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box > .comboItem {
+    -fx-prompt-text-fill: -theme-text-primary;
+}
+
+.combo-box:focused {
+    -fx-border-color: -theme-accent-cyan;
+}
+
+.radio-button .radio {
+    -fx-background-color: transparent;
+    -fx-border-color: #B0B0B0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 100px;
+    -fx-padding: 4px;
+}
+
+.radio-button:selected .radio {
+    -fx-border-color: rgba(30, 207, 207, 0.75);
     -fx-border-width: 2px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-background-color: transparent;
 }
 
-.scroller > .viewport {
+.radio-button .radio .dot {
+    -fx-background-radius: 100px;
     -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 3px;
 }
 
-
-.scroller .scroll-bar:vertical {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
+.radio-button:selected .radio .dot {
+    -fx-background-color: rgba(30, 207, 207, 0.95);
 }
 
-.scroller .scroll-bar:vertical .track-background {
-    -fx-background-color: transparent;
+.mute {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, -theme-button-top, 12, 0.4, 0, 0);
+}
+
+.mute:hover {
+    -fx-opacity: 0.85;
+    -fx-effect: dropshadow(three-pass-box, -theme-button-top, 16, 0.6, 0, 0);
 }

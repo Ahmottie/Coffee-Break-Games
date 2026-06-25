@@ -18,9 +18,6 @@ public class HostLan extends Controller implements Initializable {
     private TetrisAdvancedSettings advancedSettings = TetrisAdvancedSettings.getInstance();
 
     @FXML
-    VBox header;
-
-    @FXML
     TextField hostNameTF;
 
     @FXML
@@ -34,6 +31,7 @@ public class HostLan extends Controller implements Initializable {
 
     @FXML
     protected void onBackAction(){
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
         advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
@@ -41,6 +39,7 @@ public class HostLan extends Controller implements Initializable {
 
     @FXML
     private void onSearchAction(){
+        sC.play("button");
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         int hostLevel = yourLevel.getSelectionModel().getSelectedItem();
         if (c.checkNameLength(yourName,1,statusLabel)){
@@ -51,6 +50,9 @@ public class HostLan extends Controller implements Initializable {
             advancedSettings.setTwoBlocks(toggleSwitch.switchOnProperty().getValue());
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/Tetris/WaitForOpponent.fxml",header,vS);
             controller.passHostData(yourName,hostLevel);
+        }
+        else{
+            sC.play("error");
         }
     }
 
@@ -72,6 +74,7 @@ public class HostLan extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
         statusLabel.setVisible(false);
 
         yourLevel.getItems().clear();

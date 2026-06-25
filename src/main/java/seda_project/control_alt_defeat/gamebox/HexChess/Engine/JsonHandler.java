@@ -10,6 +10,7 @@ import seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardDesigner
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +20,32 @@ public class JsonHandler {
     public JsonHandler(){}
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
+    private final File externalSaveFile = new File("BoardDesign.json");
+
     public List<BoardDesignState> readBoardStates(){
         List<BoardDesignState> listofBoards = new ArrayList<>();
         try {
-            var path = BoardDesigner.class.getResource("/HexChess/BoardDesign.json");
+            String path = "/HexChess/BoardDesign.json";
             JsonNode nodes = null;
-            if (path != null) {
-                nodes = jsonMapper.readTree(new File(path.toURI()));
+
+            if (externalSaveFile.exists()) {
+                nodes = jsonMapper.readTree(externalSaveFile);
             }
             else {
-                File file = new File(BoardDesigner.class.getResource("/HexChess/BoardDesign.json").toURI());
-                jsonMapper.writeValue(file, new ArrayList<>()); // write empty array []
-                nodes = jsonMapper.readTree(file);
+                try (InputStream is = BoardDesigner.class.getResourceAsStream(path)) {
+                    if (is != null){
+                        nodes = jsonMapper.readTree(is);
+                    }
+                }
+            }
+
+            if (nodes == null || nodes.isMissingNode()) {
+                nodes = jsonMapper.createArrayNode();
             }
             for (JsonNode x : nodes){
                 listofBoards.add(new BoardDesignState(x));
             }
-        } catch (URISyntaxException | IOException e) {
+        } catch ( IOException e) {
             throw new RuntimeException(e);
         }
         return listofBoards;
@@ -65,15 +75,9 @@ public class JsonHandler {
         listofBoards.forEach(board -> arrayNode.add(board.getBoard()));
 
         try {
-            File file;
-            var path = BoardDesigner.class.getResource("/HexChess/BoardDesign.json");
-            if (path != null) {
-                file = new File(path.toURI());
-            } else {
-                file = new File("src/main/resources/HexChess/BoardDesign.json");
-            }
-            jsonMapper.writerWithDefaultPrettyPrinter().writeValue(file, arrayNode);
-        } catch (URISyntaxException | IOException e) {
+            // always write to the external file
+            jsonMapper.writerWithDefaultPrettyPrinter().writeValue(externalSaveFile, arrayNode);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

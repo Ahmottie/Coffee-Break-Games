@@ -84,4 +84,62 @@ public class BlockEditorController {
     public boolean checkEmpty() {
         return isEmpty(this.grid);
     }
+
+    public boolean isRemovalSafe(int row, int col) {
+        if (!grid[row][col]) return true;
+
+        boolean[][] simulated = copyGrid(grid);
+        simulated[row][col] = false;
+
+        return isConnected(simulated);
+    }
+
+    private boolean[][] copyGrid(boolean[][] source) {
+        boolean[][] copy = new boolean[source.length][];
+        for (int r = 0; r < source.length; r++)
+            copy[r] = Arrays.copyOf(source[r], source[r].length);
+        return copy;
+    }
+
+    private boolean isConnected(boolean[][] g) {
+        int startRow = -1, startCol = -1;
+        int activeCount = 0;
+
+        for (int r = 0; r < MAX_GRID_SIZE; r++) {
+            for (int c = 0; c < MAX_GRID_SIZE; c++) {
+                if (g[r][c]) {
+                    activeCount++;
+                    if (startRow == -1) {
+                        startRow = r;
+                        startCol = c;
+                    }
+                }
+            }
+        }
+
+        if (activeCount <= 1) return true;
+
+        boolean[][] visited = new boolean[MAX_GRID_SIZE][MAX_GRID_SIZE];
+        java.util.Deque<int[]> queue = new java.util.ArrayDeque<>();
+        queue.add(new int[]{startRow, startCol});
+        visited[startRow][startCol] = true;
+        int visitedCount = 1;
+
+        int[][] directions = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            for (int[] d : directions) {
+                int r = current[0] + d[0];
+                int c = current[1] + d[1];
+                if (r >= 0 && r < MAX_GRID_SIZE && c >= 0 && c < MAX_GRID_SIZE
+                        && g[r][c] && !visited[r][c]) {
+                    visited[r][c] = true;
+                    visitedCount++;
+                    queue.add(new int[]{r, c});
+                }
+            }
+        }
+
+        return visitedCount == activeCount;
+    }
 }

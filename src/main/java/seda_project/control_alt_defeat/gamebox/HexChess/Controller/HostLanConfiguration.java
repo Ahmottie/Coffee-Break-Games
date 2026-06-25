@@ -7,12 +7,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import seda_project.control_alt_defeat.gamebox.network.Session;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
+import seda_project.control_alt_defeat.gamebox.ui.ToggleSwitch;
 
 public class HostLanConfiguration  extends Controller {
     private String boardState;
-
-    @FXML
-    private VBox header;
 
     @FXML
     private TextField hostNameTF;
@@ -22,6 +20,7 @@ public class HostLanConfiguration  extends Controller {
 
     @FXML
     protected void onSearchAction() {
+        sC.play("button");
         String yourName = c.checkNameInput(hostNameTF.getText(),1);
         if (c.checkNameLength(yourName,1,statusLabel)) {
             Session s = Session.current();
@@ -33,11 +32,15 @@ public class HostLanConfiguration  extends Controller {
             WaitForOpponent controller = (WaitForOpponent) c.changeScene("/Views/HexChess/WaitForOpponent.fxml", header, vS);
             controller.passHostData(yourName, boardState);
         }
+        else{
+            sC.play("error");
+        }
     }
 
 
     @FXML
     protected void onBackAction() {
+        sC.play("button");
         Session.clear();
         c.backScene(header,vS);
     }
@@ -58,4 +61,6 @@ public class HostLanConfiguration  extends Controller {
 
         controller.handNames(hostNameTF.getText(),null);
     }
+
+
 }
