@@ -5,12 +5,16 @@ import java.util.List;
 
 public class HexBot {
 
-    public static String[] getBestMove(GameEngine liveEngine, PlayerColor botColor) {
-        List<String[]> allLegalMoves = getAllLegalMoves(liveEngine, botColor);
-        if (allLegalMoves.isEmpty()) return null; // Game over
+    public static String[] getBestMove(String fenState, PlayerColor botColor) {
+        GameEngine rootGhost = new GameEngine();
+        rootGhost.setupInitalState(fenState);
+
+        List<String[]> allLegalMoves = getAllLegalMoves(rootGhost, botColor);
+        if (allLegalMoves.isEmpty()) return null;
 
         for (String[] move : allLegalMoves) {
-            GameEngine ghost = cloneEngine(liveEngine);
+            GameEngine ghost = new GameEngine();
+            ghost.setupInitalState(fenState);
             makeSimulatedMove(ghost, move[0], move[1]);
 
             if (ghost.isGameOver() && isKingInCheck(ghost, getOpponent(botColor))) {
@@ -21,7 +25,8 @@ public class HexBot {
         List<String[]> safeMoves = new ArrayList<>();
 
         for (String[] botMove : allLegalMoves) {
-            GameEngine ghost = cloneEngine(liveEngine);
+            GameEngine ghost = new GameEngine();
+            ghost.setupInitalState(fenState);
             makeSimulatedMove(ghost, botMove[0], botMove[1]);
 
             boolean allowsMate = false;
@@ -29,7 +34,8 @@ public class HexBot {
             if (!ghost.isGameOver()) {
                 List<String[]> opponentResponses = getAllLegalMoves(ghost, getOpponent(botColor));
                 for (String[] oppMove : opponentResponses) {
-                    GameEngine oppGhost = cloneEngine(ghost);
+                    GameEngine oppGhost = new GameEngine();
+                    oppGhost.setupInitalState(ghost.getBoard().createNotation(ghost.getCurrentTurn()));
                     makeSimulatedMove(oppGhost, oppMove[0], oppMove[1]);
 
                     if (oppGhost.isGameOver() && isKingInCheck(oppGhost, botColor)) {
@@ -45,26 +51,12 @@ public class HexBot {
         }
 
         List<String[]> candidateMoves = safeMoves.isEmpty() ? allLegalMoves : safeMoves;
-
-        return pickBestMaterialMove(liveEngine, candidateMoves, botColor);
+        return pickBestMaterialMove(fenState, candidateMoves, botColor);
     }
-
-    private static GameEngine cloneEngine(GameEngine source) {
-        String turnStr = (source.getCurrentTurn() == PlayerColor.WHITE) ? "1" : "2";
-        String fen = source.getBoard().createNotation(source.getCurrentTurn()).split(" ")[0] + " " + turnStr;
-
-        GameEngine ghost = new GameEngine();
-        ghost.setupInitalState(fen);
-
-        return ghost;
-    }
-
 
     private static void makeSimulatedMove(GameEngine engine, String from, String to) {
         PlayerColor initialTurn = engine.getCurrentTurn();
         engine.handleMove(from, to);
-
-
         if (engine.getCurrentTurn() == initialTurn && !engine.isGameOver()) {
             engine.promote(PieceType.QUEEN);
         }
@@ -88,7 +80,6 @@ public class HexBot {
         return (color == PlayerColor.WHITE) ? PlayerColor.BLACK : PlayerColor.WHITE;
     }
 
-
     private static boolean isKingInCheck(GameEngine engine, PlayerColor player) {
         List<Piece> attackers = (player == PlayerColor.WHITE) ? engine.getBoard().blackPieces() : engine.getBoard().whitePieces();
         List<Piece> defenders = (player == PlayerColor.WHITE) ? engine.getBoard().whitePieces() : engine.getBoard().blackPieces();
@@ -102,13 +93,13 @@ public class HexBot {
                 .anyMatch(cell -> cell.getCoords().col == kingPos.col && cell.getCoords().row == kingPos.row);
     }
 
-
-    private static String[] pickBestMaterialMove(GameEngine liveEngine, List<String[]> moves, PlayerColor botColor) {
+    private static String[] pickBestMaterialMove(String fenState, List<String[]> moves, PlayerColor botColor) {
         String[] bestMove = moves.get(0);
         int maxScore = Integer.MIN_VALUE;
 
         for (String[] move : moves) {
-            GameEngine ghost = cloneEngine(liveEngine);
+            GameEngine ghost = new GameEngine();
+            ghost.setupInitalState(fenState);
             makeSimulatedMove(ghost, move[0], move[1]);
 
             int score = countMaterial(ghost, botColor) - countMaterial(ghost, getOpponent(botColor));

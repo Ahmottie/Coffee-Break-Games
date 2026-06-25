@@ -75,15 +75,9 @@ public class JsonHandler {
         listofBoards.forEach(board -> arrayNode.add(board.getBoard()));
 
         try {
-            File file;
-            var path = BoardDesigner.class.getResource("/HexChess/BoardDesign.json");
-            if (path != null) {
-                file = new File(path.toURI());
-            } else {
-                file = new File("src/main/resources/HexChess/BoardDesign.json");
-            }
-            jsonMapper.writerWithDefaultPrettyPrinter().writeValue(file, arrayNode);
-        } catch (URISyntaxException | IOException e) {
+            // always write to the external file
+            jsonMapper.writerWithDefaultPrettyPrinter().writeValue(externalSaveFile, arrayNode);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
