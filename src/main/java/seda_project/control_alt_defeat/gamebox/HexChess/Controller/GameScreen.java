@@ -505,7 +505,14 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                     javafx.application.Platform.runLater(() -> {
                         gameEngine.handleMove(bestMove[0], bestMove[1]);
                         if (gameEngine.getCurrentTurn() == botColor && !gameEngine.isGameOver()) {
-                            gameEngine.promote(PieceType.QUEEN);
+
+                            // default to Queen if none specified
+                            PieceType promoType = PieceType.QUEEN;
+                            if (bestMove.length > 2 && !bestMove[2].equals("NONE")) {
+                                promoType = PieceType.valueOf(bestMove[2]);
+                            }
+
+                            gameEngine.promote(promoType);
                         }
                     });
                 }
