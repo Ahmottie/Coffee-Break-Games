@@ -199,3 +199,6 @@ public class HexBot {
                 .anyMatch(cell -> cell.getCoords().col == kingPos.col && cell.getCoords().row == kingPos.row);
     }
 }
+
+
+// changes?
