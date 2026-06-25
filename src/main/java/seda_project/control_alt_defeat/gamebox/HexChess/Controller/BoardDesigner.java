@@ -20,6 +20,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seda_project.control_alt_defeat.gamebox.Configuration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.*;
 import seda_project.control_alt_defeat.gamebox.ui.Controller;
@@ -225,6 +226,7 @@ public class BoardDesigner extends Controller implements Initializable {
         sC.play("button");
         try {
             Stage selectionStage = new Stage();
+            selectionStage.initStyle(StageStyle.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/BoardSelection.fxml"));
             Parent root = loader.load();
             selectionStage.setScene(new Scene(root));

@@ -21,15 +21,16 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 18, 0.25, 0, 5);
 }
 
+.transparent-scroll,
+.transparent-scroll > .viewport,
+.transparent-scroll-content,
+.scroller,
+.scroller > .viewport {
+    -fx-background-color: transparent;
+}
+
 .transparent-scroll {
     -fx-background: transparent;
-    -fx-background-color: transparent;
-}
-.transparent-scroll > .viewport {
-    -fx-background-color: transparent;
-}
-.transparent-scroll-content {
-    -fx-background-color: transparent;
 }
 
 .error {
@@ -69,7 +70,7 @@
 }
 
 .button-wrapper {
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
     -fx-padding: 8px;
 }
 
@@ -79,7 +80,7 @@
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
 }
 
 .button:hover {
@@ -96,7 +97,7 @@
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
 }
 
 .color-picker {
@@ -105,7 +106,7 @@
     -fx-border-radius: 6px;
     -fx-border-color: transparent;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
 }
 
 .color-picker:hover {
@@ -136,7 +137,7 @@
     -fx-border-width: 1.5px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.35), 14, 0.3, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.35), 14, 0.3, 0, 4);
 }
 
 .color-palette .color-square {
@@ -147,7 +148,7 @@
 .color-palette .color-square:hover {
     -fx-border-color: -theme-button-top;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(113,189,255,0.7), 6, 0.5, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.7), 6, 0.5, 0, 0);
 }
 
 .custom-color-dialog .dialog-pane {
@@ -172,6 +173,7 @@
     -fx-background-radius: 4px;
 }
 
+/* --- Lists, Combo Boxes & Scroll Items --- */
 .combo-box-popup .list-view,
 .scroller {
     -fx-border-color: rgba(30, 207, 207, 0.3);
@@ -180,15 +182,11 @@
     -fx-border-radius: 5px;
 }
 
-.scroller{
-    -fx-background-color: transparent;
-}
-
-.combo-box-popup .list-view{
+.combo-box-popup .list-view {
     -fx-background-color: -theme-panel-bg;
 }
 
-.combo-box-popup .list-view .list-cell{
+.combo-box-popup .list-view .list-cell {
     -fx-text-fill: rgba(180, 240, 240, 0.80);
     -fx-background-color: transparent;
     -fx-background-radius: 7px;
@@ -207,8 +205,9 @@
     -fx-border-width: 1px;
     -fx-cursor: hand;
     -fx-max-width: Infinity;
-    -fx-padding: 9 14 9 14;
+    -fx-padding: 9px 14px 9px 14px;
 }
+
 .combo-box-popup .list-view .list-cell:hover,
 .scrollItem:hover {
     -fx-background-color: rgba(30, 207, 207, 0.10);
@@ -222,10 +221,6 @@
     -fx-border-color: rgba(77, 235, 184, 0.70);
     -fx-text-fill: rgba(160, 255, 220, 1.0);
     -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
-}
-
-.scroller > .viewport {
-    -fx-background-color: transparent;
 }
 
 
@@ -275,7 +270,7 @@
 .text-field {
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent #B0B0B0 transparent;
-    -fx-border-width: 0 0 1 0;
+    -fx-border-width: 0 0 1px 0;
     -fx-prompt-text-fill: #90A4AE;
 }
 
@@ -325,13 +320,10 @@
 
 .mute {
     -fx-cursor: hand;
-    -fx-effect: dropshadow(three-pass-box,-theme-button-top , 12, 0.4, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -theme-button-top, 12, 0.4, 0, 0);
 }
 
 .mute:hover {
     -fx-opacity: 0.85;
     -fx-effect: dropshadow(three-pass-box, -theme-button-top, 16, 0.6, 0, 0);
-}
-.close {
-
 }
