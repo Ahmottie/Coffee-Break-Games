@@ -91,7 +91,8 @@
     </VBox>
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
-        <URL value="@../../css/stylesheets/MemoryMenu.css" />
+        <URL value="@../../css/stylesheets/MainTheme.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/MemoryMenu.css" />
     </stylesheets>
 </StackPane>

@@ -207,7 +207,7 @@ public class WaitForOpponent extends Controller {
                 : "/Views/Tetris/GameScreenHorizontal.fxml";
 
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-        controller.create(p1, p2, p1L,p2L, engine);
+        controller.create(p1, p2, p1L,p2L, engine,header.getScene());
         if (c.checkFlip(p1,p1)){
             controller.flip();
         }

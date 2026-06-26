@@ -72,6 +72,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.16.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.dlsc.fxmlkit</groupId>
+            <artifactId>fxmlkit</artifactId>
+            <version>1.5.1</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -146,8 +146,7 @@ public class ResultScreen extends Controller {
             controller.setBotMode(false, null);
         }
 
-        controller.init();
-
+        controller.init(header.getScene());
         if (flipped){
             controller.flip();
         }

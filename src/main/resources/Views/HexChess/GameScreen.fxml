@@ -41,10 +41,10 @@
                 </HBox>
                 <HBox>
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onP1DrawAction" text="Draw" />
+                        <Button fx:id="p1Draw" mnemonicParsing="false" onAction="#onP1DrawAction" text="Draw" />
                     </StackPane>
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onP1ResignAction" text="Resign" />
+                        <Button fx:id="p1Resign" mnemonicParsing="false" onAction="#onP1ResignAction" text="Resign" />
                     </StackPane>
                 </HBox>
                 <Label styleClass="normalText" text="Lost Pieces" />
@@ -1559,10 +1559,10 @@
                 </HBox>
                 <HBox>
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onP2DrawAction" text="Draw" />
+                        <Button fx:id="p2Draw" mnemonicParsing="false" onAction="#onP2DrawAction" text="Draw" />
                     </StackPane>
                     <StackPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="button-wrapper">
-                        <Button mnemonicParsing="false" onAction="#onP2ResignAction" text="Resign" />
+                        <Button fx:id="p2Resign" mnemonicParsing="false" onAction="#onP2ResignAction" text="Resign" />
                     </StackPane>
                 </HBox>
                 <Label styleClass="normalText" text="Lost Pieces" />
@@ -1612,6 +1612,7 @@
 
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MainTheme.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
         <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>

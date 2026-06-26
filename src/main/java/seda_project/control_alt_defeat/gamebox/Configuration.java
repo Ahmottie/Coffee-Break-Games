@@ -1,5 +1,6 @@
 package seda_project.control_alt_defeat.gamebox;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 public class Configuration {
 
     private static Configuration instance;
+    public boolean crimson = false;
 
     private Configuration() {
     }
@@ -79,16 +81,18 @@ public class Configuration {
         try {
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
             Parent root = loader.load();
-
             vS.addFxmlLoaders(address);
             var controller = loader.getController();
-            Scene newScene = new Scene(root);
-            newScene.setFill(Color.TRANSPARENT);
             Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.sizeToScene();
-            stage.centerOnScreen();
-            stage.show();
+            Scene currentScene = stage.getScene();
+
+            Platform.runLater(() -> {
+                currentScene.setFill(Color.TRANSPARENT);
+                currentScene.setRoot(root);
+                stage.sizeToScene();
+                stage.centerOnScreen();
+            });
+
             if (controller != null){
                 return controller;
             }
@@ -118,22 +122,22 @@ public class Configuration {
         return null;
     }
 
-    public Object backScene( VBox header, ViewStack vS){
-        try{
+    public Object backScene(VBox header, ViewStack vS) {
+        try {
             vS.popFxmlLoader();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(vS.getFxmlLoader()));
             Parent root = loader.load();
             var controller = loader.getController();
-            Scene newScene = new Scene(root);
-            newScene.setFill(Color.TRANSPARENT);
+
             Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-            if (controller != null){
+            Scene currentScene = stage.getScene();
+
+            currentScene.setRoot(root);
+
+            if (controller != null) {
                 return controller;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

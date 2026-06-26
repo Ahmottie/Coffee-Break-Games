@@ -3,14 +3,6 @@
     src: url('../fonts/Michroma-Regular.ttf');
 }
 
-.root {
-    -theme-text-primary: rgba(180, 240, 240, 0.9);
-    -theme-accent-cyan: rgba(30, 207, 207, 0.55);
-    -theme-button-top: #71bdff;
-    -theme-button-bottom: #3d7db8;
-    -theme-panel-bg: rgba(10, 20, 40, 0.72);
-}
-
 .text {
     -fx-font-family: 'Michroma';
 }
@@ -29,28 +21,28 @@
     -fx-text-fill: -theme-text-primary;
 }
 
-.color-picker .label{
-    -fx-text-fill: #000000;
+.color-picker .label {
+    -fx-text-fill: -theme-text-dark;
 }
 
 .headerText {
     -fx-font-size: 35px;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, rgba(30,207,207,0.8), 10, 0.5, 0, 0);
+    -fx-text-fill: -theme-text-header;
+    -fx-effect: dropshadow(gaussian, -theme-header-glow, 10, 0.5, 0, 0);
 }
 
 .normalText {
     -fx-font-size: 18px;
 }
 
-.button{
+.button {
     -fx-font-size: 13px;
 }
 
-.notification{
-    -fx-font-family: Impact;
+.notification {
+    -fx-font-family: 'Michroma';
     -fx-font-weight: bold;
-    -fx-stroke:black;
+    -fx-stroke: -theme-text-dark;
     -fx-stroke-width: 3px;
     -fx-font-size: 100px;
 }

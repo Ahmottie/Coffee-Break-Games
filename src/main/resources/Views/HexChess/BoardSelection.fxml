@@ -9,6 +9,7 @@
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.BoardSelection">
     <stylesheets>
         <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MainTheme.css" />
         <URL value="@../../css/stylesheets/MenuStyle.css" />
         <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>

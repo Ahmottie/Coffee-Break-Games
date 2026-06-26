@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +41,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private boolean isNetworkPromotion = false;
     private boolean isBotMode = false;
     private PlayerColor botColor = null;
+    private Scene thisScene;
     
     @FXML
     private VBox header, p1, p2;
@@ -59,6 +61,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     @FXML
     private Label p1Score, p2Score, p1NameLabel, p2NameLabel;
 
+    @FXML
+    private Button p1Resign, p1Draw, p2Resign, p2Draw;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -77,17 +82,28 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         p2Score.setText(String.valueOf(p2Points));
     }
 
-    public void init(){
+    public void init(Scene scene){
+        this.thisScene = scene;
+
         this.gameEngine.addListener(this);
         this.gameEngine.setupInitialState();
         activePlayer = gameEngine.getActivePlayer();
+
+        if (isBotMode) {
+            Button resign = botColor == PlayerColor.WHITE ? p1Resign : p2Resign;
+            Button draw = botColor == PlayerColor.WHITE ? p1Draw : p2Draw;
+
+            resign.setDisable(true);
+            draw.setDisable(true);
+        }
     }
 
     public void setGameEngine(GameEngine gameEngine){
         this.gameEngine = gameEngine;
     }
 
-    public void init(String boardState) {
+    public void init(String boardState, Scene scene) {
+        thisScene = scene;
         this.gameEngine.addListener(this);
         this.gameEngine.setupInitalState(boardState);
         activePlayer = gameEngine.getActivePlayer();
@@ -98,8 +114,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         String pieceId = piecetoString(piece);
         Polygon field = (Polygon) boardPane.lookup("#" + id);
 
-        ImageView sourceView = (ImageView) boardPane.getScene().lookup("#" + pieceId);
-        Image img = sourceView.getImage();
+        ImageView sourceView = (ImageView) thisScene.lookup("#" + pieceId);
+        Image img = getPieceImage(piece);
 
         ImageView newPiece = new ImageView(img);
         newPiece.setFitWidth(40);
@@ -331,7 +347,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         String labelId = piecetoString(capturedPiece).replace("Img", "");
 
         VBox helper = (labelId.contains("1")) ? p1 : p2;
-        Label capturedLabel = (Label) helper.getScene().lookup("#" + labelId);
+        Label capturedLabel = (Label) thisScene.lookup("#" + labelId);
         if (capturedLabel != null) {
             int current = Integer.parseInt(capturedLabel.getText().replace("x",""));
             String newValue = (labelId.contains("1")) ? "x"+(current + 1):(current + 1)+"x";
@@ -434,7 +450,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             Stage promotionStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/PromotionStage.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) header.getScene().getWindow();
+            Stage stage = (Stage) thisScene.getWindow();
             Scene s = new Scene(root);
             s.setFill(Color.TRANSPARENT);
             promotionStage.setScene(s);
@@ -461,7 +477,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         ImageView pawnView = getPieceAtPolygon(coordId);
         if (pawnView == null) return;
         String newPieceId = piecetoString(piece);
-        ImageView sourceView = (ImageView) boardPane.getScene().lookup("#" + newPieceId);
+        ImageView sourceView = (ImageView) thisScene.lookup("#" + newPieceId);
 
         if (sourceView != null) {
             pawnView.setImage(sourceView.getImage());
@@ -664,7 +680,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private void drawProposal(int proposing){
         sC.play("button");
         try {
-            Stage stage = (Stage) header.getScene().getWindow();
+            Stage stage = (Stage) thisScene.getWindow();
 
             Stage proposalStage = new Stage();
             FXMLLoader loader = new FXMLLoader(Configuration.class.getResource("/Views/HexChess/DrawProposal.fxml"));
@@ -674,8 +690,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             proposalStage.setScene(s);
             proposalStage.initStyle(StageStyle.TRANSPARENT);
             proposalStage.initModality(Modality.APPLICATION_MODAL);
-            proposalStage.setWidth(321);
-            proposalStage.setHeight(114);
+            proposalStage.setWidth(323);
+            proposalStage.setHeight(115);
             proposalStage.setX(stage.getX() + stage.getWidth() / 2 - proposalStage.getWidth() / 2);
             proposalStage.setY(stage.getY() + stage.getHeight() / 2 - proposalStage.getHeight() / 2);
             proposalStage.show();
@@ -750,5 +766,21 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     }
     public void p2Duck(){
        p2PawnImg.setImage(settings.getP2Pieces().get(6).getImage());
+    }
+
+    private Image getPieceImage(Piece piece) {
+        List<ImageView> pieces = (piece.getPlayer() == PlayerColor.WHITE)
+                ? settings.getP1Pieces()
+                : settings.getP2Pieces();
+
+        int index = switch(piece.getType()) {
+            case PAWN -> 0;
+            case ROOK -> 1;
+            case KNIGHT -> 2;
+            case BISHOP -> 3;
+            case QUEEN -> 4;
+            case KING -> 5;
+        };
+        return pieces.get(index).getImage();
     }
 }

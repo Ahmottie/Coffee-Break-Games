@@ -78,6 +78,7 @@ public class BoardSelection extends Controller{
     @FXML
     protected void onUseAction(){
         sC.play("button");
+        if (selectedboard == null) return;
         designer.loadBoard(selectedboard);
         onBackAction();
     }

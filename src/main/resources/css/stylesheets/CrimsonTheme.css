@@ -1,0 +1,103 @@
+.root {
+    /* UI Panels & Borders */
+    -theme-panel-bg: #130B22B7;
+    -theme-border-main: #4A288AB7;
+    -theme-border-light: #E3D6FFB7;
+    -theme-border-muted: #E6B4FFB7;
+    -theme-shadow-dark: #0000008C;
+
+    /* Text Colors */
+    -theme-text-primary: #E6B4FFB7;
+    -theme-text-header: #f5c5ff;
+    -theme-text-dark: #130B22B7;
+    -theme-text-muted: #E6B4FFB7;
+    -theme-text-button: #f2a8ff;
+
+    /* Accents & Highlights */
+    -theme-accent-cyan: #DC143C8C;
+    -theme-accent-cyan-solid: #DC143CFF;
+    -theme-header-glow: #DC143CCC;
+
+    /* Buttons */
+    -theme-button-top: #C50024FF;
+    -theme-button-bottom: #5C0011FF;
+    -theme-button-hover-top: #DC143CFF;
+    -theme-button-hover-bottom: #8B0000FF;
+    -theme-button-pressed-bottom: #3D0008FF;
+    -theme-button-glow: #DC143C72;
+    -theme-button-wrapper-glow: #DC143C66;
+
+    /* Status Notifications */
+    -theme-error-bg: #8B000072;
+    -theme-error-border: #DC143CBF;
+    -theme-error-glow: #B4284666;
+
+    -theme-info-bg: #B9A00A72;
+    -theme-info-border: #E8D44ABF;
+    -theme-info-glow: #D7C82866;
+
+    -theme-ready-bg: #2E7D32C1;
+    -theme-ready-border: #4CAF50BF;
+    -theme-ready-glow: #388E3C66;
+    -theme-ready-btn-top: #81C784;
+    -theme-ready-btn-bottom: #1B5E2072;
+
+    /* Dialogs & Color Pickers */
+    -theme-palette-bg: #0B221AF2;
+    -theme-palette-border: #DC143C99;
+    -theme-palette-glow: #DC143C59;
+    -theme-dialog-bg: #0B221AF7;
+    -theme-dialog-border: #DC143C7F;
+    -theme-dialog-tf-bg: #0B221ACC;
+    -theme-dialog-tf-border: #DC143C66;
+
+    /* Lists, Dropdowns & Scrollbars */
+    -theme-combo-border: #DC143C4C;
+    -theme-combo-cell-text: #E8F5E9CC;
+    -theme-combo-cell-hover-bg: #DC143C19;
+    -theme-combo-cell-hover-border: #DC143C33;
+    -theme-combo-cell-hover-text: #FFFFFFF2;
+    -theme-combo-selected-bg: #4A288AB7;
+    -theme-combo-selected-border: #130B22B7;
+    -theme-combo-selected-text: #F5C5FFFF;
+    -theme-combo-selected-glow: #130B22B7;
+    -theme-combo-arrow: #DC143C66;
+
+    /* Game Playgrounds (Tetris / HexChess) */
+    -theme-game-bg-solid: #050F08FF;
+    -theme-playground-outer: #300291;
+    -theme-playground-mid: #ec87e6;
+    -theme-playground-core: #ba0505;
+    -theme-tetris-field-glow: #DC143C4C;
+
+    /* Game Pieces & Polygons */
+    -light-poly-color: #D2B48CFF;
+    -normal-poly-color: #A0522DFF;
+    -dark-poly-color: #5C4033FF;
+    -theme-poly-stroke: #221100FF;
+    -theme-effect-selected: #DC143CF2;
+    -theme-effect-endangered: #FF4500F2;
+    -theme-effect-capture: #eeff00;
+    -theme-effect-selected-tile: #4CAF50F2;
+    -theme-dot-self-stroke: #105c04;
+    -theme-dot-self-glow: #00a305;
+    -theme-dot-enemy-stroke: #ba0505;
+    -theme-dot-enemy-glow: #ef3a3a;
+    -theme-arrow-grad-top: #baffbb;
+    -theme-arrow-grad-mid: #00a305;
+    -theme-arrow-grad-bot: #014a02;
+    -theme-arrow-glow: #baffbb;
+    -theme-moved-color: #c6b1d5;
+
+    /* Memory Card Game Tokens */
+    -theme-card-border: #FFFFFF3F;
+    -theme-card-shadow: #0000007F;
+    -theme-card-hover-border: #DC143CFF;
+    -theme-card-hover-glow: #DC143C99;
+    -theme-card-disabled-border: #F5F5DC4C;
+    -theme-card-disabled-shadow: #0000004C;
+
+    /* Radio Buttons */
+    -theme-radio-border-selected: #DC143CBF;
+    -theme-radio-dot-selected: #DC143CF2;
+}

@@ -207,7 +207,8 @@ for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Images
 * Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
-* Mute Button: https://www.svgrepo.com/svg/469371/mute-2
+* Unmute Button: https://www.svgrepo.com/svg/363075/speaker-simple-none-bold?edit=true
+* Mute Button: https://www.svgrepo.com/svg/363074/speaker-simple-slash-bold?edit=true
 * Close Icon: https://www.svgrepo.com/svg/522388/close?edit=true
 
 ## Sounds
@@ -236,9 +237,10 @@ for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Easter Eggs:
 * Konami Code -> Change Music
-* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is roatet by 180 
+* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is rotated by 180 
 * "jeb_" -> GameScreen background has Rainbowcolors
 * "Duck" -> Pawns in Chess are replaced by Ducks
+* Second color-scheme when performing a double click on the header
 
 ## AI-Usage
 * FXML indentation

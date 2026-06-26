@@ -10,6 +10,7 @@
     <stylesheets>
         <URL value="@../css/stylesheets/fontstyle.css" />
         <URL value="@../css/stylesheets/MainMenu.css" />
+        <URL value="@../css/stylesheets/MainTheme.css" />
         <URL value="@../css/stylesheets/MenuStyle.css" />
     </stylesheets>
     <VBox alignment="TOP_CENTER" style="-fx-background-color: transparent">
