@@ -44,6 +44,17 @@ public class GameScreen extends Controller implements TetrisEventListener {
     private boolean disconnected = false;
     private boolean gameOverHandled = false;
 
+    // Dual-engine LAN state. controlledPlayer is the player THIS machine simulates
+    // (host = 1, client = 2); the opponent board is display-only from snapshots.
+    private int controlledPlayer = 0;
+    private boolean localLost = false;
+    private boolean oppLost = false;
+    private int oppFinalScore = 0;
+    private int oppFinalLines = 0;
+    // Power-ups currently shown on the opponent panel, tracked separately from my own
+    // (currentPowerUps) so the two displays don't clobber each other in dual mode.
+    private List<PowerUp> oppPowerUps = new ArrayList<>();
+
     private Image swapImage, portalImage, swapBlockImage, decreaseRotationOpponentImage,decreaseRotationSelfImage,decreaseTickOpponentImage,decreaseTickSelfImage,increaseTickOpponentImage;
     private Image radialBombImage, columnBombImage;
 
@@ -105,6 +116,9 @@ public class GameScreen extends Controller implements TetrisEventListener {
         sC.play("button");
         sC.stopLooping();
         sC.playLooping("lobby_background",.2);
+        // We're leaving on purpose: closing the connection below fires our own
+        // onDisconnected, so suppress the disconnect handler to avoid a double navigate.
+        disconnected = true;
         Session.clear();
         // engine is null in LAN-client mode
         if (engine != null) {
@@ -135,8 +149,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     public void render(TetrisEngine.GameState state, int player ){
         if (player == 1) {
+            // Dual mode: keep my own field's row count in sync with my board (board-change / swaps).
+            if (controlledPlayer == 1) syncBoardRows(player1Field, state.p1Grid().length, true);
             drawGrid(state.p1Grid(), state.p1ActiveBlocks(), player1Field, state.p1Lost());
         } else {
+            if (controlledPlayer == 2) syncBoardRows(player2Field, state.p2Grid().length, false);
             drawGrid(state.p2Grid(), state.p2ActiveBlocks(), player2Field, state.p2Lost());
         }
     }
@@ -324,6 +341,12 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onBoardSizeChange (int playerNum, int linesCleared, TetrisEngine.GameState snapshot) {
+        // Dual mode: only my own board changes here; render() resizes my field from the
+        // grid, and the opponent's field is resized from their snapshots in renderOpponent.
+        if (controlledPlayer != 0) {
+            render(snapshot, controlledPlayer);
+            return;
+        }
         RowConstraints row = new RowConstraints();
         row.setPrefHeight(12);
         row.setMinHeight(12);
@@ -402,10 +425,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onGameOver(TetrisEngine.GameState snapshot) {
-        if (p1EngineTicker != null){
-            p1EngineTicker.stop();
-            p2EngineTicker.stop();
-        }
+        // Null-safe per ticker: in dual-engine mode only one of the two tickers
+        // exists (each machine ticks only its own player), so stopping them must
+        // not assume both are present.
+        if (p1EngineTicker != null) p1EngineTicker.stop();
+        if (p2EngineTicker != null) p2EngineTicker.stop();
         if (handler != null) handler.stop();
         ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml", header, vS);
         controller.setInitialLevels(initP1Level,initP2Level);
@@ -441,10 +465,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onStopped (TetrisEngine.GameState snapshot){
-        if (p1EngineTicker != null){
-            p1EngineTicker.stop();
-            p2EngineTicker.stop();
-        }
+        // Null-safe per ticker: in dual-engine mode only one of the two tickers
+        // exists (each machine ticks only its own player), so stopping them must
+        // not assume both are present.
+        if (p1EngineTicker != null) p1EngineTicker.stop();
+        if (p2EngineTicker != null) p2EngineTicker.stop();
         if (handler != null) handler.stop();
     }
 
@@ -455,6 +480,11 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
     @Override
     public void onBlockSwap(TetrisEngine.GameState snapshot){
+        // Dual mode: my snapshot is only authoritative for my own board.
+        if (controlledPlayer != 0) {
+            render(snapshot, controlledPlayer);
+            return;
+        }
         render(snapshot, 1);
         render(snapshot,2);
     }
@@ -688,28 +718,286 @@ public class GameScreen extends Controller implements TetrisEventListener {
         }
     }
 
+    // ----- Dual-engine LAN (each machine simulates only its own board) -----
+
+    /**
+     * Like {@link #create} but for the dual-engine LAN model: this machine builds a
+     * full engine yet drives and ticks ONLY its own player ({@code controlledPlayer}),
+     * so local input is applied instantly with no host round-trip. The opponent board
+     * is rendered from snapshots, never simulated here.
+     */
+    public void createDual(String player1, String player2, int p1Level, int p2Level,
+                           TetrisEngine engine, int controlledPlayer) {
+        this.engine = engine;
+        this.controlledPlayer = controlledPlayer;
+        // Simulate only our own board; power-ups spawn here, opponent effects go over the wire.
+        engine.setSoloPlayer(controlledPlayer);
+
+        player1NameLabel.setText(player1);
+        player2NameLabel.setText(player2);
+        player1LinesLabel.setText("0");
+        player2LinesLabel.setText("0");
+        player1PointsLabel.setText("0");
+        player2PointsLabel.setText("0");
+        p1LevelLabel.setText(p1Level + "");
+        p2LevelLabel.setText(p2Level + "");
+
+        currentPowerUps = new ArrayList<>();
+        loadImages();
+
+        // Render my own board from my engine's events.
+        engine.addListener(this);
+
+        // Keyboard drives only my player -> immediate local response.
+        handler = new KeyHandler(engine, tS, this, controlledPlayer);
+        handler.attach(header.getScene());
+
+        // Tick only my own board; the opponent ticks on their machine.
+        if (controlledPlayer == 1) {
+            p1EngineTicker = new Timeline(new KeyFrame(
+                    Duration.millis(engine.getTickIntervalMs(1)), _ -> engine.tick(1)));
+            p1EngineTicker.setCycleCount(Animation.INDEFINITE);
+            p1EngineTicker.play();
+        } else {
+            p2EngineTicker = new Timeline(new KeyFrame(
+                    Duration.millis(engine.getTickIntervalMs(2)), _ -> engine.tick(2)));
+            p2EngineTicker.setCycleCount(Animation.INDEFINITE);
+            p2EngineTicker.play();
+        }
+
+        // Show my starting board right away instead of waiting for the first tick.
+        render(engine.getSnapshot(), controlledPlayer);
+    }
+
+    /**
+     * Bidirectional bridge for the dual-engine model: ships my board snapshots to the
+     * opponent, renders the opponent's snapshots, and coordinates game-over so both
+     * sides agree once both players have topped out.
+     */
+    public void attachDualBridge(NetworkLayer network, int controlledPlayer) {
+        if (engine == null || network == null) return;
+        this.controlledPlayer = controlledPlayer;
+
+        network.clearListeners();
+
+        // Engine -> network: ship MY board to the opponent for display.
+        engine.addListener(new TetrisEventListener() {
+            @Override public void onTick(TetrisEngine.GameState s, int player) { sendMyBoard(network, s); }
+            @Override public void onBlockLocked(int p, TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            @Override public void onLinesCleared(int p, int n, TetrisEngine.GameState s) {
+                sendMyBoard(network, s);
+                network.send(new TetrisMessage.LinesCleared(controlledPlayer, n));
+            }
+            @Override public void onLevelChanged(long ms, TetrisEngine.GameState s, int player) { sendMyBoard(network, s); }
+            @Override public void onBlockMovement(TetrisEngine.GameState s, int player) { sendMyBoard(network, s); }
+            @Override public void onReset(TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            @Override public void onStopped(TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            // Power-up spawn/pickup changes my board's power-up set; push it so the opponent's display updates.
+            @Override public void onPowerUpSpawned(TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            @Override public void onPowerUpTriggered(TetrisEngine.GameState s, PowerUp p) { sendMyBoard(network, s); }
+            // Swaps and board-change reshape my board; push it immediately rather than waiting for the next tick.
+            @Override public void onBlockSwap(TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            @Override public void onBoardSizeChange(int p, int n, TetrisEngine.GameState s) { sendMyBoard(network, s); }
+            // An opponent-targeted effect fired on my board -> deliver it for them to apply to theirs.
+            @Override public void onOpponentAttack(AttackType type) { network.send(new TetrisMessage.Attack(type)); }
+            // A PORTAL sent one of my blocks to the opponent's board.
+            @Override public void onPortalOut(Block block) { network.send(new TetrisMessage.PortalBlock(block)); }
+            // Board-change: I cleared lines, so the opponent shrinks their board.
+            @Override public void onBoardShrinkOut(int rows) { network.send(new TetrisMessage.BoardShrink(rows)); }
+            // Swap-active-blocks handshake.
+            @Override public void onSwapActiveRequest(Block[] blocks) { network.send(new TetrisMessage.SwapActiveRequest(blocks)); }
+            @Override public void onSwapActiveResponse(Block[] blocks) { network.send(new TetrisMessage.SwapActiveResponse(blocks)); }
+            // Swap-boards handshake.
+            @Override public void onSwapBoardsRequest(String[][] grid, Block[] blocks) { network.send(new TetrisMessage.SwapBoardsRequest(grid, blocks)); }
+            @Override public void onSwapBoardsResponse(String[][] grid, Block[] blocks) { network.send(new TetrisMessage.SwapBoardsResponse(grid, blocks)); }
+            @Override public void onPlayerLost(int p, TetrisEngine.GameState s) {
+                sendMyBoard(network, s);
+                int score = controlledPlayer == 1 ? s.p1Score() : s.p2Score();
+                int lines = Integer.parseInt(
+                        (controlledPlayer == 1 ? player1LinesLabel : player2LinesLabel).getText());
+                network.send(new TetrisMessage.PlayerLost(controlledPlayer, score, lines));
+                Platform.runLater(() -> { localLost = true; maybeFinishDual(); });
+            }
+        });
+
+        // Network -> me: render the opponent board and reach game-over consensus.
+        network.addListener(new NetworkListener() {
+            @Override
+            public void onMessage(Message msg) {
+                if (msg instanceof TetrisMessage.BoardState(TetrisEngine.GameState state, int senderPlayer)) {
+                    // last-write-wins coalescing so the FX thread renders once per batch
+                    if (pendingState.getAndSet(state) == null) {
+                        Platform.runLater(() -> {
+                            TetrisEngine.GameState latest = pendingState.getAndSet(null);
+                            if (latest != null) renderOpponent(latest);
+                        });
+                    }
+                } else if (msg instanceof TetrisMessage.LinesCleared(int playerNum, int lineCount)) {
+                    Platform.runLater(() -> incrementLines(playerNum, lineCount));
+                } else if (msg instanceof TetrisMessage.PlayerLost pl) {
+                    Platform.runLater(() -> markOpponentLost(pl.finalScore(), pl.finalLines()));
+                } else if (msg instanceof TetrisMessage.Attack a) {
+                    Platform.runLater(() -> engine.applyIncomingAttack(a.type()));
+                } else if (msg instanceof TetrisMessage.PortalBlock(Block block)) {
+                    Platform.runLater(() -> engine.receivePortalBlock(block));
+                } else if (msg instanceof TetrisMessage.BoardShrink(int rows)) {
+                    Platform.runLater(() -> engine.applyBoardShrink(rows));
+                } else if (msg instanceof TetrisMessage.SwapActiveRequest(Block[] blocks)) {
+                    Platform.runLater(() -> engine.receiveSwapActiveRequest(blocks));
+                } else if (msg instanceof TetrisMessage.SwapActiveResponse(Block[] blocks)) {
+                    Platform.runLater(() -> engine.receiveSwapActiveResponse(blocks));
+                } else if (msg instanceof TetrisMessage.SwapBoardsRequest(String[][] grid, Block[] blocks)) {
+                    Platform.runLater(() -> engine.receiveSwapBoardsRequest(grid, blocks));
+                } else if (msg instanceof TetrisMessage.SwapBoardsResponse(String[][] grid, Block[] blocks)) {
+                    Platform.runLater(() -> engine.receiveSwapBoardsResponse(grid, blocks));
+                }
+            }
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> handleDisconnect(reason));
+            }
+        });
+
+        // Push my starting board so the opponent sees it immediately, not after my first tick.
+        sendMyBoard(network, engine.getSnapshot());
+    }
+
+    private void sendMyBoard(NetworkLayer network, TetrisEngine.GameState s) {
+        network.send(new TetrisMessage.BoardState(s, controlledPlayer));
+    }
+
+    /** Render the opponent's half of a received snapshot into the opponent panel. */
+    private void renderOpponent(TetrisEngine.GameState s) {
+        int opp = 3 - controlledPlayer; // 1 -> 2, 2 -> 1
+        boolean oppHalfLost;
+        int oppScore;
+        if (opp == 1) {
+            syncBoardRows(player1Field, s.p1Grid().length, true);
+            render(s, 1);
+            player1PointsLabel.setText(String.valueOf(s.p1Score()));
+            p1LevelLabel.setText(String.valueOf(s.p1Level()));
+            oppHalfLost = s.p1Lost();
+            oppScore = s.p1Score();
+        } else {
+            syncBoardRows(player2Field, s.p2Grid().length, false);
+            render(s, 2);
+            player2PointsLabel.setText(String.valueOf(s.p2Score()));
+            p2LevelLabel.setText(String.valueOf(s.p2Level()));
+            oppHalfLost = s.p2Lost();
+            oppScore = s.p2Score();
+        }
+
+        renderOppPowerUps(s.powerUps());
+
+        // Backstop for game-over: the opponent's loss is also carried by their board
+        // snapshots, which stream continuously. So even if the discrete PlayerLost
+        // message is dropped or arrives out of order, this still finishes the game.
+        if (oppHalfLost) {
+            int oppLines = Integer.parseInt(
+                    (opp == 1 ? player1LinesLabel : player2LinesLabel).getText());
+            markOpponentLost(oppScore, oppLines);
+        }
+    }
+
+    /**
+     * Render the opponent's power-ups onto the opponent panel, diffing against what we
+     * last showed. Kept separate from showPowerUP/currentPowerUps (which manage MY own
+     * board) so the two power-up displays never clobber one another.
+     */
+    private void renderOppPowerUps(List<PowerUp> incoming) {
+        if (incoming == null) incoming = new ArrayList<>();
+        GridPane field = (controlledPlayer == 1) ? player2Field : player1Field;
+        for (PowerUp old : oppPowerUps) {
+            if (!incoming.contains(old)) removePowerUP(old);
+        }
+        for (PowerUp p : incoming) {
+            if (!oppPowerUps.contains(p)) {
+                Rectangle rect = new Rectangle(13, 13);
+                Image img = getImage(p);
+                if (img != null) rect.setFill(new ImagePattern(img));
+                else rect.setFill(Color.YELLOW);
+                rect.getStyleClass().add("PowerUp");
+                field.add(rect, p.getCol(), p.getRow());
+            }
+        }
+        oppPowerUps = new ArrayList<>(incoming);
+    }
+
+    /**
+     * Record that the opponent has topped out (learned from either the explicit
+     * PlayerLost message or their board snapshot) and try to finish. Capture-once,
+     * so whichever signal arrives first sets the opponent's final totals.
+     */
+    private void markOpponentLost(int finalScore, int finalLines) {
+        if (!oppLost) {
+            oppLost = true;
+            oppFinalScore = finalScore;
+            oppFinalLines = finalLines;
+        }
+        maybeFinishDual();
+    }
+
+    /** Once both players have topped out, both machines move to the result screen. */
+    private void maybeFinishDual() {
+        if (!(localLost && oppLost) || gameOverHandled) return;
+        gameOverHandled = true;
+
+        if (p1EngineTicker != null) p1EngineTicker.stop();
+        if (p2EngineTicker != null) p2EngineTicker.stop();
+        if (handler != null) handler.stop();
+        if (engine != null) engine.stop();
+
+        TetrisEngine.GameState mine = engine.getSnapshot();
+        int myScore = controlledPlayer == 1 ? mine.p1Score() : mine.p2Score();
+        int p1Score = controlledPlayer == 1 ? myScore : oppFinalScore;
+        int p2Score = controlledPlayer == 2 ? myScore : oppFinalScore;
+
+        // Pin the opponent's final lines so the result screen totals are exact.
+        if (controlledPlayer == 1) player2LinesLabel.setText(String.valueOf(oppFinalLines));
+        else player1LinesLabel.setText(String.valueOf(oppFinalLines));
+
+        TetrisEngine.GameState merged = new TetrisEngine.GameState(
+                mine.p1Grid(), mine.p2Grid(), mine.p1ActiveBlocks(), mine.p2ActiveBlocks(),
+                p1Score, p2Score, mine.p1Level(), mine.p2Level(),
+                mine.p1Name(), mine.p2Name(), true, true, true,
+                new ArrayList<>(), mine.isTwoBlockMode());
+
+        ResultScreen controller = (ResultScreen) c.changeScene("/Views/Tetris/ResultScreen.fxml", header, vS);
+        controller.handGameState(merged, null, player1LinesLabel, player2LinesLabel);
+        controller.setInitialLevels(initP1Level, initP2Level);
+        if (flipped) controller.flip();
+        if (rainbowed) controller.rainbow();
+    }
+
     private void handleDisconnect(String reason) {
         if (disconnected) return;
         disconnected = true;
 
-        if (p1EngineTicker != null){
-            p1EngineTicker.stop();
-            p2EngineTicker.stop();
-        }
+        // Null-safe per ticker: in dual-engine mode only one of the two tickers
+        // exists (each machine ticks only its own player), so stopping them must
+        // not assume both are present.
+        if (p1EngineTicker != null) p1EngineTicker.stop();
+        if (p2EngineTicker != null) p2EngineTicker.stop();
         if (engine != null) engine.stop();
         if (handler != null) handler.stop();
         if (clientRepeatTimer != null) clientRepeatTimer.stop();
+
+        // Only navigate if we're still attached to a window; if the scene was already
+        // swapped out, skip it instead of crashing changeScene with a null window.
+        javafx.stage.Window owner = (header.getScene() != null) ? header.getScene().getWindow() : null;
+        Session.clear();
+        vS.emtyStack();
+        if (owner != null) {
+            c.changeScene("/Views/StartingScreen.fxml", header, vS);
+        }
 
         Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
                 ButtonType.OK);
         alert.setTitle("Disconnected");
         alert.setHeaderText("Opponent disconnected");
+        if (owner != null) alert.initOwner(owner);
         alert.showAndWait();
-
-        Session.clear();
-        vS.emtyStack();
-        c.changeScene("/Views/StartingScreen.fxml", header, vS);
     }
     public void setInitialLevels(int initP1Level,int initP2Level){
         this.initP1Level = initP1Level;

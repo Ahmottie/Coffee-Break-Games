@@ -78,6 +78,12 @@ public class TetrisEngine {
 
     private boolean isStopped = false;
 
+    // Dual-engine LAN: when soloPlayer != 0 this engine simulates only that player's
+    // board. Power-ups spawn only on that board, opponent-targeted effects are sent
+    // over the network instead of mutating the (locally absent) other board.
+    private int soloPlayer = 0;
+    private boolean dualMode = false;
+
     private final ScheduledExecutorService scheduler =
             Executors.newSingleThreadScheduledExecutor(r -> {
                 Thread t = new Thread(r, "tetris-rotation-delay");
@@ -185,6 +191,49 @@ public class TetrisEngine {
         listeners.remove(listener);
     }
 
+    /**
+     * Switch this engine into dual-engine LAN mode, simulating only {@code player}'s
+     * board. Power-ups then spawn only on that board and opponent-targeted effects are
+     * emitted as {@link AttackType}s for the network layer to deliver. Cross-board
+     * power-ups that still need their own handshake (portal, swaps) and bombs are kept
+     * out of the spawn pool until their respective phases.
+     */
+    public synchronized void setSoloPlayer(int player) {
+        this.soloPlayer = player;
+        this.dualMode = player != 0;
+        // All power-ups are now networked for dual mode (self/opponent effects, portal,
+        // the two swaps), and bombs are self-contained, so nothing is excluded here.
+    }
+
+    /**
+     * Dual-engine LAN: apply an opponent-sent effect to THIS machine's own board.
+     * Mirrors the receiving side of the OPPONENT* power-ups from the single-engine model.
+     */
+    public synchronized void applyIncomingAttack(AttackType type) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        int me = soloPlayer;
+        switch (type) {
+            case SPEED_UP -> {
+                if (me == 1) p1FastEffects.add(10); else p2FastEffects.add(10);
+                bumpInterval(me);
+            }
+            case SPEED_DOWN -> {
+                if (me == 1) p1SlowEffects.add(10); else p2SlowEffects.add(10);
+                bumpInterval(me);
+            }
+            case ROTATION_DELAY -> {
+                long expiry = System.currentTimeMillis() + 10_000;
+                if (me == 1) p1RotationDelayExpiry = expiry; else p2RotationDelayExpiry = expiry;
+            }
+        }
+    }
+
+    private void bumpInterval(int player) {
+        long iv = recomputeInterval(player);
+        if (player == 1) p1TickInterval = iv; else p2TickInterval = iv;
+        listeners.forEach(l -> l.changeTickSpeed(player, iv));
+    }
+
     private long recomputeInterval(int player) {
         long baseSpeed = (player == 1) ? p1BaseTickInterval : p2BaseTickInterval;
         List<Integer> slows = (player == 1) ? p1SlowEffects : p2SlowEffects;
@@ -274,6 +323,8 @@ public class TetrisEngine {
         int playerNum = RANDOM.nextBoolean() ? 1 : 2;
         if (p1Lost) {playerNum = 2;}
         if (p2Lost) {playerNum = 1;}
+        // Dual-engine LAN: this engine only owns its own board, so only spawn there.
+        if (dualMode) {playerNum = soloPlayer;}
 
         Board board = (playerNum == 1) ? p1Board : p2Board;
         String[][] grid = board.getGrid();
@@ -404,24 +455,38 @@ public class TetrisEngine {
                         p1LinesCleared +=  linesCleared;
                         p1Score += calculateScore(linesCleared);
                         if (advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
-                            p1Board.expand(linesCleared);
-                            p2Board.shrink(linesCleared);
-                            for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
-                                if (p2ActiveBlocks[i] != null) p2ActiveBlocks[i].setY(p2ActiveBlocks[i].getY() + linesCleared);
+                            if (dualMode) {
+                                p1Board.expand(linesCleared);
+                                final int n = linesCleared;
+                                listeners.forEach(l -> l.onBoardShrinkOut(n));
+                                listeners.forEach(l -> l.onBoardSizeChange(1, n, getSnapshot()));
+                            } else {
+                                p1Board.expand(linesCleared);
+                                p2Board.shrink(linesCleared);
+                                for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
+                                    if (p2ActiveBlocks[i] != null) p2ActiveBlocks[i].setY(p2ActiveBlocks[i].getY() + linesCleared);
+                                }
+                                listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                             }
-                            listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                         }
                     }
                     else {
                         p2LinesCleared +=  linesCleared;
                         p2Score += calculateScore(linesCleared);
                         if( advancedSettings.isBoardChange() && !p1Lost && !p2Lost) {
-                            p2Board.expand(linesCleared);
-                            p1Board.shrink(linesCleared);
-                            for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
-                                if (p1ActiveBlocks[i] != null) p1ActiveBlocks[i].setY(p1ActiveBlocks[i].getY() - linesCleared);
+                            if (dualMode) {
+                                p2Board.expand(linesCleared);
+                                final int n = linesCleared;
+                                listeners.forEach(l -> l.onBoardShrinkOut(n));
+                                listeners.forEach(l -> l.onBoardSizeChange(2, n, getSnapshot()));
+                            } else {
+                                p2Board.expand(linesCleared);
+                                p1Board.shrink(linesCleared);
+                                for(int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
+                                    if (p1ActiveBlocks[i] != null) p1ActiveBlocks[i].setY(p1ActiveBlocks[i].getY() - linesCleared);
+                                }
+                                listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                             }
-                            listeners.forEach(l -> l.onBoardSizeChange(playerNum,linesCleared,getSnapshot()));
                         }
                     }
 
@@ -439,6 +504,7 @@ public class TetrisEngine {
             if (hit != null) {
                 switch (hit.getType()) {
                     case PORTAL : {
+                        if (dualMode) { executePortalDual(playerNum, activeBlock, blockIndex); break; }
                         executePortal(playerNum,activeBlock, blockIndex);
                         break;
                     }
@@ -456,6 +522,7 @@ public class TetrisEngine {
                         break;
                     }
                     case OPPONENTSPEEDUP: {
+                        if (dualMode) { listeners.forEach(l -> l.onOpponentAttack(AttackType.SPEED_UP)); break; }
                         if (playerNum == 1){
                             p2FastEffects.add(10);
                             p2TickInterval = recomputeInterval(2);
@@ -469,11 +536,13 @@ public class TetrisEngine {
                         break;
                     }
                     case SWAPACTIVEBLOCKS: {
+                        if (dualMode) { initiateSwapActive(); break; }
                         swapActiveBlocks();
                         listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
                         break;
                     }
                     case OPPONENTSPEEDDOWN: {
+                        if (dualMode) { listeners.forEach(l -> l.onOpponentAttack(AttackType.SPEED_DOWN)); break; }
                         if (playerNum == 1){
                             p2SlowEffects.add(10);
                             p2TickInterval = recomputeInterval(2);
@@ -493,12 +562,14 @@ public class TetrisEngine {
                         break;
                     }
                     case OPPONENTROTATIONDELAY: {
+                        if (dualMode) { listeners.forEach(l -> l.onOpponentAttack(AttackType.ROTATION_DELAY)); break; }
                         long expiry = System.currentTimeMillis() + 10_000;
                         if (playerNum == 1) p2RotationDelayExpiry = expiry;
                         else p1RotationDelayExpiry = expiry;
                         break;
                     }
                     case SWAPBOARDS:{
+                        if (dualMode) { initiateSwapBoards(); break; }
                         executePlayerSwap();
                         break;
                     }
@@ -530,6 +601,123 @@ public class TetrisEngine {
         }
         p1ActiveBlock.setX(posX);
         p1ActiveBlock.setY(posY);
+    }
+
+    /**
+     * Dual-engine PORTAL: the block leaves my board and travels to the opponent's board
+     * on THEIR machine. We position it like {@link #executePortal} would for the
+     * destination, emit it for the network layer to deliver, and spawn our replacement.
+     */
+    private void executePortalDual(int playerNum, Block activeBlock, int sourceIndex) {
+        if (playerNum == 1) {
+            activeBlock.setY(p1Board.getHeight() - activeBlock.getShape().length);
+            activeBlock.setX(3);
+        } else {
+            activeBlock.setX(3);
+            activeBlock.setY(0);
+        }
+        listeners.forEach(l -> l.onPortalOut(activeBlock));
+        spawnNewBlock(playerNum, sourceIndex);
+    }
+
+    /** Dual-engine PORTAL receiver: queue an incoming block onto my own board. */
+    public synchronized void receivePortalBlock(Block block) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        if (soloPlayer == 1) p1NextActiveBlock.add(block);
+        else p2NextActiveBlock.add(block);
+    }
+
+    // ----- Dual-engine board-change (shared boundary) -----
+
+    /** Dual-engine: I cleared lines and expanded; shrink my own board on the receiver. */
+    public synchronized void applyBoardShrink(int rows) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        if ((soloPlayer == 1) ? p1Lost : p2Lost) return;
+        Board myBoard = (soloPlayer == 1) ? p1Board : p2Board;
+        int safe = Math.min(rows, myBoard.getHeight() - 1);
+        if (safe <= 0) return;
+        myBoard.shrink(safe);
+        Block[] myActive = (soloPlayer == 1) ? p1ActiveBlocks : p2ActiveBlocks;
+        int dy = (soloPlayer == 1) ? -safe : safe;
+        for (int i = 0; i < (isTwoBlockMode ? 2 : 1); i++) {
+            if (myActive[i] != null) myActive[i].setY(myActive[i].getY() + dy);
+        }
+        listeners.forEach(l -> l.onBoardSizeChange(soloPlayer, safe, getSnapshot()));
+    }
+
+    // ----- Dual-engine SWAPACTIVEBLOCKS (two-way handshake) -----
+
+    private Block[] cloneMyActive() {
+        Block[] mine = (soloPlayer == 1) ? p1ActiveBlocks : p2ActiveBlocks;
+        return new Block[]{ mine[0] != null ? mine[0].cloneForSnapshot() : null,
+                            mine[1] != null ? mine[1].cloneForSnapshot() : null };
+    }
+
+    private void setSwappedActive(Block[] incoming) {
+        Board myBoard = (soloPlayer == 1) ? p1Board : p2Board;
+        Block[] myActive = (soloPlayer == 1) ? p1ActiveBlocks : p2ActiveBlocks;
+        for (int i = 0; i < 2; i++) {
+            myActive[i] = incoming[i];
+            if (myActive[i] != null) swapBlockErrorCorrection(myActive[i].getX(), myActive[i].getY(), myActive[i], myBoard);
+        }
+    }
+
+    /** I hit a swap-active power-up: offer my active blocks to the opponent. */
+    private void initiateSwapActive() {
+        Block[] copy = cloneMyActive();
+        listeners.forEach(l -> l.onSwapActiveRequest(copy));
+    }
+
+    public synchronized void receiveSwapActiveRequest(Block[] senderBlocks) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        Block[] myCopy = cloneMyActive();
+        setSwappedActive(senderBlocks);
+        listeners.forEach(l -> l.onSwapActiveResponse(myCopy));
+        listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
+    }
+
+    public synchronized void receiveSwapActiveResponse(Block[] oppBlocks) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        setSwappedActive(oppBlocks);
+        listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
+    }
+
+    // ----- Dual-engine SWAPBOARDS (two-way handshake) -----
+
+    /** I hit a swap-boards power-up: offer my whole board + active blocks to the opponent. */
+    private void initiateSwapBoards() {
+        Board myBoard = (soloPlayer == 1) ? p1Board : p2Board;
+        listeners.forEach(l -> l.onSwapBoardsRequest(deepCopy(myBoard.getGrid()), cloneMyActive()));
+    }
+
+    public synchronized void receiveSwapBoardsRequest(String[][] senderGrid, Block[] senderBlocks) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        Board myBoard = (soloPlayer == 1) ? p1Board : p2Board;
+        String[][] myGrid = deepCopy(myBoard.getGrid());
+        Block[] myCopy = cloneMyActive();
+        applySwappedBoard(senderGrid, senderBlocks);
+        listeners.forEach(l -> l.onSwapBoardsResponse(myGrid, myCopy));
+    }
+
+    public synchronized void receiveSwapBoardsResponse(String[][] oppGrid, Block[] oppBlocks) {
+        if (isGameOver || isStopped || soloPlayer == 0) return;
+        applySwappedBoard(oppGrid, oppBlocks);
+    }
+
+    /** Overwrite my board (rotated to my orientation) with the opponent's, swap in their blocks. */
+    private void applySwappedBoard(String[][] incomingGrid, Block[] incomingBlocks) {
+        Board myBoard = (soloPlayer == 1) ? p1Board : p2Board;
+        myBoard.overwriteGrid(rotateGrid180(incomingGrid));
+        Block[] myActive = (soloPlayer == 1) ? p1ActiveBlocks : p2ActiveBlocks;
+        for (int i = 0; i < 2; i++) {
+            myActive[i] = incomingBlocks[i];
+            if (myActive[i] != null) rotateBlock180(myBoard, myActive[i]);
+        }
+        activePowerUps.removeIf(p -> p.getPlayerNum() == soloPlayer);
+        listeners.forEach(l -> l.clearPowerUps());
+        listeners.forEach(l -> l.onBlockSwap(getSnapshot()));
+        checkValidPosition(soloPlayer, 0);
+        if (isTwoBlockMode) checkValidPosition(soloPlayer, 1);
     }
 
     private void executePortal(int playerNum, Block activeBlock, int sourceIndex) {

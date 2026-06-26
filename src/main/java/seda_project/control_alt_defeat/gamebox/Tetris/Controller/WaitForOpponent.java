@@ -16,6 +16,7 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.network.Announcer;
 import seda_project.control_alt_defeat.gamebox.network.Discovery;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
+import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisNet;
 import seda_project.control_alt_defeat.gamebox.network.Lan;
 import seda_project.control_alt_defeat.gamebox.network.LanHost;
 import seda_project.control_alt_defeat.gamebox.network.Message;
@@ -113,6 +114,8 @@ public class WaitForOpponent extends Controller {
             boolean vertical = TetrisAdvancedSettings.getInstance().isVertical();
             s.lanVertical = vertical;
             layer.send(new TetrisMessage.LobbyInfo(s.myName,h.playerName(),s.myLevel,s.peerLevel,vertical));
+            // Dual-engine: client builds its own engine, so it needs the host's advanced settings.
+            layer.send(new TetrisMessage.SettingsSync(TetrisAdvancedSettings.getInstance()));
             playerJoin(h.playerName());
         } else if (msg instanceof TetrisMessage.Ready r) {
             Session.current().peerReady = r.ready();
@@ -158,6 +161,9 @@ public class WaitForOpponent extends Controller {
             Session.current().lanVertical = info.vertical();
             opponentNameLabel.setText(info.hostName());
             statusLabel.setText("Press Ready to start!");
+        } else if (msg instanceof TetrisMessage.SettingsSync ss) {
+            // Adopt the host's advanced settings so our engine matches theirs.
+            TetrisAdvancedSettings.getInstance().copyFrom(ss.settings());
         } else if (msg instanceof TetrisMessage.Ready r) {
             Session.current().peerReady = r.ready();
             updatePeerStatus();
@@ -195,16 +201,36 @@ public class WaitForOpponent extends Controller {
         int p1L = s.isHost ? s.myLevel : s.peerLevel;
         int p2L = s.isHost ? s.peerLevel : s.myLevel;
 
-        // Build the engine on the host only
+        String address = s.lanVertical
+                ? "/Views/Tetris/GameScreen.fxml"
+                : "/Views/Tetris/GameScreenHorizontal.fxml";
+
+        if (TetrisNet.DUAL_ENGINE) {
+            // Dual-engine: BOTH sides build an engine and simulate only their own board.
+            int controlled = s.isHost ? 1 : 2;
+            TetrisEngine engine = new TetrisEngine(p1, p2, p1L, p2L,
+                    BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
+            s.tetrisEngine = engine;
+
+            GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
+            controller.createDual(p1, p2, p1L, p2L, engine, controlled);
+            controller.setInitialLevels(p1L, p2L);
+            if (c.checkFlip(p1, p1)) {
+                controller.flip();
+            }
+            if (c.checkRainbow(p1, p2)) {
+                controller.rainbow();
+            }
+            controller.attachDualBridge(s.network, controlled);
+            return;
+        }
+
+        // Legacy host-authoritative path: build the engine on the host only.
         TetrisEngine engine = null;
         if (s.isHost) {
             engine = new TetrisEngine(p1, p2, p1L,p2L, BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
             s.tetrisEngine = engine;
         }
-
-        String address = s.lanVertical
-                ? "/Views/Tetris/GameScreen.fxml"
-                : "/Views/Tetris/GameScreenHorizontal.fxml";
 
         GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
         controller.create(p1, p2, p1L,p2L, engine,header.getScene());
