@@ -65,9 +65,9 @@
         </StackPane>
     </VBox>
 
-    <stylesheets>
-        <URL value="@../../css/stylesheets/fontstyle.css" />
-        <URL value="@../../css/stylesheets/MenuStyle.css" />
-        <URL value="@../../css/stylesheets/HexChessMenu.css" />
+    <URL value="@../../css/stylesheets/fontstyle.css" />
+    <URL value="@../../css/stylesheets/MainTheme.css" />
+    <URL value="@../../css/stylesheets/MenuStyle.css" />
+    <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>
 </StackPane>

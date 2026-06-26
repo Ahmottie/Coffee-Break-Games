@@ -61,10 +61,10 @@ public class LocalGameConfiguration extends Controller implements Initializable 
                 controller.p2Duck();
             }
             if (boardState == null) {
-                controller.init();
+                controller.init(header.getScene());
             }
             else{
-                controller.init(boardState);
+                controller.init(boardState, header.getScene());
             }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);

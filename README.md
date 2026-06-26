@@ -207,7 +207,8 @@ for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Images
 * Application Icon: https://www.svgrepo.com/svg/211920/coffee-grain-seed?edit=true
-* Mute Button: https://www.svgrepo.com/svg/469371/mute-2
+* Unmute Button: https://www.svgrepo.com/svg/363075/speaker-simple-none-bold?edit=true
+* Mute Button: https://www.svgrepo.com/svg/363074/speaker-simple-slash-bold?edit=true
 * Close Icon: https://www.svgrepo.com/svg/522388/close?edit=true
 
 ## Sounds

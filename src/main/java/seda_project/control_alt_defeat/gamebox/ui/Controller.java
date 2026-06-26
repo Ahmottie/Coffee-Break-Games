@@ -7,10 +7,13 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -20,7 +23,6 @@ import seda_project.control_alt_defeat.gamebox.SoundController;
 import seda_project.control_alt_defeat.gamebox.ViewStack;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -62,6 +64,29 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (this.header != null) {
+            header.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        if (mouseEvent.getClickCount() == 2) {
+                            c.crimson = !c.crimson;
+                            if (c.crimson) {
+                                root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
+                                root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
+                            } else {
+                                root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
+                                root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        if (c.crimson){
+            root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
+            root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
+        }
         Rectangle clip = new Rectangle();
 
         clip.setArcWidth(32);

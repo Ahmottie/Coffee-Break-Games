@@ -11,9 +11,10 @@
            fx:controller="seda_project.control_alt_defeat.gamebox.HexChess.Controller.Promotion">
 
     <stylesheets>
-        <URL value="@../../css/stylesheets/fontstyle.css"/>
-        <URL value="@../../css/stylesheets/MenuStyle.css"/>
-        <URL value="@../../css/stylesheets/HexChessMenu.css"/>
+        <URL value="@../../css/stylesheets/fontstyle.css" />
+        <URL value="@../../css/stylesheets/MainTheme.css" />
+        <URL value="@../../css/stylesheets/MenuStyle.css" />
+        <URL value="@../../css/stylesheets/HexChessMenu.css" />
     </stylesheets>
     <VBox alignment="CENTER" fillWidth="false" layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity">
         <StackPane fx:id="stackpane" maxHeight="-Infinity" maxWidth="-Infinity">

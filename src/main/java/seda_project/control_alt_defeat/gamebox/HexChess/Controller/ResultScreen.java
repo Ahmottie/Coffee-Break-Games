@@ -133,7 +133,7 @@ public class ResultScreen extends Controller {
 
         GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
         controller.setGameEngine(engine);
-        controller.init();
+        controller.init(header.getScene());
         if (flipped){
             controller.flip();
         }

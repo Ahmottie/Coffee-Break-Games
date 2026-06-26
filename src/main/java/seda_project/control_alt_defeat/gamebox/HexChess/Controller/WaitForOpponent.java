@@ -213,18 +213,18 @@ public class WaitForOpponent extends Controller {
         }
         if (s.isHost) {
             if (boardState == null) {
-                controller.init();
+                controller.init(header.getScene());
             }
             else{
-                controller.init(boardState);
+                controller.init(boardState, header.getScene());
             }
             controller.attachHostBridge(s.network, engine);
         } else {
             if(s.boardState == null) {
-                controller.init();
+                controller.init(header.getScene());
             }
             else {
-                controller.init(s.boardState);
+                controller.init(s.boardState, header.getScene());
             }
             controller.attachClientBridge(s.network, engine);
         }

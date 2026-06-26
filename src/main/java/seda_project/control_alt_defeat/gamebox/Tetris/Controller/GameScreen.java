@@ -247,7 +247,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
     }
 
 
-    public void create(String player1, String player2, int p1Level, int p2Level, TetrisEngine engine) {
+    public void create(String player1, String player2, int p1Level, int p2Level, TetrisEngine engine, Scene scene) {
         this.engine = engine;
         player1NameLabel.setText(player1);
         player2NameLabel.setText(player2);
@@ -273,7 +273,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
         // arrives from the client over the network.
         boolean lanHost = Session.current().network != null;
         handler = new KeyHandler(engine, tS, this, lanHost);
-        handler.attach(header.getScene());
+        handler.attach(scene);
 
         p1EngineTicker = new Timeline(
                 new KeyFrame(

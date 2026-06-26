@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dlsc.fxmlkit.fxml.FxmlKit;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ public class GameBox extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        FxmlKit.enableDevelopmentMode();
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setTitle("Coffee Break Game");
         stage.centerOnScreen();

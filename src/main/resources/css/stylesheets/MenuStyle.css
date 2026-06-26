@@ -1,24 +1,18 @@
 .root {
-    -theme-text-primary: rgba(180, 240, 240, 0.9);
-    -theme-accent-cyan: rgba(30, 207, 207, 0.55);
-    -theme-button-top: #71bdff;
-    -theme-button-bottom: #3d7db8;
-    -theme-panel-bg: rgba(10, 20, 40, 0.72);
-
     -fx-background-color: transparent;
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
-    -fx-border-color: #3a3a3c;
+    -fx-border-color: -theme-border-main;
     -fx-border-width: 1px;
 }
 
 .box {
     -fx-background-color: -theme-panel-bg;
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-color: -theme-border-light;
     -fx-border-radius: 14px;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.55), 18, 0.25, 0, 5);
+    -fx-effect: dropshadow(gaussian, -theme-shadow-dark, 18, 0.25, 0, 5);
 }
 
 .transparent-scroll,
@@ -34,70 +28,61 @@
 }
 
 .error {
-    -fx-background-color: rgba(160, 30, 50, 0.45);
+    -fx-background-color:  -theme-error-bg;
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(210, 70, 90, 0.75);
+    -fx-border-color: -theme-error-border;
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(180, 40, 70, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, -theme-error-glow, 12, 0.3, 0, 0);
 }
 
 .information {
-    -fx-background-color: rgba(160, 185, 10, 0.45);
+    -fx-background-color: -theme-info-bg;
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(212, 232, 74, 0.75);
+    -fx-border-color: -theme-info-border;
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(190, 215, 40, 0.4), 12, 0.3, 0, 0);
-}
-
-.secondary {
-    -fx-background-color: rgba(20, 120, 160, 0.45);
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(80, 180, 255, 0.75);
-    -fx-border-radius: 14px;
-    -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(60, 160, 230, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, -theme-info-glow, 12, 0.3, 0, 0);
 }
 
 .ready {
-    -fx-background-color: rgba(30, 180, 140, 0.45);
+    -fx-background-color: -theme-ready-bg;
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(77, 235, 184, 0.75);
+    -fx-border-color: -theme-ready-border;
     -fx-border-radius: 14px;
     -fx-border-width: 1.5px;
-    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.4), 12, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, -theme-ready-glow, 12, 0.3, 0, 0);
 }
 
 .button-wrapper {
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, -theme-button-wrapper-glow, 8, 0, 0, 2);
     -fx-padding: 8px;
 }
 
 .button {
     -fx-background-color: linear-gradient(to bottom, -theme-button-top, -theme-button-bottom);
-    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-text-fill: -theme-text-button;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, -theme-button-glow, 8, 0, 0, 2);
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #90ccff, #5599d4);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-hover-top, -theme-button-hover-bottom);
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, #1e4e7a);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, -theme-button-pressed-bottom);
 }
 
 .button.ready {
-    -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, #59dc94 0.0%, #1eb48c72 100.0%);
-    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, -theme-ready-btn-top 0.0%, -theme-ready-btn-bottom 100.0%);
+    -fx-text-fill: -theme-text-button;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.45), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, -theme-button-glow, 8, 0, 0, 2);
 }
 
 .color-picker {
@@ -106,38 +91,38 @@
     -fx-border-radius: 6px;
     -fx-border-color: transparent;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.4), 8, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, -theme-button-wrapper-glow, 8, 0, 0, 2);
 }
 
 .color-picker:hover {
-    -fx-background-color: linear-gradient(to bottom, #90ccff, #5599d4);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-hover-top, -theme-button-hover-bottom);
 }
 
 .color-picker:pressed {
-    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, #1e4e7a);
+    -fx-background-color: linear-gradient(to bottom, -theme-button-bottom, -theme-button-pressed-bottom);
 }
 
 .color-picker .label {
-    -fx-text-fill: white;
+    -fx-text-fill: -theme-text-header;
     -fx-font-size: 13px;
 }
 
 .color-picker .arrow-button {
-    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-color: -theme-arrow-btn-bg;
     -fx-background-radius: 0 6px 6px 0;
 }
 
 .color-picker .arrow-button .arrow {
-    -fx-background-color: white;
+    -fx-background-color: -theme-text-header;
 }
 
 .color-picker-palette {
-    -fx-background-color: rgba(10, 20, 40, 0.95);
-    -fx-border-color: rgba(113, 189, 255, 0.6);
+    -fx-background-color: -theme-palette-bg;
+    -fx-border-color: -theme-palette-border;
     -fx-border-width: 1.5px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.35), 14, 0.3, 0, 4);
+    -fx-effect: dropshadow(gaussian, -theme-palette-glow, 14, 0.3, 0, 4);
 }
 
 .color-palette .color-square {
@@ -148,26 +133,26 @@
 .color-palette .color-square:hover {
     -fx-border-color: -theme-button-top;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(113, 189, 255, 0.7), 6, 0.5, 0, 0);
+    -fx-effect: dropshadow(gaussian, -theme-palette-hover-glow, 6, 0.5, 0, 0);
 }
 
 .custom-color-dialog .dialog-pane {
-    -fx-background-color: rgba(10, 20, 40, 0.97);
-    -fx-border-color: rgba(113, 189, 255, 0.5);
+    -fx-background-color: -theme-dialog-bg;
+    -fx-border-color: -theme-dialog-border;
     -fx-border-width: 1.5px;
     -fx-border-radius: 14px;
     -fx-background-radius: 14px;
 }
 
 .custom-color-dialog .label {
-    -fx-text-fill: rgba(210, 235, 255, 0.9);
+    -fx-text-fill: -theme-text-button;
     -fx-font-size: 13px;
 }
 
 .custom-color-dialog .text-field {
-    -fx-background-color: rgba(10, 20, 40, 0.8);
-    -fx-text-fill: rgba(210, 235, 255, 0.9);
-    -fx-border-color: rgba(113, 189, 255, 0.4);
+    -fx-background-color: -theme-dialog-tf-bg;
+    -fx-text-fill: -theme-text-button;
+    -fx-border-color: -theme-dialog-tf-border;
     -fx-border-width: 1px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
@@ -176,7 +161,7 @@
 /* --- Lists, Combo Boxes & Scroll Items --- */
 .combo-box-popup .list-view,
 .scroller {
-    -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-color: -theme-combo-border;
     -fx-border-width: 2px;
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
@@ -187,7 +172,7 @@
 }
 
 .combo-box-popup .list-view .list-cell {
-    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-text-fill: -theme-combo-cell-text;
     -fx-background-color: transparent;
     -fx-background-radius: 7px;
     -fx-border-color: transparent;
@@ -197,7 +182,7 @@
 }
 
 .scrollItem {
-    -fx-text-fill: rgba(180, 240, 240, 0.80);
+    -fx-text-fill: -theme-combo-cell-text;
     -fx-background-color: transparent;
     -fx-background-radius: 7px;
     -fx-border-color: transparent;
@@ -210,29 +195,28 @@
 
 .combo-box-popup .list-view .list-cell:hover,
 .scrollItem:hover {
-    -fx-background-color: rgba(30, 207, 207, 0.10);
-    -fx-border-color: rgba(30, 207, 207, 0.20);
-    -fx-text-fill: rgba(200, 255, 255, 0.95);
+    -fx-background-color: -theme-combo-cell-hover-bg;
+    -fx-border-color: -theme-combo-cell-hover-border;
+    -fx-text-fill: -theme-combo-cell-hover-text;
 }
 
 .combo-box-popup .list-view .list-cell:filled:selected,
 .scrollItem .selectedItem {
-    -fx-background-color: rgba(30, 180, 140, 0.22);
-    -fx-border-color: rgba(77, 235, 184, 0.70);
-    -fx-text-fill: rgba(160, 255, 220, 1.0);
-    -fx-effect: dropshadow(gaussian, rgba(60, 210, 165, 0.35), 8, 0.3, 0, 0);
+    -fx-background-color: -theme-combo-selected-bg;
+    -fx-border-color: -theme-combo-selected-border;
+    -fx-text-fill: -theme-combo-selected-text;
+    -fx-effect: dropshadow(gaussian, -theme-combo-selected-glow, 8, 0.3, 0, 0);
 }
-
 
 .scroller .track,
 .combo-box-popup .scroll-bar:vertical .track {
-    -fx-background-color: rgba(30, 207, 207, 0.1);
+    -fx-background-color: -theme-combo-cell-hover-bg;
     -fx-background-radius: 4px;
 }
 
 .scroller .thumb,
 .combo-box-popup .scroll-bar:vertical .thumb {
-    -fx-background-color: rgba(30, 207, 207, 0.3);
+    -fx-background-color: -theme-combo-border;
     -fx-background-radius: 4px;
 }
 
@@ -264,14 +248,14 @@
 .scroller .scroll-bar:vertical .decrement-arrow,
 .combo-box-popup .scroll-bar:vertical .increment-arrow,
 .combo-box-popup .scroll-bar:vertical .decrement-arrow {
-    -fx-background-color: rgba(30, 207, 207, 0.40);
+    -fx-background-color: -theme-combo-arrow;
 }
 
 .text-field {
     -fx-background-color: transparent;
-    -fx-border-color: transparent transparent #B0B0B0 transparent;
+    -fx-border-color: transparent transparent -theme-border-muted transparent;
     -fx-border-width: 0 0 1px 0;
-    -fx-prompt-text-fill: #90A4AE;
+    -fx-prompt-text-fill: -theme-text-muted;
 }
 
 .text-field:focused {
@@ -280,7 +264,7 @@
 
 .combo-box {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(30, 207, 207, 0.3);
+    -fx-border-color: -theme-combo-border;
     -fx-border-width: 1px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
@@ -296,14 +280,14 @@
 
 .radio-button .radio {
     -fx-background-color: transparent;
-    -fx-border-color: #B0B0B0;
+    -fx-border-color: -theme-border-muted;
     -fx-border-width: 1px;
     -fx-border-radius: 100px;
     -fx-padding: 4px;
 }
 
 .radio-button:selected .radio {
-    -fx-border-color: rgba(30, 207, 207, 0.75);
+    -fx-border-color: -theme-radio-border-selected;
     -fx-border-width: 2px;
 }
 
@@ -315,7 +299,7 @@
 }
 
 .radio-button:selected .radio .dot {
-    -fx-background-color: rgba(30, 207, 207, 0.95);
+    -fx-background-color: -theme-radio-dot-selected;
 }
 
 .mute {
