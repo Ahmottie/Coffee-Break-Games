@@ -11,6 +11,7 @@ import seda_project.control_alt_defeat.gamebox.Tetris.Engine.BlockRegistry;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisAdvancedSettings;
 import seda_project.control_alt_defeat.gamebox.Tetris.Engine.TetrisEngine;
 import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisMessage;
+import seda_project.control_alt_defeat.gamebox.Tetris.network.TetrisNet;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkLayer;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
@@ -72,6 +73,9 @@ public class ResultScreen extends Controller {
         sC.play("button");
         sC.stopLooping();
         sC.playLooping("lobby_background",.2);
+        // We're leaving on purpose: closing the connection below fires our own
+        // onDisconnected, so suppress the disconnect handler to avoid a double navigate.
+        disconnected = true;
         Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
@@ -147,6 +151,24 @@ public class ResultScreen extends Controller {
         if (rainbowed){
             controller.rainbow();
         }
+
+        if (TetrisNet.DUAL_ENGINE) {
+            // Both sides simulate their own board; build an engine if we don't have one.
+            int controlled = s.isHost ? 1 : 2;
+            int p1L = s.isHost ? s.myLevel : s.peerLevel;
+            int p2L = s.isHost ? s.peerLevel : s.myLevel;
+            TetrisEngine engine = engineForHost;
+            if (engine == null) {
+                engine = new TetrisEngine(state.p1Name(), state.p2Name(), p1L, p2L,
+                        BlockRegistry.getInstance(), TetrisAdvancedSettings.getInstance());
+                s.tetrisEngine = engine;
+            }
+            controller.createDual(state.p1Name(), state.p2Name(), p1L, p2L, engine, controlled);
+            controller.setInitialLevels(p1L, p2L);
+            controller.attachDualBridge(s.network, controlled);
+            return;
+        }
+
         if (s.isHost) {
             controller.create(state.p1Name(), state.p2Name(), s.myLevel,s.peerLevel, engineForHost,header.getScene());
             controller.attachHostNetworkBridge(s.network);
@@ -159,15 +181,23 @@ public class ResultScreen extends Controller {
     private void handleDisconnect(String reason) {
         if (disconnected) return;
         disconnected = true;
+
+        // Only navigate if we're still attached to a window; if the scene was already
+        // swapped out (e.g. we navigated away), skip it instead of crashing changeScene.
+        javafx.stage.Window owner = (header.getScene() != null) ? header.getScene().getWindow() : null;
+        Session.clear();
+        vS.emtyStack();
+        if (owner != null) {
+            c.changeScene("/Views/StartingScreen.fxml", header, vS);
+        }
+
         Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
                 ButtonType.OK);
         alert.setTitle("Disconnected");
         alert.setHeaderText("Opponent disconnected");
+        if (owner != null) alert.initOwner(owner);
         alert.showAndWait();
-        Session.clear();
-        vS.emtyStack();
-        c.changeScene("/Views/StartingScreen.fxml", header, vS);
     }
 
     public void setInitialLevels(int initP1Level,int initP2Level){

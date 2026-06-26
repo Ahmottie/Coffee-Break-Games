@@ -7,7 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +43,7 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     private boolean isNetworkPromotion = false;
     private boolean isBotMode = false;
     private PlayerColor botColor = null;
+    private boolean disconnected = false;
     private Scene thisScene;
     
     @FXML
@@ -578,7 +581,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         sC.play("button");
         sC.stopLooping();
         sC.playLooping("lobby_background",.2);
-        Session s = Session.current();
+        // we're leaving on purpose: don't show ourselves a disconnect alert,
+        // but DO close the connection so the opponent is notified gracefully.
+        disconnected = true;
+        Session.clear();
         vS.emtyStack();
         c.changeScene("/Views/StartingScreen.fxml",header,vS);
     }
@@ -609,8 +615,30 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         return sb.toString();
     }
 
+    // Mid-game disconnect: opponent's window closed / connection dropped.
+    // Show one alert and return to the main menu (idempotent so it fires once).
+    private void handleDisconnect(String reason) {
+        if (disconnected) return;
+        disconnected = true;
+        sC.stopLooping();
+        sC.playLooping("lobby_background", .2);
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                "Connection to opponent lost: " + reason + "\n\nReturning to the main menu.",
+                ButtonType.OK);
+        alert.setTitle("Disconnected");
+        alert.setHeaderText("Opponent disconnected");
+        alert.showAndWait();
+        Session.clear();
+        vS.emtyStack();
+        c.changeScene("/Views/StartingScreen.fxml", header, vS);
+    }
+
     public void attachHostBridge(NetworkLayer network, GameEngine engine) {
         network.addListener(new NetworkListener() {
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> handleDisconnect(reason));
+            }
             @Override
             public void onMessage(Message msg) {
                 if (msg instanceof ChessMessage.Input input) {
@@ -649,6 +677,10 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     public void attachClientBridge(NetworkLayer network, GameEngine engine) {
         network.addListener(new NetworkListener() {
+            @Override
+            public void onDisconnected(String reason) {
+                Platform.runLater(() -> handleDisconnect(reason));
+            }
             @Override
             public void onMessage(Message msg) {
                 if (msg instanceof ChessMessage.StateUpdate update) {

@@ -32,6 +32,30 @@ public class TetrisAdvancedSettings implements Serializable {
 
     private TetrisAdvancedSettings (){}
 
+    /**
+     * Copy every gameplay field from another settings object. Used in dual-engine LAN
+     * so the client's engine is built from the HOST's advanced settings (power-up types,
+     * spawn rates, bombs, two-blocks, board-change) rather than its own local defaults.
+     */
+    public void copyFrom(TetrisAdvancedSettings o) {
+        this.vertical = o.vertical;
+        this.itemSpawnRate = o.itemSpawnRate;
+        this.itemDespawnRate = o.itemDespawnRate;
+        this.bombChance = o.bombChance;
+        this.swapBoards = o.swapBoards;
+        this.swapBlocks = o.swapBlocks;
+        this.portals = o.portals;
+        this.opponentSlowDown = o.opponentSlowDown;
+        this.opponentSpeedUp = o.opponentSpeedUp;
+        this.opponentDelayRotation = o.opponentDelayRotation;
+        this.selfDelayRotation = o.selfDelayRotation;
+        this.selfSpeedDown = o.selfSpeedDown;
+        this.radialBomb = o.radialBomb;
+        this.columnBomb = o.columnBomb;
+        this.twoBlocks = o.twoBlocks;
+        this.isBoardChange = o.isBoardChange;
+    }
+
     public void setVertical(boolean vertical) { this.vertical = vertical; }
     public void setSwapBoards(boolean swapBoards) { this.swapBoards = swapBoards; }
     public void setSwapBlocks(boolean swapBlocks) { this.swapBlocks = swapBlocks; }

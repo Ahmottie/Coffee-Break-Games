@@ -26,6 +26,10 @@ public class ResultScreen extends Controller {
             s.localReady = false;
             s.peerReady = false;
 
+            // Drop the GameScreen's stale bridge listener so its mid-game disconnect
+            // alert doesn't fire when the opponent simply exits the result screen.
+            s.network.clearListeners();
+
             s.network.addListener(new NetworkListener() {
                 @Override
                 public void onMessage(Message msg) {
