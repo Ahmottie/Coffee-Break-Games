@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,6 +61,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
     @FXML
     private Label p1Score, p2Score, p1NameLabel, p2NameLabel;
 
+    @FXML
+    private Button p1Resign, p1Draw, p2Resign, p2Draw;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -84,6 +88,14 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         this.gameEngine.addListener(this);
         this.gameEngine.setupInitialState();
         activePlayer = gameEngine.getActivePlayer();
+
+        if (isBotMode) {
+            Button resign = botColor == PlayerColor.WHITE ? p1Resign : p2Resign;
+            Button draw = botColor == PlayerColor.WHITE ? p1Draw : p2Draw;
+
+            resign.setDisable(true);
+            draw.setDisable(true);
+        }
     }
 
     public void setGameEngine(GameEngine gameEngine){

@@ -72,11 +72,13 @@ public class Controller implements Initializable {
                         if (mouseEvent.getClickCount() == 2) {
                             c.crimson = !c.crimson;
                             if (c.crimson) {
+                                int pos = root.getStylesheets().indexOf(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
                                 root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
-                                root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
+                                root.getStylesheets().add(pos,Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
                             } else {
+                                int pos = root.getStylesheets().indexOf(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
                                 root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
-                                root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
+                                root.getStylesheets().add(pos,Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
                             }
                         }
                     }
@@ -84,8 +86,9 @@ public class Controller implements Initializable {
             });
         }
         if (c.crimson){
+            int pos = root.getStylesheets().indexOf(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
             root.getStylesheets().remove(Controller.class.getResource("/css/stylesheets/MainTheme.css").toExternalForm());
-            root.getStylesheets().add(Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
+            root.getStylesheets().add(pos,Controller.class.getResource("/css/stylesheets/CrimsonTheme.css").toExternalForm());
         }
         Rectangle clip = new Rectangle();
 

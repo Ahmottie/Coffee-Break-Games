@@ -237,9 +237,10 @@ for ungraceful disconnects (cable pulled, process force-killed).
 
 ## Easter Eggs:
 * Konami Code -> Change Music
-* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is roatet by 180 
+* "Upsidedown", "Grumm", "Dinnerbone" -> GameScreen is rotated by 180 
 * "jeb_" -> GameScreen background has Rainbowcolors
 * "Duck" -> Pawns in Chess are replaced by Ducks
+* Second color-scheme when performing a double click on the header
 
 ## AI-Usage
 * FXML indentation
