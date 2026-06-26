@@ -690,8 +690,8 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
             proposalStage.setScene(s);
             proposalStage.initStyle(StageStyle.TRANSPARENT);
             proposalStage.initModality(Modality.APPLICATION_MODAL);
-            proposalStage.setWidth(321);
-            proposalStage.setHeight(114);
+            proposalStage.setWidth(323);
+            proposalStage.setHeight(115);
             proposalStage.setX(stage.getX() + stage.getWidth() / 2 - proposalStage.getWidth() / 2);
             proposalStage.setY(stage.getY() + stage.getHeight() / 2 - proposalStage.getHeight() / 2);
             proposalStage.show();
