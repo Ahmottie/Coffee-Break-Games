@@ -43,11 +43,14 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             GameEngine gameEngine = new GameEngine();
             controller.setGameEngine(gameEngine);
 
-            if (player2Name.equalsIgnoreCase("Bot")) {
+            if (player1Name.equalsIgnoreCase("Bot")) {
+                controller.setBotMode(true, PlayerColor.WHITE);
+            } else if (player2Name.equalsIgnoreCase("Bot")) {
                 controller.setBotMode(true, PlayerColor.BLACK);
             } else {
                 controller.setBotMode(false, null);
             }
+
             if (c.checkFlip(player1Name,player2Name)){
                 controller.flip();
             }
@@ -68,6 +71,13 @@ public class LocalGameConfiguration extends Controller implements Initializable 
             }
             controller.setNames(player1Name, player2Name);
             controller.setPoints(0, 0);
+
+            PlayerColor startingColor = gameEngine.getActivePlayer();
+            if (startingColor == PlayerColor.WHITE && player1Name.equalsIgnoreCase("Bot")) {
+                controller.activePlayer(PlayerColor.WHITE);
+            } else if (startingColor == PlayerColor.BLACK && player2Name.equalsIgnoreCase("Bot")) {
+                controller.activePlayer(PlayerColor.BLACK);
+            }
         }
         else{
             statusLabel.setVisible(true);
@@ -94,19 +104,28 @@ public class LocalGameConfiguration extends Controller implements Initializable 
     }
 
     private void changeBot(boolean newValue, int player){
-        if (player == 1 && newValue){
-            if (isP2Bot.switchOnProperty().getValue()){
-                player2TF.setText("");
-                isP2Bot.setSwitchedOn(false);
-            }
-            player1TF.setText("Bot");
-        }
-        if (player == 2 && newValue){
-            if (isP1Bot.switchOnProperty().getValue()){
+        if (player == 1) {
+            if (newValue) {
+                if (isP2Bot.switchOnProperty().getValue()) {
+                    player2TF.setText("");
+                    isP2Bot.setSwitchedOn(false);
+                }
+                player1TF.setText("Bot");
+            } else if (player1TF.getText().equalsIgnoreCase("Bot")) {
                 player1TF.setText("");
-                isP1Bot.setSwitchedOn(false);
             }
-            player2TF.setText("Bot");
+        }
+
+        if (player == 2) {
+            if (newValue) {
+                if (isP1Bot.switchOnProperty().getValue()) {
+                    player1TF.setText("");
+                    isP1Bot.setSwitchedOn(false);
+                }
+                player2TF.setText("Bot");
+            } else if (player2TF.getText().equalsIgnoreCase("Bot")) {
+                player2TF.setText("");
+            }
         }
     }
 

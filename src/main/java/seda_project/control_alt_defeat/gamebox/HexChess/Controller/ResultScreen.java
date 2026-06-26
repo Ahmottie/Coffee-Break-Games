@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import seda_project.control_alt_defeat.gamebox.HexChess.Engine.GameEngine;
+import seda_project.control_alt_defeat.gamebox.HexChess.Engine.PlayerColor;
 import seda_project.control_alt_defeat.gamebox.HexChess.Network.ChessMessage;
 import seda_project.control_alt_defeat.gamebox.network.Message;
 import seda_project.control_alt_defeat.gamebox.network.NetworkListener;
@@ -133,6 +134,18 @@ public class ResultScreen extends Controller {
 
         GameScreen controller = (GameScreen) c.changeScene("/Views/HexChess/GameScreen.fxml", header, vS);
         controller.setGameEngine(engine);
+
+        String p1 = p1NameLabel.getText();
+        String p2 = p2NameLabel.getText();
+
+        if (p1.equalsIgnoreCase("Bot")) {
+            controller.setBotMode(true, PlayerColor.WHITE);
+        } else if (p2.equalsIgnoreCase("Bot")) {
+            controller.setBotMode(true, PlayerColor.BLACK);
+        } else {
+            controller.setBotMode(false, null);
+        }
+
         controller.init(header.getScene());
         if (flipped){
             controller.flip();
@@ -140,6 +153,13 @@ public class ResultScreen extends Controller {
         if (rainbowed){
             controller.rainbow();
         }
+        if (p1.equals("Duck")) {
+            controller.p1Duck();
+        }
+        if (p2.equals("Duck")){
+            controller.p2Duck();
+        }
+
         if (s.network != null) {
             if (s.isHost) {
                 controller.attachHostBridge(s.network, engine);
@@ -148,8 +168,12 @@ public class ResultScreen extends Controller {
             }
         }
 
-        controller.setNames(p1NameLabel.getText(), p2NameLabel.getText());
+        controller.setNames(p1, p2);
         controller.setPoints(Double.parseDouble(p1Score.getText()), Double.parseDouble(p2Score.getText()));
+
+        if (s.network == null && p1.equalsIgnoreCase("Bot")) {
+            controller.activePlayer(PlayerColor.WHITE);
+        }
     }
 
     public void draw() {
@@ -158,7 +182,7 @@ public class ResultScreen extends Controller {
     }
 
     public void resign(int winner) {
-        resultLabel.setText("Resing");
+        resultLabel.setText("Resigned");
         onePoint(winner);
     }
 

@@ -243,8 +243,9 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
                             }
                         }
                         else {
-                            gameEngine.handleMove(currentTileId, targetTileId);
-                            playSound();
+                            if (ok) {
+                                playSound();
+                            }
                         }
                         clearHighlights();
                         event.consume();
@@ -413,6 +414,11 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
 
     @Override
     public void promotion(PlayerColor currentTurn) {
+        // Ignore UI. bot always chooses queen when promoted.
+        if (isBotMode && currentTurn == botColor) {
+            return;
+        }
+
         Session s = Session.current();
         if  (s.network != null) {
             if (s.isHost && currentTurn == PlayerColor.WHITE) {
@@ -494,14 +500,23 @@ public class GameScreen extends Controller implements Initializable, ChessEventL
         this.activePlayer = currentTurn;
 
         if (isBotMode && currentTurn == botColor) {
+            String currentFen = gameEngine.getBoard().createNotation(currentTurn);
+
             new Thread(() -> {
-                String[] bestMove = HexBot.getBestMove(gameEngine, botColor);
+                String[] bestMove = HexBot.getBestMove(currentFen, botColor);
 
                 if (bestMove != null) {
                     javafx.application.Platform.runLater(() -> {
                         gameEngine.handleMove(bestMove[0], bestMove[1]);
                         if (gameEngine.getCurrentTurn() == botColor && !gameEngine.isGameOver()) {
-                            gameEngine.promote(PieceType.QUEEN);
+
+                            // default to Queen if none specified
+                            PieceType promoType = PieceType.QUEEN;
+                            if (bestMove.length > 2 && !bestMove[2].equals("NONE")) {
+                                promoType = PieceType.valueOf(bestMove[2]);
+                            }
+
+                            gameEngine.promote(promoType);
                         }
                     });
                 }
