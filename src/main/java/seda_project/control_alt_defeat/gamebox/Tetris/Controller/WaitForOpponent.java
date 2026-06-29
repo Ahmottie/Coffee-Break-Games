@@ -213,8 +213,9 @@ public class WaitForOpponent extends Controller {
             s.tetrisEngine = engine;
 
             GameScreen controller = (GameScreen) c.changeScene(address, header, vS);
-            controller.createDual(p1, p2, p1L, p2L, engine, controlled);
-            controller.setInitialLevels(p1L, p2L);
+            Platform.runLater(() -> {
+                controller.createDual(p1, p2, p1L, p2L, engine, controlled);
+                controller.setInitialLevels(p1L, p2L);
             if (c.checkFlip(p1, p1)) {
                 controller.flip();
             }
@@ -222,6 +223,7 @@ public class WaitForOpponent extends Controller {
                 controller.rainbow();
             }
             controller.attachDualBridge(s.network, controlled);
+            });
             return;
         }
 

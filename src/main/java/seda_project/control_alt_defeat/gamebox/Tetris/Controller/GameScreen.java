@@ -750,7 +750,7 @@ public class GameScreen extends Controller implements TetrisEventListener {
 
         // Keyboard drives only my player -> immediate local response.
         handler = new KeyHandler(engine, tS, this, controlledPlayer);
-        handler.attach(header.getScene());
+        handler.attach(root.getScene());
 
         // Tick only my own board; the opponent ticks on their machine.
         if (controlledPlayer == 1) {

@@ -102,26 +102,6 @@ public class Configuration {
         return null;
     }
 
-    public Object changeScene(String address, VBox header, ViewStack vS, int v, int v1){
-        try {
-            FXMLLoader loader = new FXMLLoader(Configuration.class.getResource(address));
-            Parent root = loader.load();
-
-            vS.addFxmlLoaders(address);
-            var controller = loader.getController();
-            Scene newScene = new Scene(root, v, v1);
-            Stage stage = (Stage) header.getScene().getWindow();
-            stage.setScene(newScene);
-            stage.show();
-            if (controller != null){
-                return controller;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
     public Object backScene(VBox header, ViewStack vS) {
         try {
             vS.popFxmlLoader();
