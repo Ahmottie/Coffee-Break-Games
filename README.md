@@ -17,9 +17,9 @@ The rules for this game are the same in Local and Lan mode.
 
 | Person   | Area                                              |
 |----------| ------------------------------------------------- |
-| Amir     | Game engine — match logic, scoring, deck setup    |
+| Amir     | Game engine   |
 | Erik     | UI / FXML controllers, animations, local play     |
-| Suleyman | LAN networking — sockets, lobby sync, disconnect  |
+| Suleyman | LAN networking  |
 
 ## Requirements
 
