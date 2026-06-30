@@ -168,17 +168,6 @@ The test classes currently in the repo:
   5-second peer-disconnect detection over loopback.
 - `gamebox.ExampleTest` — placeholder smoke test from the template.
 
-## Known limitations / non-goals
-
-These are intentionally out of scope (see `docs/requirements.pdf`, section
-2.2):
-
-- No single-player or AI opponent.
-- No internet play, only LAN.
-- No automatic host discovery — the joining player has to type the IP.
-- No persistent player accounts or cross-session leaderboard.
-- No mobile or web client.
-
 ## Troubleshooting
 
 **"Cannot resolve symbol" on JavaFX classes after pulling.** Run
